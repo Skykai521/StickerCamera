@@ -1,13 +1,14 @@
-package com.github.skykai.stickercamera;
+package com.stickercamera;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.github.skykai.stickercamera.R;
+
 public class MainActivity extends AppCompatActivity {
 
-    //test
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
