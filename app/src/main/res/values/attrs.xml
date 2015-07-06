@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+
+    <declare-styleable name="CommonTitleBar">
+        <attr name="baseStyle">
+            <enum name="normal" value="0" />
+            <enum name="white" value="1" />
+        </attr>
+        <attr name="leftBtnIcon" format="reference" />
+        <attr name="leftBtnTxt" format="string|reference" />
+        <attr name="titleTxt" format="string|reference" />
+        <attr name="rightBtnTxt" format="string|reference" />
+        <attr name="rightBtnIcon" format="reference" />
+    </declare-styleable>
+
+
+
+</resources>

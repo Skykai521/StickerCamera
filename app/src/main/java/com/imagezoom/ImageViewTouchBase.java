@@ -12,10 +12,10 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.widget.ImageView;
 
-import it.sephiroth.android.library.imagezoom.easing.Cubic;
-import it.sephiroth.android.library.imagezoom.easing.Easing;
-import it.sephiroth.android.library.imagezoom.graphics.FastBitmapDrawable;
-import it.sephiroth.android.library.imagezoom.utils.IDisposable;
+import com.imagezoom.easing.Cubic;
+import com.imagezoom.easing.Easing;
+import com.imagezoom.graphics.FastBitmapDrawable;
+import com.imagezoom.utils.IDisposable;
 
 /**
  * Base View to manage image zoom/scrool/pinch operations
