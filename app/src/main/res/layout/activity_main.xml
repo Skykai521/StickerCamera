@@ -7,6 +7,7 @@
 
 
     <com.customview.CommonTitleBar
+        android:id="@+id/title_layout"
         style="@style/head_default"
         app:titleTxt="我的主页"
         app:rightBtnIcon="@drawable/next">

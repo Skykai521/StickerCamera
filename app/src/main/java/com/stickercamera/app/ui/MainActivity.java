@@ -1,4 +1,4 @@
-package com.stickercamera;
+package com.stickercamera.app.ui;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
