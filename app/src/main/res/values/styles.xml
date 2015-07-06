@@ -5,4 +5,11 @@
         <!-- Customize your theme here. -->
     </style>
 
+
+
+    <style name="head_default">
+        <item name="android:layout_width">fill_parent</item>
+        <item name="android:layout_height">@dimen/height_100px</item>
+    </style>
+
 </resources>
