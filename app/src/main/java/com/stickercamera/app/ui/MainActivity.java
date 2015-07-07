@@ -33,6 +33,8 @@ public class MainActivity extends BaseActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+//            showProgressDialog("test");
+//            toast("1122",5000);
             return true;
         }
 
