@@ -3,9 +3,13 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <!-- Customize your theme here. -->
+    </style>s
+
+    <style name="RedTheme" parent="AppTheme">
+        <item name="colorPrimary">@color/red</item>
+        <item name="colorPrimaryDark">@color/dark_red</item>
+        <item name="colorAccent">@color/accent_red</item>
     </style>
-
-
 
     <style name="head_default">
         <item name="android:layout_width">fill_parent</item>

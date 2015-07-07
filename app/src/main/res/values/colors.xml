@@ -23,4 +23,11 @@
     <color name="crop__selector_focused">#77000000</color>
     <!-- [end]crop -->
 
+
+
+    <!--Theme-->
+    <color name="red">#FF6347</color>
+    <color name="dark_red">#F4511E</color>
+    <color name="accent_red">#FF5722</color>
+    <!--Theme-->
 </resources>

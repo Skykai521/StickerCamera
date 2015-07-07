@@ -6,11 +6,18 @@
     tools:context=".MainActivity">
 
 
-    <com.customview.CommonTitleBar
-        android:id="@+id/title_layout"
-        style="@style/head_default"
-        app:titleTxt="我的主页"
-        app:rightBtnIcon="@drawable/next">
-    </com.customview.CommonTitleBar>
+    <com.melnykov.fab.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="4dp"
+        android:src="@drawable/ic_edit_white"
+        app:fab_colorRipple="?attr/colorPrimary"
+        app:fab_colorNormal="?attr/colorPrimary"
+        app:fab_colorPressed="?attr/colorPrimaryDark"
+        android:layout_marginBottom="31dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
+
 
 </RelativeLayout>

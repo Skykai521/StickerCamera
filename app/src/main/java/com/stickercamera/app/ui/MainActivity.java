@@ -6,8 +6,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.github.skykai.stickercamera.R;
+import com.stickercamera.base.BaseActivity;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
 
     @Override
