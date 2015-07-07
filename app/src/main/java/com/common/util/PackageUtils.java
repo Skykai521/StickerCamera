@@ -17,36 +17,7 @@ import android.provider.Settings;
 import android.util.Log;
 import com.common.util.ShellUtils.CommandResult;
 
-/**
- * PackageUtils
- * <ul>
- * <strong>Install package</strong>
- * <li>{@link PackageUtils#installNormal(Context, String)}</li>
- * <li>{@link PackageUtils#installSilent(Context, String)}</li>
- * <li>{@link PackageUtils#install(Context, String)}</li>
- * </ul>
- * <ul>
- * <strong>Uninstall package</strong>
- * <li>{@link PackageUtils#uninstallNormal(Context, String)}</li>
- * <li>{@link PackageUtils#uninstallSilent(Context, String)}</li>
- * <li>{@link PackageUtils#uninstall(Context, String)}</li>
- * </ul>
- * <ul>
- * <strong>Is system application</strong>
- * <li>{@link PackageUtils#isSystemApplication(Context)}</li>
- * <li>{@link PackageUtils#isSystemApplication(Context, String)}</li>
- * <li>{@link PackageUtils#isSystemApplication(PackageManager, String)}</li>
- * </ul>
- * <ul>
- * <strong>Others</strong>
- * <li>{@link PackageUtils#getInstallLocation()} get system install location</li>
- * <li>{@link PackageUtils#isTopActivity(Context, String)} whether the app whost package's name is packageName is on the
- * top of the stack</li>
- * <li>{@link PackageUtils#startInstalledAppDetails(Context, String)} start InstalledAppDetails Activity</li>
- * </ul>
- * 
- * @author <a href="http://www.trinea.cn" target="_blank">Trinea</a> 2013-5-15
- */
+
 public class PackageUtils {
 
     public static final String TAG = "PackageUtils";
