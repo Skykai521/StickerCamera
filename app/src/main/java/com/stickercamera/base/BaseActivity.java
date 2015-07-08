@@ -32,7 +32,7 @@ public class BaseActivity extends AppCompatActivity implements ActivityResponsab
         super.onCreate(savedInstanceState);
         mActivityHelper = new ActivityHelper(this);
         initWindow();
-        ButterKnife.inject(this);
+
     }
 
     @TargetApi(19)

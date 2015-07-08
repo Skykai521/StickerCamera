@@ -8,8 +8,10 @@ import android.view.View;
 
 import com.github.skykai.stickercamera.R;
 import com.melnykov.fab.FloatingActionButton;
+import com.stickercamera.app.camera.CameraManager;
 import com.stickercamera.base.BaseActivity;
 
+import butterknife.ButterKnife;
 import butterknife.InjectView;
 
 public class MainActivity extends BaseActivity {
@@ -22,11 +24,12 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.inject(this);
         initView();
     }
 
     private void initView(){
-//        fab.setOnClickListener(v -> toast("11",100));
+        fab.setOnClickListener(v -> CameraManager.getInst().openCamera(MainActivity.this));
     }
 
 
