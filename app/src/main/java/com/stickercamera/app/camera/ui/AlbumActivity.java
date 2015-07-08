@@ -8,4 +8,6 @@ import com.stickercamera.app.camera.CameraBaseActivity;
 public class AlbumActivity extends CameraBaseActivity {
 
 
+
+
 }

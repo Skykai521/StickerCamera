@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical" >
+
+    <com.customview.CommonTitleBar
+        android:id="@+id/title_layout"
+        style="@style/head_default"
+        app:titleTxt="裁剪相片" />
+
+    <View
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@color/crop_bg" />
+
+    <RelativeLayout
+        android:id="@+id/draw_area"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+        <LinearLayout
+            android:id="@+id/wrap_image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            android:background="@drawable/black_white_selector" >
+
+            <ImageView
+                android:id="@+id/image_center"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:scaleType="fitCenter" />
+        </LinearLayout>
+        <com.imagezoom.ImageViewTouch
+            android:id="@+id/crop_image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitCenter"/>
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2"
+        android:background="@color/crop_bg" >
+        
+        <ImageView
+            android:id="@+id/btn_crop_type"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_centerInParent="true"
+            android:src="@drawable/btn_crop_selector" />
+        <TextView 
+            android:id="@+id/cancel"
+            android:text="取消"
+            android:textSize="24sp"
+            android:textColor="@color/white"
+            android:layout_margin="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@id/btn_crop_type"/>
+        <TextView 
+            android:id="@+id/picked"
+            android:text="选取"
+            android:textSize="24sp"
+            android:layout_margin="20dp"
+            android:textColor="@color/white"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/btn_crop_type"/>
+    </RelativeLayout>
+
+</LinearLayout>

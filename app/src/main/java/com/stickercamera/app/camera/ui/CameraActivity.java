@@ -42,6 +42,7 @@ import com.stickercamera.App;
 import com.stickercamera.app.camera.CameraBaseActivity;
 import com.stickercamera.app.camera.CameraManager;
 import com.stickercamera.app.camera.util.CameraHelper;
+import com.stickercamera.app.camera.util.Crop;
 import com.stickercamera.app.model.PhotoItem;
 
 import java.io.ByteArrayInputStream;
@@ -258,6 +259,20 @@ public class CameraActivity extends CameraBaseActivity {
             focusIndex.startAnimation(sa);
             handler.postDelayed( ()->focusIndex.setVisibility(View.INVISIBLE) , 800);
         });
+    }
+
+    @Override
+    protected void onActivityResult(final int requestCode, final int resultCode, final Intent result) {
+        if (requestCode == Crop.REQUEST_PICK && resultCode == RESULT_OK) {
+            CameraManager.getInst().processPhotoItem(
+                    CameraActivity.this,
+                    new PhotoItem(result.getData().getPath(), System
+                            .currentTimeMillis()));
+        } else if (requestCode == Crop.REQUEST_CROP && resultCode == RESULT_OK) {
+            Intent newIntent = new Intent(this, PhotoProcessActivity.class);
+            newIntent.setData(result.getData());
+            startActivity(newIntent);
+        }
     }
 
     /**
