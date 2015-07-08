@@ -9,6 +9,7 @@ import com.common.util.ImageUtils;
 import com.stickercamera.app.camera.ui.CameraActivity;
 import com.stickercamera.app.camera.ui.CropPhotoActivity;
 import com.stickercamera.app.camera.ui.PhotoProcessActivity;
+import com.stickercamera.app.camera.util.Crop;
 import com.stickercamera.app.model.PhotoItem;
 
 import java.util.Stack;
@@ -50,7 +51,7 @@ public class CameraManager {
             Intent i = new Intent(activity, CropPhotoActivity.class);
             i.setData(uri);
             //TODO稍后添加
-            //activity.startActivityForResult(i, Crop.REQUEST_CROP);
+            activity.startActivityForResult(i, Crop.REQUEST_CROP);
         }
     }
 

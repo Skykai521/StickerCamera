@@ -1,30 +1,53 @@
 package com.stickercamera.app.camera.ui;
 
+import android.annotation.TargetApi;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.BitmapRegionDecoder;
+import android.graphics.Canvas;
+import android.graphics.Matrix;
 import android.graphics.PixelFormat;
+import android.graphics.Rect;
+import android.graphics.RectF;
 import android.hardware.Camera;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.PersistableBundle;
+import android.util.FloatMath;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.ScaleAnimation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.common.util.DistanceUtil;
 import com.common.util.FileUtils;
+import com.common.util.IOUtil;
+import com.common.util.ImageUtils;
 import com.common.util.StringUtils;
 import com.customview.CameraGrid;
 import com.github.skykai.stickercamera.R;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.stickercamera.App;
 import com.stickercamera.app.camera.CameraBaseActivity;
+import com.stickercamera.app.camera.CameraManager;
 import com.stickercamera.app.camera.util.CameraHelper;
 import com.stickercamera.app.model.PhotoItem;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -54,6 +77,8 @@ public class CameraActivity extends CameraBaseActivity {
     private int mode;                      //0是聚焦 1是放大
     private float dist;
     private int PHOTO_SIZE = 2000;
+    private int mCurrentCameraId = 0;
+    private Handler handler    = new Handler();
 
     @InjectView(R.id.masking)
     CameraGrid cameraGrid;
@@ -61,6 +86,8 @@ public class CameraActivity extends CameraBaseActivity {
     LinearLayout photoArea;
     @InjectView(R.id.panel_take_photo)
     View takePhotoPanel;
+    @InjectView(R.id.takepicture)
+    View takePicture;
     @InjectView(R.id.flashBtn)
     ImageView flashBtn;
     @InjectView(R.id.change)
@@ -116,7 +143,7 @@ public class CameraActivity extends CameraBaseActivity {
     private void addPhoto(PhotoItem photoItem) {
         ImageView photo = new ImageView(this);
         if (StringUtils.isNotBlank(photoItem.getImageUri())) {
-            ImageLoader.getInstance().displayLocalImage(photoItem.getImageUri(), photo,null);
+            ImageLoader.getInstance().displayLocalImage(photoItem.getImageUri(), photo, null);
         } else {
             photo.setImageResource(R.drawable.default_img);
         }
@@ -134,13 +161,223 @@ public class CameraActivity extends CameraBaseActivity {
         } else {
             photoArea.addView(photo, 0, params);
         }
-        //TODO 稍后添加点击事件
-        //photo.setOnClickListener(photoListener);
+        photo.setOnClickListener(v -> {
+                    if (v instanceof ImageView && v.getTag() instanceof String) {
+                        CameraManager.getInst().processPhotoItem(CameraActivity.this,
+                                new PhotoItem((String) v.getTag(), System.currentTimeMillis()));
+                    }
+        });
     }
 
     private void initEvent() {
+        //拍照
+        takePicture.setOnClickListener(v -> {
+            try {
+                cameraInst.takePicture(null, null, new MyPictureCallback());
+            } catch (Throwable t) {
+                t.printStackTrace();
+                toast("拍照失败，请重试！", Toast.LENGTH_LONG);
+                try {
+                    cameraInst.startPreview();
+                } catch (Throwable e) {
+
+                }
+            }
+
+        });
+        //闪光灯
+        flashBtn.setOnClickListener(v ->  turnLight(cameraInst));
+        //前后置摄像头切换
+        boolean canSwitch = false;
+        try{
+            canSwitch = mCameraHelper.hasFrontCamera() && mCameraHelper.hasBackCamera();
+        }catch(Exception e) {
+            //获取相机信息失败
+        }
+        if (!canSwitch) {
+            changeBtn.setVisibility(View.GONE);
+        } else {
+            changeBtn.setOnClickListener(v -> switchCamera());
+        }
+        //跳转相册
+        galaryBtn.setOnClickListener(v -> startActivity(new Intent(CameraActivity.this,AlbumActivity.class)));
+        //返回按钮
+        backBtn.setOnClickListener(v -> finish());
+        surfaceView.setOnTouchListener((v,event) ->{
+            switch (event.getAction() & MotionEvent.ACTION_MASK) {
+                // 主点按下
+                case MotionEvent.ACTION_DOWN:
+                    pointX = event.getX();
+                    pointY = event.getY();
+                    mode = FOCUS;
+                    break;
+                // 副点按下
+                case MotionEvent.ACTION_POINTER_DOWN:
+                    dist = spacing(event);
+                    // 如果连续两点距离大于10，则判定为多点模式
+                    if (spacing(event) > 10f) {
+                        mode = ZOOM;
+                    }
+                    break;
+                case MotionEvent.ACTION_UP:
+                case MotionEvent.ACTION_POINTER_UP:
+                    mode = FOCUS;
+                    break;
+                case MotionEvent.ACTION_MOVE:
+                    if (mode == FOCUS) {
+                        //pointFocus((int) event.getRawX(), (int) event.getRawY());
+                    } else if (mode == ZOOM) {
+                        float newDist = spacing(event);
+                        if (newDist > 10f) {
+                            float tScale = (newDist - dist) / dist;
+                            if (tScale < 0) {
+                                tScale = tScale * 10;
+                            }
+                            addZoomIn((int) tScale);
+                        }
+                    }
+                    break;
+            }
+            return false;
+        });
 
 
+        surfaceView.setOnClickListener(v -> {
+            try {
+                pointFocus((int) pointX, (int) pointY);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            RelativeLayout.LayoutParams layout = new RelativeLayout.LayoutParams(focusIndex.getLayoutParams());
+            layout.setMargins((int) pointX - 60, (int) pointY - 60, 0, 0);
+            focusIndex.setLayoutParams(layout);
+            focusIndex.setVisibility(View.VISIBLE);
+            ScaleAnimation sa = new ScaleAnimation(3f, 1f, 3f, 1f,
+                    ScaleAnimation.RELATIVE_TO_SELF, 0.5f, ScaleAnimation.RELATIVE_TO_SELF, 0.5f);
+            sa.setDuration(800);
+            focusIndex.startAnimation(sa);
+            handler.postDelayed( ()->focusIndex.setVisibility(View.INVISIBLE) , 800);
+        });
+    }
+
+    /**
+     * 两点的距离
+     */
+    private float spacing(MotionEvent event) {
+        if (event == null) {
+            return 0;
+        }
+        float x = event.getX(0) - event.getX(1);
+        float y = event.getY(0) - event.getY(1);
+        return FloatMath.sqrt(x * x + y * y);
+    }
+
+    //放大缩小
+    int curZoomValue = 0;
+    private void addZoomIn(int delta) {
+
+        try {
+            Camera.Parameters params = cameraInst.getParameters();
+            Log.d("Camera", "Is support Zoom " + params.isZoomSupported());
+            if (!params.isZoomSupported()) {
+                return;
+            }
+            curZoomValue += delta;
+            if (curZoomValue < 0) {
+                curZoomValue = 0;
+            } else if (curZoomValue > params.getMaxZoom()) {
+                curZoomValue = params.getMaxZoom();
+            }
+
+            if (!params.isSmoothZoomSupported()) {
+                params.setZoom(curZoomValue);
+                cameraInst.setParameters(params);
+                return;
+            } else {
+                cameraInst.startSmoothZoom(curZoomValue);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    //定点对焦的代码
+    private void pointFocus(int x, int y) {
+        cameraInst.cancelAutoFocus();
+        parameters = cameraInst.getParameters();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
+            showPoint(x, y);
+        }
+        cameraInst.setParameters(parameters);
+        autoFocus();
+    }
+
+    @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
+    private void showPoint(int x, int y) {
+        if (parameters.getMaxNumMeteringAreas() > 0) {
+            List<Camera.Area> areas = new ArrayList<Camera.Area>();
+            //xy变换了
+            int rectY = -x * 2000 / App.getApp().getScreenWidth() + 1000;
+            int rectX = y * 2000 / App.getApp().getScreenHeight() - 1000;
+
+            int left = rectX < -900 ? -1000 : rectX - 100;
+            int top = rectY < -900 ? -1000 : rectY - 100;
+            int right = rectX > 900 ? 1000 : rectX + 100;
+            int bottom = rectY > 900 ? 1000 : rectY + 100;
+            Rect area1 = new Rect(left, top, right, bottom);
+            areas.add(new Camera.Area(area1, 800));
+            parameters.setMeteringAreas(areas);
+        }
+
+        parameters.setFocusMode(Camera.Parameters.FOCUS_MODE_CONTINUOUS_PICTURE);
+    }
+
+    private final class MyPictureCallback implements Camera.PictureCallback {
+
+        @Override
+        public void onPictureTaken(byte[] data, Camera camera) {
+            bundle = new Bundle();
+            bundle.putByteArray("bytes", data); //将图片字节数据保存在bundle当中，实现数据交换
+            new SavePicTask(data).execute();
+            camera.startPreview(); // 拍完照后，重新开始预览
+        }
+    }
+
+    private class SavePicTask extends AsyncTask<Void, Void, String> {
+        private byte[] data;
+
+        protected void onPreExecute() {
+                showProgressDialog("处理中");
+        };
+
+        SavePicTask(byte[] data) {
+            this.data = data;
+        }
+
+        @Override
+        protected String doInBackground(Void... params) {
+            try {
+                return saveToSDCard(data);
+            } catch (IOException e) {
+                e.printStackTrace();
+                return null;
+            }
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+
+            if (StringUtils.isNotEmpty(result)) {
+                    dismissProgressDialog();
+                    CameraManager.getInst().processPhotoItem(
+                            CameraActivity.this,
+                            new PhotoItem(result, System.currentTimeMillis()));
+
+            } else {
+                toast("拍照失败，请稍后重试！", Toast.LENGTH_LONG);
+            }
+        }
 
     }
 
@@ -414,7 +651,6 @@ public class CameraActivity extends CameraBaseActivity {
         }
 
         // 没有找到合适的，就返回默认的
-
         return defaultPictureResolution;
     }
 
@@ -440,5 +676,198 @@ public class CameraActivity extends CameraBaseActivity {
         } catch (Exception e) {
             Log.e("Came_e", "图像出错");
         }
+    }
+
+    /******************************** 拍照后裁剪 ***********************/
+    private static final boolean IN_MEMORY_CROP = Build.VERSION.SDK_INT < Build.VERSION_CODES.GINGERBREAD_MR1;
+
+    /**
+     * 将拍下来的照片存放在SD卡中
+     * @param data
+     *
+     * @throws IOException
+     */
+    public String saveToSDCard(byte[] data) throws IOException {
+        Bitmap croppedImage;
+
+        //获得图片大小
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeByteArray(data, 0, data.length, options);
+
+        PHOTO_SIZE = options.outHeight > options.outWidth ? options.outWidth : options.outHeight;
+        int height = options.outHeight > options.outWidth ? options.outHeight : options.outWidth;
+        options.inJustDecodeBounds = false;
+        Rect r;
+        if (mCurrentCameraId == 1) {
+            r = new Rect(height - PHOTO_SIZE, 0, height, PHOTO_SIZE);
+        } else {
+            r = new Rect(0, 0, PHOTO_SIZE, PHOTO_SIZE);
+        }
+        Bitmap oriBitmap = BitmapFactory.decodeByteArray(data, 0, data.length, options);
+
+        if (IN_MEMORY_CROP && oriBitmap != null) {
+            croppedImage = inMemoryCrop(oriBitmap, r, PHOTO_SIZE, PHOTO_SIZE, options.outWidth,
+                    options.outHeight);
+        } else {
+            try {
+                croppedImage = decodeRegionCrop(oriBitmap, r);
+            } catch (Exception e) {
+                return null;
+            }
+        }
+
+        String imagePath = ImageUtils.saveToFile(FileUtils.getInst().getSystemPhotoPath(),true,
+                croppedImage);
+        croppedImage.recycle();
+        return imagePath;
+    }
+
+    private Bitmap inMemoryCrop(Bitmap oriBitmap, Rect r, int width, int height, int outWidth,
+                                int outHeight) {
+        // In-memory crop means potential OOM errors,
+        // but we have no choice as we can't selectively decode a bitmap with this API level
+        System.gc();
+        Bitmap croppedImage = null;
+        try {
+            croppedImage = Bitmap.createBitmap(outWidth, outHeight, Bitmap.Config.ARGB_8888);//FIXME 分辨率是否会有问题
+
+            Canvas canvas = new Canvas(croppedImage);
+            RectF dstRect = new RectF(0, 0, width, height);
+
+            Matrix m = new Matrix();
+            m.setRectToRect(new RectF(r), dstRect, Matrix.ScaleToFit.FILL);
+            m.setRotate(90, width / 2, height / 2);
+            if (mCurrentCameraId == 1) {
+                m.postScale(1, -1);
+            }
+            canvas.drawBitmap(oriBitmap, m, null);
+        } catch (OutOfMemoryError e) {
+            System.gc();
+        } catch (Exception e) {
+            toast("照片处理失败，请稍后重试！", Toast.LENGTH_LONG);
+        }
+
+        oriBitmap.recycle();
+        return croppedImage;
+    }
+
+    @TargetApi(10)
+    private Bitmap decodeRegionCrop(Bitmap oriImage, Rect rect) {
+
+        InputStream is = null;
+        System.gc();
+        Bitmap croppedImage = null;
+        try {
+
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            oriImage.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+            is = new ByteArrayInputStream(baos.toByteArray());
+            BitmapRegionDecoder decoder = BitmapRegionDecoder.newInstance(is, false);
+
+            try {
+                croppedImage = decoder.decodeRegion(rect, new BitmapFactory.Options());
+
+            } catch (IllegalArgumentException e) {
+
+            }
+            oriImage.recycle();
+        } catch (Throwable e) {
+            //LogUtil.appError("照片处理失败", e);
+        } finally {
+            IOUtil.closeStream(is);
+        }
+        Matrix m = new Matrix();
+        m.setRotate(90, PHOTO_SIZE / 2, PHOTO_SIZE / 2);
+        if (mCurrentCameraId == 1) {
+            m.postScale(1, -1);
+        }
+        Bitmap rotatedImage = Bitmap.createBitmap(croppedImage, 0, 0, PHOTO_SIZE, PHOTO_SIZE, m,
+                true);
+        croppedImage.recycle();
+        return rotatedImage;
+    }
+    /******************************** 拍照后裁剪 ***********************/
+
+    /**
+     * 闪光灯开关   开->关->自动
+     * @param mCamera
+     */
+    private void turnLight(Camera mCamera) {
+        if (mCamera == null || mCamera.getParameters() == null
+                || mCamera.getParameters().getSupportedFlashModes() == null) {
+            return;
+        }
+        Camera.Parameters parameters = mCamera.getParameters();
+        String flashMode = mCamera.getParameters().getFlashMode();
+        List<String> supportedModes = mCamera.getParameters().getSupportedFlashModes();
+        if (Camera.Parameters.FLASH_MODE_OFF.equals(flashMode)
+                && supportedModes.contains(Camera.Parameters.FLASH_MODE_ON)) {//关闭状态
+            parameters.setFlashMode(Camera.Parameters.FLASH_MODE_ON);
+            mCamera.setParameters(parameters);
+            flashBtn.setImageResource(R.drawable.camera_flash_on);
+        } else if (Camera.Parameters.FLASH_MODE_ON.equals(flashMode)) {//开启状态
+            if (supportedModes.contains(Camera.Parameters.FLASH_MODE_AUTO)) {
+                parameters.setFlashMode(Camera.Parameters.FLASH_MODE_AUTO);
+                flashBtn.setImageResource(R.drawable.camera_flash_auto);
+                mCamera.setParameters(parameters);
+            } else if (supportedModes.contains(Camera.Parameters.FLASH_MODE_OFF)) {
+                parameters.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);
+                flashBtn.setImageResource(R.drawable.camera_flash_off);
+                mCamera.setParameters(parameters);
+            }
+        } else if (Camera.Parameters.FLASH_MODE_AUTO.equals(flashMode)
+                && supportedModes.contains(Camera.Parameters.FLASH_MODE_OFF)) {
+            parameters.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);
+            mCamera.setParameters(parameters);
+            flashBtn.setImageResource(R.drawable.camera_flash_off);
+        }
+    }
+
+
+    //切换前后置摄像头
+    private void switchCamera() {
+        mCurrentCameraId = (mCurrentCameraId + 1) % mCameraHelper.getNumberOfCameras();
+        releaseCamera();
+        setUpCamera(mCurrentCameraId);
+    }
+
+    private void releaseCamera() {
+        if (cameraInst != null) {
+            cameraInst.setPreviewCallback(null);
+            cameraInst.release();
+            cameraInst = null;
+        }
+        adapterSize = null;
+        previewSize = null;
+    }
+
+    /**
+     * @param mCurrentCameraId2
+     */
+    private void setUpCamera(int mCurrentCameraId2) {
+        cameraInst = getCameraInstance(mCurrentCameraId2);
+        if(cameraInst != null){
+            try {
+                cameraInst.setPreviewDisplay(surfaceView.getHolder());
+                initCamera();
+                cameraInst.startPreview();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }else{
+            toast("切换失败，请重试！", Toast.LENGTH_LONG);
+
+        }
+    }
+
+    private Camera getCameraInstance(final int id) {
+        Camera c = null;
+        try {
+            c = mCameraHelper.openCamera(id);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return c;
     }
 }
