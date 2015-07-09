@@ -15,7 +15,7 @@
     <color name="tabcolor">#6e686a</color>
     <!-- [begin]crop -->
     
-    <color name="crop_bg">#77000000</color>
+    <color name="crop_bg">#D5D5D5</color>
     
     <color name="crop__button_bar">#f3f3f3</color>
     <color name="crop__button_text">#666666</color>

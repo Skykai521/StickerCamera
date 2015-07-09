@@ -49,6 +49,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.ref.SoftReference;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -78,8 +79,8 @@ public class CameraActivity extends CameraBaseActivity {
     private int mode;                      //0是聚焦 1是放大
     private float dist;
     private int PHOTO_SIZE = 2000;
-    private int mCurrentCameraId = 0;
-    private Handler handler    = new Handler();
+    private int mCurrentCameraId = 0;  //1是前置 0是后置
+    private Handler handler = new Handler();
 
     @InjectView(R.id.masking)
     CameraGrid cameraGrid;
@@ -163,10 +164,10 @@ public class CameraActivity extends CameraBaseActivity {
             photoArea.addView(photo, 0, params);
         }
         photo.setOnClickListener(v -> {
-                    if (v instanceof ImageView && v.getTag() instanceof String) {
-                        CameraManager.getInst().processPhotoItem(CameraActivity.this,
-                                new PhotoItem((String) v.getTag(), System.currentTimeMillis()));
-                    }
+            if (v instanceof ImageView && v.getTag() instanceof String) {
+                CameraManager.getInst().processPhotoItem(CameraActivity.this,
+                        new PhotoItem((String) v.getTag(), System.currentTimeMillis()));
+            }
         });
     }
 
@@ -187,12 +188,12 @@ public class CameraActivity extends CameraBaseActivity {
 
         });
         //闪光灯
-        flashBtn.setOnClickListener(v ->  turnLight(cameraInst));
+        flashBtn.setOnClickListener(v -> turnLight(cameraInst));
         //前后置摄像头切换
         boolean canSwitch = false;
-        try{
+        try {
             canSwitch = mCameraHelper.hasFrontCamera() && mCameraHelper.hasBackCamera();
-        }catch(Exception e) {
+        } catch (Exception e) {
             //获取相机信息失败
         }
         if (!canSwitch) {
@@ -201,10 +202,10 @@ public class CameraActivity extends CameraBaseActivity {
             changeBtn.setOnClickListener(v -> switchCamera());
         }
         //跳转相册
-        galaryBtn.setOnClickListener(v -> startActivity(new Intent(CameraActivity.this,AlbumActivity.class)));
+        galaryBtn.setOnClickListener(v -> startActivity(new Intent(CameraActivity.this, AlbumActivity.class)));
         //返回按钮
         backBtn.setOnClickListener(v -> finish());
-        surfaceView.setOnTouchListener((v,event) ->{
+        surfaceView.setOnTouchListener((v, event) -> {
             switch (event.getAction() & MotionEvent.ACTION_MASK) {
                 // 主点按下
                 case MotionEvent.ACTION_DOWN:
@@ -257,7 +258,7 @@ public class CameraActivity extends CameraBaseActivity {
                     ScaleAnimation.RELATIVE_TO_SELF, 0.5f, ScaleAnimation.RELATIVE_TO_SELF, 0.5f);
             sa.setDuration(800);
             focusIndex.startAnimation(sa);
-            handler.postDelayed( ()->focusIndex.setVisibility(View.INVISIBLE) , 800);
+            handler.postDelayed(() -> focusIndex.setVisibility(View.INVISIBLE), 800);
         });
     }
 
@@ -289,6 +290,7 @@ public class CameraActivity extends CameraBaseActivity {
 
     //放大缩小
     int curZoomValue = 0;
+
     private void addZoomIn(int delta) {
 
         try {
@@ -362,8 +364,10 @@ public class CameraActivity extends CameraBaseActivity {
         private byte[] data;
 
         protected void onPreExecute() {
-                showProgressDialog("处理中");
-        };
+            showProgressDialog("处理中");
+        }
+
+        ;
 
         SavePicTask(byte[] data) {
             this.data = data;
@@ -384,11 +388,12 @@ public class CameraActivity extends CameraBaseActivity {
             super.onPostExecute(result);
 
             if (StringUtils.isNotEmpty(result)) {
-                    dismissProgressDialog();
-                    CameraManager.getInst().processPhotoItem(
-                            CameraActivity.this,
-                            new PhotoItem(result, System.currentTimeMillis()));
+                dismissProgressDialog();
+//                    CameraManager.getInst().processPhotoItem(
+//                            CameraActivity.this,
+//                            new PhotoItem(result, System.currentTimeMillis()));
 
+                toast("拍照成功", Toast.LENGTH_LONG);
             } else {
                 toast("拍照失败，请稍后重试！", Toast.LENGTH_LONG);
             }
@@ -412,6 +417,7 @@ public class CameraActivity extends CameraBaseActivity {
             }
 
         }
+
         @Override
         public void surfaceCreated(SurfaceHolder holder) {
             if (null == cameraInst) {
@@ -425,6 +431,7 @@ public class CameraActivity extends CameraBaseActivity {
                 }
             }
         }
+
         @Override
         public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
             autoFocus();
@@ -451,7 +458,6 @@ public class CameraActivity extends CameraBaseActivity {
                             initCamera();//实现相机的参数初始化
                         }
                     }
-
                 });
             }
         };
@@ -517,7 +523,7 @@ public class CameraActivity extends CameraBaseActivity {
      * 最大宽高比差
      */
     private static final double MAX_ASPECT_DISTORTION = 0.15;
-    private static final String TAG                   = "Camera";
+    private static final String TAG = "Camera";
 
     /**
      * 找出最适合的预览界面分辨率
@@ -684,22 +690,20 @@ public class CameraActivity extends CameraBaseActivity {
         Method downPolymorphic;
         try {
             downPolymorphic = camera.getClass().getMethod("setDisplayOrientation",
-                    new Class[] { int.class });
+                    new Class[]{int.class});
             if (downPolymorphic != null) {
-                downPolymorphic.invoke(camera, new Object[] { i });
+                downPolymorphic.invoke(camera, new Object[]{i});
             }
         } catch (Exception e) {
             Log.e("Came_e", "图像出错");
         }
     }
 
-    /******************************** 拍照后裁剪 ***********************/
-    private static final boolean IN_MEMORY_CROP = Build.VERSION.SDK_INT < Build.VERSION_CODES.GINGERBREAD_MR1;
 
     /**
      * 将拍下来的照片存放在SD卡中
-     * @param data
      *
+     * @param data
      * @throws IOException
      */
     public String saveToSDCard(byte[] data) throws IOException {
@@ -719,76 +723,32 @@ public class CameraActivity extends CameraBaseActivity {
         } else {
             r = new Rect(0, 0, PHOTO_SIZE, PHOTO_SIZE);
         }
-        Bitmap oriBitmap = BitmapFactory.decodeByteArray(data, 0, data.length, options);
-
-        if (IN_MEMORY_CROP && oriBitmap != null) {
-            croppedImage = inMemoryCrop(oriBitmap, r, PHOTO_SIZE, PHOTO_SIZE, options.outWidth,
-                    options.outHeight);
-        } else {
-            try {
-                croppedImage = decodeRegionCrop(oriBitmap, r);
-            } catch (Exception e) {
-                return null;
-            }
+        try {
+            croppedImage = decodeRegionCrop(data, r);
+        } catch (Exception e) {
+            return null;
         }
-
-        String imagePath = ImageUtils.saveToFile(FileUtils.getInst().getSystemPhotoPath(),true,
+        String imagePath = ImageUtils.saveToFile(FileUtils.getInst().getSystemPhotoPath(), true,
                 croppedImage);
         croppedImage.recycle();
         return imagePath;
     }
 
-    private Bitmap inMemoryCrop(Bitmap oriBitmap, Rect r, int width, int height, int outWidth,
-                                int outHeight) {
-        // In-memory crop means potential OOM errors,
-        // but we have no choice as we can't selectively decode a bitmap with this API level
-        System.gc();
-        Bitmap croppedImage = null;
-        try {
-            croppedImage = Bitmap.createBitmap(outWidth, outHeight, Bitmap.Config.ARGB_8888);//FIXME 分辨率是否会有问题
-
-            Canvas canvas = new Canvas(croppedImage);
-            RectF dstRect = new RectF(0, 0, width, height);
-
-            Matrix m = new Matrix();
-            m.setRectToRect(new RectF(r), dstRect, Matrix.ScaleToFit.FILL);
-            m.setRotate(90, width / 2, height / 2);
-            if (mCurrentCameraId == 1) {
-                m.postScale(1, -1);
-            }
-            canvas.drawBitmap(oriBitmap, m, null);
-        } catch (OutOfMemoryError e) {
-            System.gc();
-        } catch (Exception e) {
-            toast("照片处理失败，请稍后重试！", Toast.LENGTH_LONG);
-        }
-
-        oriBitmap.recycle();
-        return croppedImage;
-    }
-
-    @TargetApi(10)
-    private Bitmap decodeRegionCrop(Bitmap oriImage, Rect rect) {
+    private Bitmap decodeRegionCrop(byte[] data, Rect rect) {
 
         InputStream is = null;
         System.gc();
         Bitmap croppedImage = null;
         try {
-
-            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            oriImage.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-            is = new ByteArrayInputStream(baos.toByteArray());
+            is = new ByteArrayInputStream(data);
             BitmapRegionDecoder decoder = BitmapRegionDecoder.newInstance(is, false);
 
             try {
                 croppedImage = decoder.decodeRegion(rect, new BitmapFactory.Options());
-
             } catch (IllegalArgumentException e) {
-
             }
-            oriImage.recycle();
         } catch (Throwable e) {
-            //LogUtil.appError("照片处理失败", e);
+            e.printStackTrace();
         } finally {
             IOUtil.closeStream(is);
         }
@@ -797,15 +757,15 @@ public class CameraActivity extends CameraBaseActivity {
         if (mCurrentCameraId == 1) {
             m.postScale(1, -1);
         }
-        Bitmap rotatedImage = Bitmap.createBitmap(croppedImage, 0, 0, PHOTO_SIZE, PHOTO_SIZE, m,
-                true);
-        croppedImage.recycle();
+        Bitmap rotatedImage = Bitmap.createBitmap(croppedImage, 0, 0, PHOTO_SIZE, PHOTO_SIZE, m, true);
+        if (rotatedImage != croppedImage)
+            croppedImage.recycle();
         return rotatedImage;
     }
-    /******************************** 拍照后裁剪 ***********************/
 
     /**
      * 闪光灯开关   开->关->自动
+     *
      * @param mCamera
      */
     private void turnLight(Camera mCamera) {
@@ -844,6 +804,7 @@ public class CameraActivity extends CameraBaseActivity {
     private void switchCamera() {
         mCurrentCameraId = (mCurrentCameraId + 1) % mCameraHelper.getNumberOfCameras();
         releaseCamera();
+        Log.d("DDDD", "DDDD----mCurrentCameraId" + mCurrentCameraId);
         setUpCamera(mCurrentCameraId);
     }
 
@@ -862,7 +823,7 @@ public class CameraActivity extends CameraBaseActivity {
      */
     private void setUpCamera(int mCurrentCameraId2) {
         cameraInst = getCameraInstance(mCurrentCameraId2);
-        if(cameraInst != null){
+        if (cameraInst != null) {
             try {
                 cameraInst.setPreviewDisplay(surfaceView.getHolder());
                 initCamera();
@@ -870,7 +831,7 @@ public class CameraActivity extends CameraBaseActivity {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }else{
+        } else {
             toast("切换失败，请重试！", Toast.LENGTH_LONG);
 
         }
