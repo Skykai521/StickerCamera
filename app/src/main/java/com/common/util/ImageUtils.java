@@ -4,13 +4,19 @@
 package com.common.util;
 
 import android.content.ContentResolver;
+import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.media.ExifInterface;
 import android.net.Uri;
+import android.provider.MediaStore;
+
 import com.stickercamera.App;
+import com.stickercamera.app.model.Album;
+import com.stickercamera.app.model.PhotoItem;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -20,7 +26,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.ref.SoftReference;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 
 /**
@@ -203,6 +214,50 @@ public class ImageUtils {
             e.printStackTrace();
         }
         return bitmap;
+    }
+
+
+    public static Map<String, Album> findGalleries(Context mContext, List<String> paths, long babyId) {
+        paths.clear();
+        paths.add(FileUtils.getInst().getSystemPhotoPath());
+        String[] projection = { MediaStore.Images.Media._ID, MediaStore.Images.Media.DATA,
+                MediaStore.Images.Media.DATE_ADDED };//FIXME 拍照时间为新增照片时间
+        Cursor cursor = mContext.getContentResolver().query(
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI, projection,//指定所要查询的字段
+                MediaStore.Images.Media.SIZE + ">?",//查询条件
+                new String[] { "100000" }, //查询条件中问号对应的值
+                MediaStore.Images.Media.DATE_ADDED + " desc");
+
+        cursor.moveToFirst();
+        //文件夹照片
+        Map<String, Album> galleries = new HashMap<String, Album>();
+        while (cursor.moveToNext()) {
+            String data = cursor.getString(1);
+            if (data.lastIndexOf("/") < 1) {
+                continue;
+            }
+            String sub = data.substring(0, data.lastIndexOf("/"));
+            if (!galleries.keySet().contains(sub)) {
+                String name = sub.substring(sub.lastIndexOf("/") + 1, sub.length());
+                if (!paths.contains(sub)) {
+                    paths.add(sub);
+                }
+                galleries.put(sub, new Album(name, sub, new ArrayList<PhotoItem>()));
+            }
+
+            galleries.get(sub).getPhotos().add(new PhotoItem(data, (long) (cursor.getInt(2)) * 1000));
+        }
+        //系统相机照片
+        ArrayList<PhotoItem> sysPhotos = FileUtils.getInst().findPicsInDir(
+                FileUtils.getInst().getSystemPhotoPath());
+        if (!sysPhotos.isEmpty()) {
+            galleries.put(FileUtils.getInst().getSystemPhotoPath(), new Album("胶卷相册", FileUtils
+                    .getInst().getSystemPhotoPath(), sysPhotos));
+        } else {
+            galleries.remove(FileUtils.getInst().getSystemPhotoPath());
+            paths.remove(FileUtils.getInst().getSystemPhotoPath());
+        }
+        return galleries;
     }
 
 

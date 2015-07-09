@@ -15,12 +15,6 @@ public class PhotoItem implements Parcelable, Comparable<PhotoItem> {
     private String  dateStr;
     private boolean uploaded;
 
-    public PhotoItem(String uri, long date, boolean uploaded) {
-        this.imageUri = uri;
-        this.date = date;
-        this.uploaded = uploaded;
-    }
-
     public PhotoItem(String uri, long date) {
         this.imageUri = uri;
         this.date = date;
