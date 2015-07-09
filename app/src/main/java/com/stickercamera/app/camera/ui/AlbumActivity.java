@@ -35,6 +35,8 @@ public class AlbumActivity extends CameraBaseActivity {
 
     @InjectView(R.id.indicator)
     PagerSlidingTabStrip tab;
+    @InjectView(R.id.pager)
+    ViewPager pager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,12 +46,8 @@ public class AlbumActivity extends CameraBaseActivity {
         albums = ImageUtils.findGalleries(this, paths, 0);
         //ViewPager的adapter
         FragmentPagerAdapter adapter = new TabPageIndicatorAdapter(getSupportFragmentManager());
-        ViewPager pager = (ViewPager) findViewById(R.id.pager);
         pager.setAdapter(adapter);
-
         tab.setViewPager(pager);
-
-
     }
 
     @Override
@@ -91,7 +89,6 @@ public class AlbumActivity extends CameraBaseActivity {
             } else if (album.getTitle().length() > 13) {
                 return album.getTitle().substring(0, 11) + "...";
             }
-
             return album.getTitle();
         }
 
