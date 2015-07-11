@@ -168,6 +168,7 @@ public class ImageUtils {
         if (result != bm)
             bm.recycle();
         return result;
+
     }
 
 

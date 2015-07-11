@@ -260,6 +260,7 @@ public class CameraActivity extends CameraBaseActivity {
             focusIndex.startAnimation(sa);
             handler.postDelayed(() -> focusIndex.setVisibility(View.INVISIBLE), 800);
         });
+
     }
 
     @Override

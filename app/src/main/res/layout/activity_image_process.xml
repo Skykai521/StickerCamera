@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="#ffffff"
+    android:orientation="vertical" >
+
+    <com.customview.CommonTitleBar
+        android:id="@+id/title_layout"
+        style="@style/head_default"
+        app:leftBtnIcon="@drawable/back"
+        app:rightBtnIcon="@drawable/next"
+        app:titleTxt="编辑相片"
+        app:leftBtnTxt="返回"
+        app:rightBtnTxt="下一步" />
+
+    <LinearLayout
+        android:id="@+id/main_area"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical" >
+
+        <RelativeLayout
+            android:id="@+id/drawing_view_container"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <jp.co.cyberagent.android.gpuimage.GPUImageView
+                android:id="@+id/gpuimage"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center" />
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/toolbar_area"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="vertical" >
+
+            <it.sephiroth.android.library.widget.HListView
+                android:id="@+id/tool_packages"
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:gravity="center_vertical"
+                android:overScrollMode="always" />
+
+            <it.sephiroth.android.library.widget.HListView
+                android:id="@+id/list_tools"
+                android:layout_width="match_parent"
+                android:layout_height="fill_parent"
+                android:background="@color/common_background"
+                android:gravity="center_vertical"
+                android:overScrollMode="always" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/btn_area"
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+        android:background="#ff004a"
+        android:orientation="horizontal" >
+
+
+        <TextView
+            android:id="@+id/sticker_btn"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="贴纸"
+            android:textColor="#d0beb9"
+            android:textSize="22sp" />
+
+        <TextView
+            android:id="@+id/filter_btn"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="滤镜"
+            android:textColor="#d0beb9"
+            android:textSize="22sp" />
+
+        <TextView
+            android:id="@+id/text_btn"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:text="标签"
+            android:textColor="#d0beb9"
+            android:textSize="22sp" />
+    </LinearLayout>
+
+</LinearLayout>

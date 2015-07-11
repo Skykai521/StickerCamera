@@ -35,4 +35,6 @@ dependencies {
     compile 'com.melnykov:floatingactionbutton:1.3.0'
     compile 'com.rengwuxian.materialedittext:library:2.1.3'
     compile files('libs/fastjson-1.2.5.jar')
+    compile 'it.sephiroth.android.library.horizontallistview:hlistview:1.2.2'
+    compile project(":Gpu-Image")
 }
