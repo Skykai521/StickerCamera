@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/label_selector"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal" >
+
+    <TextView
+        android:id="@+id/label_text_left"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/icon_biaoqian_i"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:textSize="13sp"
+        android:paddingRight="12dp"
+        android:paddingTop="2dp"
+        android:paddingBottom="2dp"
+        android:paddingLeft="6dp"
+        android:singleLine="true"
+        android:visibility="invisible" />
+
+    <ImageView
+        android:id="@+id/label_icon"
+        android:layout_width="12dp"
+        android:layout_height="20dp"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:paddingBottom="4dp"
+        android:paddingTop="4dp"
+        android:src="@drawable/dot" />
+
+    <TextView
+        android:id="@+id/label_text_right"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/icon_biaoqian"
+        android:gravity="center"
+        android:text="标签标签标签"
+        android:textColor="@color/white"
+        android:textSize="13sp"
+        android:singleLine="true"
+        android:paddingRight="6dp"
+        android:paddingTop="2dp"
+        android:paddingBottom="2dp"
+        android:paddingLeft="12dp"
+        android:visibility="invisible" />
+
+</LinearLayout>
