@@ -42,19 +42,13 @@
             android:orientation="vertical" >
 
             <it.sephiroth.android.library.widget.HListView
-                android:id="@+id/tool_packages"
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:gravity="center_vertical"
-                android:overScrollMode="always" />
-
-            <it.sephiroth.android.library.widget.HListView
                 android:id="@+id/list_tools"
                 android:layout_width="match_parent"
                 android:layout_height="fill_parent"
                 android:background="@color/common_background"
                 android:gravity="center_vertical"
-                android:overScrollMode="always" />
+                android:overScrollMode="always"
+                app:hlv_dividerWidth="@dimen/margin_15px"/>
         </LinearLayout>
     </LinearLayout>
 
@@ -64,7 +58,6 @@
         android:layout_height="50dp"
         android:background="#ff004a"
         android:orientation="horizontal" >
-
 
         <TextView
             android:id="@+id/sticker_btn"

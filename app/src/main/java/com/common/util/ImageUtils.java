@@ -12,6 +12,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.media.ExifInterface;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.provider.MediaStore;
 
 import com.stickercamera.App;
@@ -25,6 +26,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.ref.SoftReference;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -259,6 +261,52 @@ public class ImageUtils {
             paths.remove(FileUtils.getInst().getSystemPhotoPath());
         }
         return galleries;
+    }
+
+
+
+    //异步加载图片
+    public static interface LoadImageCallback {
+        public void callback(Bitmap result);
+    }
+
+    public static void asyncLoadImage(Context context, Uri imageUri, LoadImageCallback callback) {
+        new LoadImageUriTask(context, imageUri, callback).execute();
+    }
+
+    private static class LoadImageUriTask extends AsyncTask<Void, Void, Bitmap> {
+        private final Uri         imageUri;
+        private final Context     context;
+        private LoadImageCallback callback;
+
+        public LoadImageUriTask(Context context, Uri imageUri, LoadImageCallback callback) {
+            this.imageUri = imageUri;
+            this.context = context;
+            this.callback = callback;
+        }
+
+        @Override
+        protected Bitmap doInBackground(Void... params) {
+            try {
+                InputStream inputStream;
+                if (imageUri.getScheme().startsWith("http")
+                        || imageUri.getScheme().startsWith("https")) {
+                    inputStream = new URL(imageUri.toString()).openStream();
+                } else {
+                    inputStream = context.getContentResolver().openInputStream(imageUri);
+                }
+                return BitmapFactory.decodeStream(inputStream);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Bitmap result) {
+            super.onPostExecute(result);
+            callback.callback(result);
+        }
     }
 
 

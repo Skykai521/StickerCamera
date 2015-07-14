@@ -390,16 +390,12 @@ public class CameraActivity extends CameraBaseActivity {
 
             if (StringUtils.isNotEmpty(result)) {
                 dismissProgressDialog();
-//                    CameraManager.getInst().processPhotoItem(
-//                            CameraActivity.this,
-//                            new PhotoItem(result, System.currentTimeMillis()));
-
-                toast("拍照成功", Toast.LENGTH_LONG);
+                    CameraManager.getInst().processPhotoItem(CameraActivity.this,
+                            new PhotoItem(result, System.currentTimeMillis()));
             } else {
                 toast("拍照失败，请稍后重试！", Toast.LENGTH_LONG);
             }
         }
-
     }
 
 
