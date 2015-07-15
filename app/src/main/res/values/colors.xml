@@ -7,6 +7,7 @@
     <color name="gray">#666666</color>
     <color name="dialog_title">#ffff0000</color>
     <color name="common_background">#f5f3f0</color>
+    <color name="txt_color_gray_3">#cbc4c6</color>
 	<color name="pink">#ff5d65</color>
 	<color name="brown">#cccccc</color>
     <color name="pale_pink">#cbc4c6</color>

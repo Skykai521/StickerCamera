@@ -1,24 +1,41 @@
 package com.stickercamera.app.camera.ui;
 
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.GridView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.common.util.ImageUtils;
 import com.customview.LabelSelector;
+import com.customview.LabelView;
+import com.customview.MyHighlightView;
 import com.customview.MyImageViewDrawableOverlay;
 import com.github.skykai.stickercamera.R;
+import com.imagezoom.ImageViewTouch;
 import com.stickercamera.App;
 import com.stickercamera.app.camera.CameraBaseActivity;
+import com.stickercamera.app.camera.EffectService;
+import com.stickercamera.app.camera.adapter.FilterAdapter;
+import com.stickercamera.app.camera.effect.FilterEffect;
+import com.stickercamera.app.camera.util.EffectUtil;
+import com.stickercamera.app.camera.util.GPUImageFilterTools;
+
+import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import it.sephiroth.android.library.widget.HListView;
+import jp.co.cyberagent.android.gpuimage.GPUImageFilter;
 import jp.co.cyberagent.android.gpuimage.GPUImageView;
 
 /**
@@ -47,8 +64,15 @@ public class PhotoProcessActivity extends CameraBaseActivity {
     private MyImageViewDrawableOverlay mImageView;
     private LabelSelector labelSelector;
 
+    //当前选择底部按钮
+    private TextView currentBtn;
+
     //当前图片
     private Bitmap currentBitmap;
+    //用于预览的小图片
+    private Bitmap smallImageBackgroud;
+    //小白点标签
+    private LabelView emptyLabelView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,12 +81,20 @@ public class PhotoProcessActivity extends CameraBaseActivity {
         ButterKnife.inject(this);
 
         initView();
+        initEvent();
 
         ImageUtils.asyncLoadImage(this, getIntent().getData(), new ImageUtils.LoadImageCallback() {
             @Override
             public void callback(Bitmap result) {
                 currentBitmap = result;
                 mGPUImageView.setImage(currentBitmap);
+            }
+        });
+
+        ImageUtils.asyncLoadSmallImage(this, getIntent().getData(), new ImageUtils.LoadImageCallback() {
+            @Override
+            public void callback(Bitmap result) {
+                smallImageBackgroud = result;
             }
         });
 
@@ -87,5 +119,115 @@ public class PhotoProcessActivity extends CameraBaseActivity {
         //初始化滤镜图片
         mGPUImageView.setLayoutParams(rparams);
 
+
+        //初始化空白标签
+        emptyLabelView = new LabelView(this);
+        emptyLabelView.setEmpty();
+        EffectUtil.addLabelEditable(mImageView, drawArea, emptyLabelView,
+                mImageView.getWidth() / 2, mImageView.getWidth() / 2);
+        emptyLabelView.setVisibility(View.INVISIBLE);
     }
+
+    private void initEvent() {
+        stickerBtn.setOnClickListener(v ->{
+            if (!setCurrentBtn(stickerBtn)) {
+                return;
+            }
+            bottomToolBar.setVisibility(View.VISIBLE);
+            labelSelector.hide();
+            emptyLabelView.setVisibility(View.GONE);
+            initStickerToolBar();
+        });
+
+        filterBtn.setOnClickListener(v -> {
+            if (!setCurrentBtn(filterBtn)) {
+                return;
+            }
+            bottomToolBar.setVisibility(View.VISIBLE);
+            labelSelector.hide();
+            emptyLabelView.setVisibility(View.INVISIBLE);
+            initFilterToolBar();
+        });
+        labelBtn.setOnClickListener(v -> {
+            if (!setCurrentBtn(labelBtn)) {
+                return;
+            }
+            bottomToolBar.setVisibility(View.GONE);
+            labelSelector.showToTop();
+        });
+        labelSelector.setTxtClicked(v -> {
+            //Intent i = new Intent(PhotoProcessActivity.this, TextLabelActivity.class);
+            //startActivityForResult(i, XiaobudianConsts.ACTION_ADD_LABEL);
+        });
+        labelSelector.setAddrClicked(v -> {
+            //Intent i = new Intent(PhotoProcessActivity.this, PlaceLabelActivity.class);
+            //startActivityForResult(i, XiaobudianConsts.ACTION_ADD_PLACE);
+        });
+        //mImageView.setOnDrawableEventListener(wpEditListener);
+        mImageView.setSingleTapListener(()->{
+                emptyLabelView.updateLocation((int) mImageView.getmLastMotionScrollX(),
+                        (int) mImageView.getmLastMotionScrollY());
+                emptyLabelView.setVisibility(View.VISIBLE);
+
+                labelSelector.showToTop();
+                drawArea.postInvalidate();
+        });
+        labelSelector.setOnClickListener(v -> {
+            labelSelector.hide();
+            emptyLabelView.updateLocation((int) labelSelector.getmLastTouchX(),
+                    (int) labelSelector.getmLastTouchY());
+            emptyLabelView.setVisibility(View.VISIBLE);
+        });
+
+    }
+
+    private boolean setCurrentBtn(TextView btn) {
+        if (currentBtn == null) {
+            currentBtn = btn;
+        } else if (currentBtn.equals(btn)) {
+            return false;
+        } else {
+            currentBtn.setTextColor(Color.rgb(208, 190, 185));
+            currentBtn.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
+        }
+        Drawable myImage = getResources().getDrawable(R.drawable.select_icon);
+        btn.setTextColor(Color.rgb(255, 255, 255));
+        btn.setCompoundDrawablesWithIntrinsicBounds(null, null, null, myImage);
+        currentBtn = btn;
+        return true;
+    }
+
+
+    //初始化贴图
+    private void initStickerToolBar(){
+
+
+
+    }
+
+
+    //初始化滤镜
+    private void initFilterToolBar(){
+        final List<FilterEffect> filters = EffectService.getInst().getLocalFilters();
+        final FilterAdapter adapter = new FilterAdapter(PhotoProcessActivity.this, filters,smallImageBackgroud);
+        bottomToolBar.setAdapter(adapter);
+        bottomToolBar.setOnItemClickListener(new it.sephiroth.android.library.widget.AdapterView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(it.sephiroth.android.library.widget.AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+                        labelSelector.hide();
+                        if (adapter.getSelectFilter() != arg2) {
+                            adapter.setSelectFilter(arg2);
+                            GPUImageFilter filter = GPUImageFilterTools.createFilterForType(
+                                    PhotoProcessActivity.this, filters.get(arg2).getType());
+                            mGPUImageView.setFilter(filter);
+                            GPUImageFilterTools.FilterAdjuster mFilterAdjuster = new GPUImageFilterTools.FilterAdjuster(filter);
+                            //可调节颜色的滤镜
+                            if (mFilterAdjuster.canAdjust()) {
+                                //mFilterAdjuster.adjust(100);//FIXME 给可调节的滤镜选一个合适的值
+                            }
+                        }
+                    }
+                });
+    }
+
 }

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:gravity="center_vertical"
+    android:padding="1dp" >
+
+    <LinearLayout
+        android:id="@+id/small_filter_container"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:gravity="center"
+        android:background="@drawable/bottom_tool" >
+
+        <jp.co.cyberagent.android.gpuimage.GPUImageView
+            android:id="@+id/small_filter"
+            android:layout_width="98dp"
+            android:layout_height="98dp"
+            android:layout_gravity="center"
+            android:contentDescription="@null"
+            android:scaleType="fitCenter" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/filter_name"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/small_filter_container"
+        android:layout_marginTop="10dp"
+        android:gravity="center"
+        android:text="无滤镜"
+        android:textColor="#9b6b6c"
+        android:textSize="20sp" />
+
+</RelativeLayout>
