@@ -27,10 +27,6 @@ public class EffectService {
     private EffectService() {
     }
 
-
-
-
-
     public List<FilterEffect> getLocalFilters() {
         List<FilterEffect> filters = new ArrayList<FilterEffect>();
         filters.add(new FilterEffect("原始", GPUImageFilterTools.FilterType.NORMAL, 0));

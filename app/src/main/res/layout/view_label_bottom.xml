@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="160dp"
+    android:orientation="vertical"
+    android:paddingLeft="13dp">
+
+    <TextView
+        android:id="@+id/tag_input_tips"
+        android:layout_width="100dp"
+        android:layout_height="44dp"
+        android:text="常用标签"
+        android:textColor="#9b6b6c"
+        android:gravity="center"
+        android:textSize="16sp" />
+
+    <View
+        android:id="@+id/split_line"
+        android:layout_width="fill_parent"
+        android:layout_height="1dp"
+        android:layout_marginBottom="2dp"
+        android:background="#9b6b6c" />
+
+    <com.customview.FlowLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="start|top">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/pink"
+            android:padding="10dp"
+            android:text="这只是一个标签~"
+            android:clickable="true"
+            android:onClick="tagClick"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/pink"
+            android:text="nice"
+            android:padding="10dp"
+            android:clickable="true"
+            android:onClick="tagClick"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/pink"
+            android:text="cute"
+            android:padding="10dp"
+            android:clickable="true"
+            android:onClick="tagClick"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/pink"
+            android:text="哈哈哈哈"
+            android:padding="10dp"
+            android:clickable="true"
+            android:onClick="tagClick"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/pink"
+            android:text="我也不知道该推荐什么"
+            android:padding="10dp"
+            android:clickable="true"
+            android:onClick="tagClick"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/pink"
+            android:text="\@只是游客sky"
+            android:padding="10dp"
+            android:clickable="true"
+            android:onClick="tagClick"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/pink"
+            android:text="你好,夏天"
+            android:padding="10dp"
+            android:clickable="true"
+            android:onClick="tagClick"/>
+
+
+    </com.customview.FlowLayout>
+
+</LinearLayout>

@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.common.util.FileUtils;
 import com.common.util.ImageUtils;
+import com.common.util.StringUtils;
 import com.customview.LabelSelector;
 import com.customview.LabelView;
 import com.customview.MyHighlightView;
@@ -24,6 +25,7 @@ import com.customview.MyImageViewDrawableOverlay;
 import com.github.skykai.stickercamera.R;
 import com.imagezoom.ImageViewTouch;
 import com.stickercamera.App;
+import com.stickercamera.AppConstants;
 import com.stickercamera.app.camera.CameraBaseActivity;
 import com.stickercamera.app.camera.EffectService;
 import com.stickercamera.app.camera.adapter.FilterAdapter;
@@ -33,6 +35,7 @@ import com.stickercamera.app.camera.util.EffectUtil;
 import com.stickercamera.app.camera.util.GPUImageFilterTools;
 import com.stickercamera.app.model.Addon;
 import com.stickercamera.app.model.TagItem;
+import com.stickercamera.app.ui.EditTextActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,7 +68,8 @@ public class PhotoProcessActivity extends CameraBaseActivity {
     //工具区
     @InjectView(R.id.list_tools)
     HListView bottomToolBar;
-
+    @InjectView(R.id.toolbar_area)
+    ViewGroup toolArea;
     private MyImageViewDrawableOverlay mImageView;
     private LabelSelector labelSelector;
 
@@ -79,6 +83,9 @@ public class PhotoProcessActivity extends CameraBaseActivity {
     private LabelView emptyLabelView;
 
     private List<LabelView> labels = new ArrayList<LabelView>();
+
+    //标签区域
+    private View commonLabelArea;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -133,6 +140,14 @@ public class PhotoProcessActivity extends CameraBaseActivity {
         EffectUtil.addLabelEditable(mImageView, drawArea, emptyLabelView,
                 mImageView.getWidth() / 2, mImageView.getWidth() / 2);
         emptyLabelView.setVisibility(View.INVISIBLE);
+
+        //初始化推荐标签栏
+        commonLabelArea = LayoutInflater.from(PhotoProcessActivity.this).inflate(
+                R.layout.view_label_bottom,null);
+        commonLabelArea.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT));
+        toolArea.addView(commonLabelArea);
+        commonLabelArea.setVisibility(View.GONE);
     }
 
     private void initEvent() {
@@ -143,6 +158,7 @@ public class PhotoProcessActivity extends CameraBaseActivity {
             bottomToolBar.setVisibility(View.VISIBLE);
             labelSelector.hide();
             emptyLabelView.setVisibility(View.GONE);
+            commonLabelArea.setVisibility(View.GONE);
             initStickerToolBar();
         });
 
@@ -153,6 +169,7 @@ public class PhotoProcessActivity extends CameraBaseActivity {
             bottomToolBar.setVisibility(View.VISIBLE);
             labelSelector.hide();
             emptyLabelView.setVisibility(View.INVISIBLE);
+            commonLabelArea.setVisibility(View.GONE);
             initFilterToolBar();
         });
         labelBtn.setOnClickListener(v -> {
@@ -161,22 +178,17 @@ public class PhotoProcessActivity extends CameraBaseActivity {
             }
             bottomToolBar.setVisibility(View.GONE);
             labelSelector.showToTop();
+            commonLabelArea.setVisibility(View.VISIBLE);
+
         });
         labelSelector.setTxtClicked(v -> {
-            TagItem tag = new TagItem();
-            tag.setName("stickerCamera");
-            addLabel(tag);
-            //Intent i = new Intent(PhotoProcessActivity.this, TextLabelActivity.class);
-            //startActivityForResult(i, XiaobudianConsts.ACTION_ADD_LABEL);
+            EditTextActivity.openTextEdit(PhotoProcessActivity.this,"",8, AppConstants.ACTION_EDIT_LABEL);
         });
         labelSelector.setAddrClicked(v -> {
-            TagItem tag = new TagItem();
-            tag.setName("stickerCamera");
-            addLabel(tag);
-            //Intent i = new Intent(PhotoProcessActivity.this, PlaceLabelActivity.class);
-            //startActivityForResult(i, XiaobudianConsts.ACTION_ADD_PLACE);
+            EditTextActivity.openTextEdit(PhotoProcessActivity.this,"",8, AppConstants.ACTION_EDIT_LABEL_POI);
+
         });
-        //mImageView.setOnDrawableEventListener(wpEditListener);
+        mImageView.setOnDrawableEventListener(wpEditListener);
         mImageView.setSingleTapListener(()->{
                 emptyLabelView.updateLocation((int) mImageView.getmLastMotionScrollX(),
                         (int) mImageView.getmLastMotionScrollY());
@@ -193,6 +205,47 @@ public class PhotoProcessActivity extends CameraBaseActivity {
         });
 
     }
+
+
+    public void tagClick(View v){
+        TextView textView = (TextView)v;
+        TagItem tagItem = new TagItem(AppConstants.POST_TYPE_TAG,textView.getText().toString());
+        addLabel(tagItem);
+    }
+
+    private MyImageViewDrawableOverlay.OnDrawableEventListener wpEditListener   = new MyImageViewDrawableOverlay.OnDrawableEventListener() {
+        @Override
+        public void onMove(MyHighlightView view) {
+        }
+
+        @Override
+        public void onFocusChange(MyHighlightView newFocus, MyHighlightView oldFocus) {
+        }
+
+        @Override
+        public void onDown(MyHighlightView view) {
+
+        }
+
+        @Override
+        public void onClick(MyHighlightView view) {
+            labelSelector.hide();
+        }
+
+        @Override
+        public void onClick(final LabelView label) {
+            if (label.equals(emptyLabelView)) {
+                return;
+            }
+            alert("温馨提示", "是否需要删除该标签！", "确定", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    EffectUtil.removeLabelEditable(mImageView, drawArea, label);
+                    labels.remove(label);
+                }
+            }, "取消", null);
+        }
+    };
 
     private boolean setCurrentBtn(TextView btn) {
         if (currentBtn == null) {
@@ -282,4 +335,22 @@ public class PhotoProcessActivity extends CameraBaseActivity {
         }
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        labelSelector.hide();
+        super.onActivityResult(requestCode, resultCode, data);
+        if (AppConstants.ACTION_EDIT_LABEL== requestCode && data != null) {
+            String text = data.getStringExtra(AppConstants.PARAM_EDIT_TEXT);
+            if(StringUtils.isNotEmpty(text)){
+                TagItem tagItem = new TagItem(AppConstants.POST_TYPE_TAG,text);
+                addLabel(tagItem);
+            }
+        }else if(AppConstants.ACTION_EDIT_LABEL_POI== requestCode && data != null){
+            String text = data.getStringExtra(AppConstants.PARAM_EDIT_TEXT);
+            if(StringUtils.isNotEmpty(text)){
+                TagItem tagItem = new TagItem(AppConstants.POST_TYPE_POI,text);
+                addLabel(tagItem);
+            }
+        }
+    }
 }

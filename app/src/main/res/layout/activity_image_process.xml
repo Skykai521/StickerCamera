@@ -49,6 +49,7 @@
                 android:gravity="center_vertical"
                 android:overScrollMode="always"
                 app:hlv_dividerWidth="@dimen/margin_15px"/>
+
         </LinearLayout>
     </LinearLayout>
 

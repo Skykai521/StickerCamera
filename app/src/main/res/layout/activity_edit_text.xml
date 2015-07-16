@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/white"
+    android:orientation="vertical" >
+
+    <com.customview.CommonTitleBar
+        android:id="@+id/title_layout"
+        style="@style/head_default"
+        app:leftBtnTxt="取消"
+        app:titleTxt="输入内容"
+        app:rightBtnTxt="保存" />
+
+    <View style="@style/message_divider" />
+    
+    <EditText
+        android:id="@+id/text_input"
+        android:layout_width="fill_parent"
+        android:layout_height="200dp"
+        android:layout_margin="2dp"
+        android:background="@drawable/corners_bg_white_2r_borderd"
+        android:gravity="top"
+        android:hint="输入内容..."
+        android:padding="4dp"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/tag_input_tips"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="6dp"
+        android:text="还能输入10个字(0/10)" />
+
+</LinearLayout>

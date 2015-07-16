@@ -42,6 +42,10 @@
             android:name="com.stickercamera.app.camera.ui.PhotoProcessActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"/>
+        <activity android:name="com.stickercamera.app.ui.EditTextActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar.FullScreen"/>
+
     </application>
 
 </manifest>
