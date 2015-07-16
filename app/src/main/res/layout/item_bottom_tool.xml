@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="fill_parent"
+    android:background="@color/common_background">
+
+    <RelativeLayout
+        android:id="@+id/effect_area"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_centerVertical="true"
+        android:padding="1dp" >
+
+        <ImageView
+            android:id="@+id/effect_background"
+            android:layout_width="98dp"
+            android:layout_height="98dp"
+            android:layout_centerInParent="true"
+            android:contentDescription="@null"
+            android:scaleType="fitCenter" />
+
+        <ImageView
+            android:id="@+id/effect_image"
+            android:layout_width="98dp"
+            android:layout_height="98dp"
+            android:layout_centerVertical="true"
+            android:background="@android:color/transparent"
+            android:contentDescription="@null"
+            android:scaleType="fitCenter" />
+    </RelativeLayout>
+
+</RelativeLayout>

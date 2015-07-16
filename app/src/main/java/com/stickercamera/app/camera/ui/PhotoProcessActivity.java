@@ -15,6 +15,7 @@ import android.widget.GridView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.common.util.FileUtils;
 import com.common.util.ImageUtils;
 import com.customview.LabelSelector;
 import com.customview.LabelView;
@@ -26,9 +27,11 @@ import com.stickercamera.App;
 import com.stickercamera.app.camera.CameraBaseActivity;
 import com.stickercamera.app.camera.EffectService;
 import com.stickercamera.app.camera.adapter.FilterAdapter;
+import com.stickercamera.app.camera.adapter.StickerToolAdapter;
 import com.stickercamera.app.camera.effect.FilterEffect;
 import com.stickercamera.app.camera.util.EffectUtil;
 import com.stickercamera.app.camera.util.GPUImageFilterTools;
+import com.stickercamera.app.model.Addon;
 
 import java.util.List;
 
@@ -66,7 +69,6 @@ public class PhotoProcessActivity extends CameraBaseActivity {
 
     //当前选择底部按钮
     private TextView currentBtn;
-
     //当前图片
     private Bitmap currentBitmap;
     //用于预览的小图片
@@ -82,6 +84,7 @@ public class PhotoProcessActivity extends CameraBaseActivity {
 
         initView();
         initEvent();
+        initStickerToolBar();
 
         ImageUtils.asyncLoadImage(this, getIntent().getData(), new ImageUtils.LoadImageCallback() {
             @Override
@@ -201,8 +204,27 @@ public class PhotoProcessActivity extends CameraBaseActivity {
     //初始化贴图
     private void initStickerToolBar(){
 
+        List<Addon> stickers = FileUtils.getLocalAddon();
+        bottomToolBar.setAdapter(new StickerToolAdapter(PhotoProcessActivity.this,stickers));
+        bottomToolBar.setOnItemClickListener(new it.sephiroth.android.library.widget.AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(it.sephiroth.android.library.widget.AdapterView<?> arg0,
+                                    View arg1, int arg2, long arg3) {
+                labelSelector.hide();
+                Addon sticker = stickers.get(arg2);
+                EffectUtil.addStickerImage(mImageView, PhotoProcessActivity.this, sticker,
+                        new EffectUtil.StickerCallback() {
+                            @Override
+                            public void onRemoveSticker(Addon sticker) {
+                                labelSelector.hide();
+                            }
+                        });
+            }
+        });
 
 
+        setCurrentBtn(stickerBtn);
     }
 
 

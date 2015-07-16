@@ -108,8 +108,10 @@ public class MyImageViewDrawableOverlay extends ImageViewTouch {
                                                 * Math.abs(upX - downLabelX)
                                                 + Math.abs(upY - downLabelY)
                                                 * Math.abs(upY - downLabelY));//两点之间的距离
-                    if (distance < 15) { // 距离较小，当作click事件来处理 
-                        mDrawableListener.onClick(currentLabel);
+                    if (distance < 15) { // 距离较小，当作click事件来处理
+                        if(mDrawableListener!=null){
+                            mDrawableListener.onClick(currentLabel);
+                        }
                     }
                     currentLabel = null;
                     break;

@@ -304,26 +304,6 @@ public class ImageLoader {
 		displayImage(uri, new ImageViewAware(imageView), options, null, null);
 	}
 
-    private String getSmallImage(String uri) {
-        if (uri != null && !uri.endsWith("-middle") && !uri.endsWith("-small")&&uri.indexOf("qiniu.com")>0) {
-            return uri + "-small";
-        }
-        return uri;
-    }
-    public void displayImageSmall(String uri, ImageView imageView, DisplayImageOptions options) {
-        displayImage(getSmallImage(uri), new ImageViewAware(imageView), options);
-    }
-
-    private String getMiddleImage(String uri) {
-        if (uri != null && !uri.endsWith("-middle") && !uri.endsWith("-small")&&uri.indexOf("qiniu.com")>0) {
-            return uri + "-middle";
-        }
-        return uri;
-    }
-
-    public void displayImageMiddle(String uri, ImageView imageView, DisplayImageOptions options) {
-        displayImage(getMiddleImage(uri), new ImageViewAware(imageView), options);
-    }
 	/**
 	 * display local image
 	 * @param uri

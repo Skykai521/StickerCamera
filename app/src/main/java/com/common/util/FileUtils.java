@@ -6,7 +6,9 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Environment;
 
+import com.alibaba.fastjson.JSON;
 import com.stickercamera.App;
+import com.stickercamera.app.model.Addon;
 import com.stickercamera.app.model.PhotoItem;
 
 import java.io.BufferedReader;
@@ -22,6 +24,7 @@ import java.io.OutputStream;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 public class FileUtils {
 
@@ -101,7 +104,7 @@ public class FileUtils {
         String md5Str = MD5Util.getMD5(imageUrl).replace("-", "mm");
         return getBasePath(packageId) + md5Str;
     }
-
+    //读取assets文件
     public String readFromAsset(String fileName) {
         InputStream is = null;
         BufferedReader br = null;
@@ -376,4 +379,12 @@ public class FileUtils {
         Collections.sort(photos);
         return photos;
     }
+
+
+    public static List<Addon> getLocalAddon(){
+        String vaccineStr = FileUtils.getInst().readFromAsset("AddonList1.json");
+        return JSON.parseArray(vaccineStr, Addon.class);
+    }
+
+
 }
