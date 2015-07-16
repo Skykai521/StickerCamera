@@ -32,7 +32,9 @@ import com.stickercamera.app.camera.effect.FilterEffect;
 import com.stickercamera.app.camera.util.EffectUtil;
 import com.stickercamera.app.camera.util.GPUImageFilterTools;
 import com.stickercamera.app.model.Addon;
+import com.stickercamera.app.model.TagItem;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.ButterKnife;
@@ -75,6 +77,8 @@ public class PhotoProcessActivity extends CameraBaseActivity {
     private Bitmap smallImageBackgroud;
     //小白点标签
     private LabelView emptyLabelView;
+
+    private List<LabelView> labels = new ArrayList<LabelView>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -159,10 +163,16 @@ public class PhotoProcessActivity extends CameraBaseActivity {
             labelSelector.showToTop();
         });
         labelSelector.setTxtClicked(v -> {
+            TagItem tag = new TagItem();
+            tag.setName("stickerCamera");
+            addLabel(tag);
             //Intent i = new Intent(PhotoProcessActivity.this, TextLabelActivity.class);
             //startActivityForResult(i, XiaobudianConsts.ACTION_ADD_LABEL);
         });
         labelSelector.setAddrClicked(v -> {
+            TagItem tag = new TagItem();
+            tag.setName("stickerCamera");
+            addLabel(tag);
             //Intent i = new Intent(PhotoProcessActivity.this, PlaceLabelActivity.class);
             //startActivityForResult(i, XiaobudianConsts.ACTION_ADD_PLACE);
         });
@@ -205,7 +215,7 @@ public class PhotoProcessActivity extends CameraBaseActivity {
     private void initStickerToolBar(){
 
         List<Addon> stickers = FileUtils.getLocalAddon();
-        bottomToolBar.setAdapter(new StickerToolAdapter(PhotoProcessActivity.this,stickers));
+        bottomToolBar.setAdapter(new StickerToolAdapter(PhotoProcessActivity.this, stickers));
         bottomToolBar.setOnItemClickListener(new it.sephiroth.android.library.widget.AdapterView.OnItemClickListener() {
 
             @Override
@@ -234,22 +244,42 @@ public class PhotoProcessActivity extends CameraBaseActivity {
         final FilterAdapter adapter = new FilterAdapter(PhotoProcessActivity.this, filters,smallImageBackgroud);
         bottomToolBar.setAdapter(adapter);
         bottomToolBar.setOnItemClickListener(new it.sephiroth.android.library.widget.AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(it.sephiroth.android.library.widget.AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-                        labelSelector.hide();
-                        if (adapter.getSelectFilter() != arg2) {
-                            adapter.setSelectFilter(arg2);
-                            GPUImageFilter filter = GPUImageFilterTools.createFilterForType(
-                                    PhotoProcessActivity.this, filters.get(arg2).getType());
-                            mGPUImageView.setFilter(filter);
-                            GPUImageFilterTools.FilterAdjuster mFilterAdjuster = new GPUImageFilterTools.FilterAdjuster(filter);
-                            //可调节颜色的滤镜
-                            if (mFilterAdjuster.canAdjust()) {
-                                //mFilterAdjuster.adjust(100);//FIXME 给可调节的滤镜选一个合适的值
-                            }
-                        }
+            @Override
+            public void onItemClick(it.sephiroth.android.library.widget.AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+                labelSelector.hide();
+                if (adapter.getSelectFilter() != arg2) {
+                    adapter.setSelectFilter(arg2);
+                    GPUImageFilter filter = GPUImageFilterTools.createFilterForType(
+                            PhotoProcessActivity.this, filters.get(arg2).getType());
+                    mGPUImageView.setFilter(filter);
+                    GPUImageFilterTools.FilterAdjuster mFilterAdjuster = new GPUImageFilterTools.FilterAdjuster(filter);
+                    //可调节颜色的滤镜
+                    if (mFilterAdjuster.canAdjust()) {
+                        //mFilterAdjuster.adjust(100);//FIXME 给可调节的滤镜选一个合适的值
                     }
-                });
+                }
+            }
+        });
+    }
+
+    //添加标签
+    private void addLabel(TagItem tagItem) {
+        labelSelector.hide();
+        emptyLabelView.setVisibility(View.INVISIBLE);
+        if (labels.size() >= 5) {
+            alert("温馨提示", "您只能添加5个标签！", "确定", null, null, null, true);
+        } else {
+            int left = emptyLabelView.getLeft();
+            int top = emptyLabelView.getTop();
+            if (labels.size() == 0 && left == 0 && top == 0) {
+                left = mImageView.getWidth() / 2 - 10;
+                top = mImageView.getWidth() / 2;
+            }
+            LabelView label = new LabelView(PhotoProcessActivity.this);
+            label.init(tagItem);
+            EffectUtil.addLabelEditable(mImageView, drawArea, label, left, top);
+            labels.add(label);
+        }
     }
 
 }
