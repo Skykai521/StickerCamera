@@ -204,6 +204,14 @@ public class PhotoProcessActivity extends CameraBaseActivity {
             emptyLabelView.setVisibility(View.VISIBLE);
         });
 
+
+        titleBar.setRightBtnOnclickListener(v -> {
+            savePhoto();
+        });
+    }
+
+    private void savePhoto(){
+
     }
 
 
