@@ -3,10 +3,14 @@ package com.stickercamera.app.camera.ui;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,10 +18,12 @@ import android.widget.Button;
 import android.widget.GridView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.common.util.FileUtils;
 import com.common.util.ImageUtils;
 import com.common.util.StringUtils;
+import com.common.util.TimeUtils;
 import com.customview.LabelSelector;
 import com.customview.LabelView;
 import com.customview.MyHighlightView;
@@ -38,6 +44,7 @@ import com.stickercamera.app.model.TagItem;
 import com.stickercamera.app.ui.EditTextActivity;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.ButterKnife;
@@ -206,12 +213,70 @@ public class PhotoProcessActivity extends CameraBaseActivity {
 
 
         titleBar.setRightBtnOnclickListener(v -> {
-            savePhoto();
+            savePicture();
         });
     }
 
-    private void savePhoto(){
+    //保存图片
+    private void savePicture(){
+        if (!currentBitmap.isMutable()) {
+            currentBitmap = currentBitmap.copy(Bitmap.Config.ARGB_8888, true);
+        }
 
+        //加滤镜
+        final Bitmap newbmp = Bitmap.createBitmap(mImageView.getWidth(), mImageView.getHeight(),
+                Bitmap.Config.ARGB_8888);
+        Canvas cv = new Canvas(newbmp);
+        RectF dst = new RectF(0, 0, mImageView.getWidth(), mImageView.getHeight());
+        try {
+            cv.drawBitmap(mGPUImageView.capture(), null, dst, null);
+        } catch (InterruptedException e1) {
+            e1.printStackTrace();
+            cv.drawBitmap(currentBitmap, null, dst, null);
+        }
+
+        //加贴纸水印
+        EffectUtil.applyOnSave(cv, mImageView);
+
+        new SavePicToFileTask().execute(newbmp);
+    }
+
+    private class SavePicToFileTask extends AsyncTask<Bitmap,Void,String>{
+        Bitmap bitmap;
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            showProgressDialog("图片处理中...");
+        }
+
+        @Override
+        protected String doInBackground(Bitmap... params) {
+            String fileName = null;
+            try {
+                bitmap = params[0];
+
+                String picName = TimeUtils.dtFormat(new Date(), "yyyyMMddHHmmss");
+                 fileName = ImageUtils.saveToFile(FileUtils.getInst().getPhotoSavedPath() + "/"+ picName, false, bitmap);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                toast("图片处理错误，请退出相机并重试", Toast.LENGTH_LONG);
+            }
+            return fileName;
+        }
+
+        @Override
+        protected void onPostExecute(String fileName) {
+            super.onPostExecute(fileName);
+            dismissProgressDialog();
+            if (StringUtils.isEmpty(fileName)) {
+                return;
+            }
+
+            //将照片信息保存至sharedPreference
+
+
+        }
     }
 
 
@@ -275,15 +340,14 @@ public class PhotoProcessActivity extends CameraBaseActivity {
     //初始化贴图
     private void initStickerToolBar(){
 
-        List<Addon> stickers = FileUtils.getLocalAddon();
-        bottomToolBar.setAdapter(new StickerToolAdapter(PhotoProcessActivity.this, stickers));
+        bottomToolBar.setAdapter(new StickerToolAdapter(PhotoProcessActivity.this, EffectUtil.addonList));
         bottomToolBar.setOnItemClickListener(new it.sephiroth.android.library.widget.AdapterView.OnItemClickListener() {
 
             @Override
             public void onItemClick(it.sephiroth.android.library.widget.AdapterView<?> arg0,
                                     View arg1, int arg2, long arg3) {
                 labelSelector.hide();
-                Addon sticker = stickers.get(arg2);
+                Addon sticker = EffectUtil.addonList.get(arg2);
                 EffectUtil.addStickerImage(mImageView, PhotoProcessActivity.this, sticker,
                         new EffectUtil.StickerCallback() {
                             @Override

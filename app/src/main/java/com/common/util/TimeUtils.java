@@ -1,5 +1,6 @@
 package com.common.util;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -26,6 +27,14 @@ public class TimeUtils {
      */
     public static String getTime(long timeInMillis, SimpleDateFormat dateFormat) {
         return dateFormat.format(new Date(timeInMillis));
+    }
+
+    public static String dtFormat(Date date, String dateFormat){
+        return getFormat(dateFormat).format(date);
+    }
+
+    private static final DateFormat getFormat(String format) {
+        return new SimpleDateFormat(format);
     }
 
     /**

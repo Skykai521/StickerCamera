@@ -69,16 +69,8 @@ public class StickerToolAdapter extends BaseAdapter {
 
     private View showItem(View convertView, EffectHolder holder, final Addon sticker) {
 
-//        //贴纸的处理
-//        if (sticker.isMall()) {//贴纸商城处理
-//            holder.logo.setImageResource(R.drawable.camera_mall_paster);
-//        } else {
-//            holder.container.setVisibility(View.GONE);
-//            holder.logo.setImageBitmap(FileUtils.getInst().getAddonImage(sticker.getPackageId(),
-//                sticker.getIcon()));
-//        }
         holder.container.setVisibility(View.GONE);
-        ImageLoader.getInstance().displayImage(sticker.getIcon(),holder.logo);
+        ImageLoader.getInstance().displayDrawableImage(sticker.getId()+"",holder.logo,null);
 
         return convertView;
     }

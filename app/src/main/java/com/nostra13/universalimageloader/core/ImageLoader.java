@@ -315,6 +315,16 @@ public class ImageLoader {
 	}
 
 	/**
+	 * display Drawable image
+	 * @param uri
+	 * @param imageView
+	 * @param options
+	 */
+	public void displayDrawableImage(String uri, ImageView imageView, DisplayImageOptions options) {
+		displayImage("drawable://"+uri, new ImageViewAware(imageView), options, null, null);
+	}
+
+	/**
 	 * Adds display image task to execution pool. Image will be set to ImageView when it's turn.<br />
 	 * Default {@linkplain DisplayImageOptions display image options} from {@linkplain ImageLoaderConfiguration
 	 * configuration} will be used.<br />

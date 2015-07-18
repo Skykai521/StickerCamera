@@ -381,10 +381,4 @@ public class FileUtils {
     }
 
 
-    public static List<Addon> getLocalAddon(){
-        String vaccineStr = FileUtils.getInst().readFromAsset("AddonList1.json");
-        return JSON.parseArray(vaccineStr, Addon.class);
-    }
-
-
 }

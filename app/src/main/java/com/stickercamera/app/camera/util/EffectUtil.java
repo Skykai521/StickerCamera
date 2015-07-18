@@ -3,6 +3,7 @@ package com.stickercamera.app.camera.util;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Rect;
 import android.graphics.RectF;
@@ -21,6 +22,7 @@ import com.stickercamera.App;
 import com.stickercamera.AppConstants;
 import com.stickercamera.app.model.Addon;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -29,24 +31,34 @@ import java.util.concurrent.CopyOnWriteArrayList;
  */
 public class EffectUtil {
 
+    public static List<Addon> addonList                 = new ArrayList<Addon>();
     private static List<MyHighlightView> hightlistViews = new CopyOnWriteArrayList<MyHighlightView>();
+
+    static {
+        addonList.add(new Addon(R.drawable.sticker1));
+        addonList.add(new Addon(R.drawable.sticker2));
+        addonList.add(new Addon(R.drawable.sticker3));
+        addonList.add(new Addon(R.drawable.sticker4));
+        addonList.add(new Addon(R.drawable.sticker5));
+        addonList.add(new Addon(R.drawable.sticker6));
+        addonList.add(new Addon(R.drawable.sticker7));
+        addonList.add(new Addon(R.drawable.sticker8));
+    }
 
     public static void clear() {
         hightlistViews.clear();
     }
 
-
-
+    //删除贴纸的回调接口
     public static interface StickerCallback {
         public void onRemoveSticker(Addon sticker);
     }
 
+    //添加贴纸
     public static MyHighlightView addStickerImage(final ImageViewTouch processImage,
                                                   Context context, final Addon sticker,
                                                   final StickerCallback callback) {
-        //Bitmap bitmap = FileUtils.getInst().getAddonImage(sticker.getPackageId(), sticker.getIcon());
-        //先随便放一个图片
-        Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.ic_launcher);
+        Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), sticker.getId());
         if (bitmap == null) {
             return null;
         }
@@ -182,6 +194,37 @@ public class EffectUtil {
                 }
             }
         });
+    }
+
+
+    //添加水印
+    public static void applyOnSave(Canvas mCanvas, ImageViewTouch processImage) {
+        for (MyHighlightView view : hightlistViews) {
+            applyOnSave(mCanvas, processImage, view);
+        }
+    }
+
+    private static void applyOnSave(Canvas mCanvas, ImageViewTouch processImage,MyHighlightView view) {
+
+        if (view != null && view.getContent() instanceof StickerDrawable) {
+
+            final StickerDrawable stickerDrawable = ((StickerDrawable) view.getContent());
+            RectF cropRect = view.getCropRectF();
+            Rect rect = new Rect((int) cropRect.left, (int) cropRect.top, (int) cropRect.right,
+                    (int) cropRect.bottom);
+
+            Matrix rotateMatrix = view.getCropRotationMatrix();
+            Matrix matrix = new Matrix(processImage.getImageMatrix());
+            if (!matrix.invert(matrix)) {
+            }
+            int saveCount = mCanvas.save(Canvas.MATRIX_SAVE_FLAG);
+            mCanvas.concat(rotateMatrix);
+
+            stickerDrawable.setDropShadow(false);
+            view.getContent().setBounds(rect);
+            view.getContent().draw(mCanvas);
+            mCanvas.restoreToCount(saveCount);
+        }
     }
 
 }
