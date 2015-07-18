@@ -19,7 +19,9 @@ public class AppConstants {
     public static final float  DEFAULT_PIXEL              = 1242;                           //按iphone6设置
     public static final String PARAM_MAX_SIZE             = "PARAM_MAX_SIZE";
     public static final String PARAM_EDIT_TEXT            = "PARAM_EDIT_TEXT";
-    public static final int    ACTION_EDIT_LABEL             = 8080;
-    public static final int    ACTION_EDIT_LABEL_POI         = 9090;
+    public static final int    ACTION_EDIT_LABEL          = 8080;
+    public static final int    ACTION_EDIT_LABEL_POI      = 9090;
+
+    public static final String FEED_INFO                  = "FEED_INFO";
 
 }

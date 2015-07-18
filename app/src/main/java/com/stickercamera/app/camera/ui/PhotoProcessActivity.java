@@ -33,6 +33,7 @@ import com.imagezoom.ImageViewTouch;
 import com.stickercamera.App;
 import com.stickercamera.AppConstants;
 import com.stickercamera.app.camera.CameraBaseActivity;
+import com.stickercamera.app.camera.CameraManager;
 import com.stickercamera.app.camera.EffectService;
 import com.stickercamera.app.camera.adapter.FilterAdapter;
 import com.stickercamera.app.camera.adapter.StickerToolAdapter;
@@ -40,6 +41,7 @@ import com.stickercamera.app.camera.effect.FilterEffect;
 import com.stickercamera.app.camera.util.EffectUtil;
 import com.stickercamera.app.camera.util.GPUImageFilterTools;
 import com.stickercamera.app.model.Addon;
+import com.stickercamera.app.model.FeedItem;
 import com.stickercamera.app.model.TagItem;
 import com.stickercamera.app.ui.EditTextActivity;
 
@@ -49,6 +51,7 @@ import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import de.greenrobot.event.EventBus;
 import it.sephiroth.android.library.widget.HListView;
 import jp.co.cyberagent.android.gpuimage.GPUImageFilter;
 import jp.co.cyberagent.android.gpuimage.GPUImageView;
@@ -274,8 +277,16 @@ public class PhotoProcessActivity extends CameraBaseActivity {
             }
 
             //将照片信息保存至sharedPreference
+            //保存标签信息
+            List<TagItem> tagInfoList = new ArrayList<TagItem>();
+            for (LabelView label : labels) {
+                tagInfoList.add(label.getTagInfo());
+            }
 
-
+            //将图片信息通过EventBus发送到MainActivity
+            FeedItem feedItem = new FeedItem(tagInfoList,fileName);
+            EventBus.getDefault().post(feedItem);
+            CameraManager.getInst().close();
         }
     }
 
