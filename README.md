@@ -1,6 +1,15 @@
 # StickerCamera
 这是一款集成了相机,图片裁剪,给图片贴贴图打标签的APP。
 
+# Feature
+- 实现相机功能
+- 实现对图片进行裁剪的功能
+- 图片的滤镜功能
+- 能为图片添加贴纸(贴纸可移动,放大,旋转)
+- 能为图片添加标签(同样可以移动)
+- 本地保存制作好的图片,并展示
+- 较多的自定义控件,不错的项目架构
+
 # ScreenShot
 
 <img src="./screenshot/Screenshot_2015-07-19-11-23-22.png" width="30%" height="30%">
@@ -22,8 +31,10 @@
 - [Notes](https://github.com/lguipeng/Notes)
 - [SystemBarTint](https://github.com/jgilfelt/SystemBarTint)
 - [cropimage](https://github.com/biokys/cropimage)
+- [EventBus](https://github.com/greenrobot/EventBus)
 
 # 联系我
+
 - Weibo: http://weibo.com/2030683111
 - Email: 1132234509@qq.com
 
