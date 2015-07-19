@@ -1,23 +1,41 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    android:layout_height="match_parent">
+
+    <View
+        android:id="@+id/shadow_view"
+        android:layout_width="match_parent"
+        android:layout_height="26dp"
+        android:layout_marginTop="?attr/actionBarSize"
+        android:background="@drawable/toolbar_shadow" />
+
+    <android.support.v4.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_refresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/shadow_view"
+        android:background="#FFF">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scrollbars="vertical" />
+    </android.support.v4.widget.SwipeRefreshLayout>
 
 
     <com.melnykov.fab.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="31dp"
         android:padding="4dp"
-        app:fab_colorRipple="?attr/colorPrimary"
         app:fab_colorNormal="?attr/colorPrimary"
         app:fab_colorPressed="?attr/colorPrimaryDark"
-        android:layout_marginBottom="31dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
-
+        app:fab_colorRipple="?attr/colorPrimary" />
 
 
 </RelativeLayout>
