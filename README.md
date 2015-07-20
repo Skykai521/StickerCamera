@@ -12,7 +12,7 @@
 
 # ScreenShot
 
-<img src="./screenshot/Screenshot_gif.png" width="30%" height="30%">
+<img src="./screenshot/Screenshot_gif.gif" width="30%" height="30%">
 
 <img src="./screenshot/Screenshot_2015-07-19-11-23-22.png" width="30%" height="30%">
 
