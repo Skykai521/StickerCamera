@@ -13,7 +13,6 @@
 # ScreenShot
 
 <img src="./screenshot/Screenshot_01.gif" width="30%" height="30%">
-
 <img src="./screenshot/Screenshot_2015-07-19-11-23-22.png" width="30%" height="30%">
 
 <img src="./screenshot/Screenshot_2015-07-19-11-21-39.png" width="30%" height="30%">
