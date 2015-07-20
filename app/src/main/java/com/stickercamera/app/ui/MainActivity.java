@@ -41,17 +41,19 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import de.greenrobot.event.EventBus;
 
+/**
+ * 主界面
+ * Created by sky on 2015/7/20.
+ * Weibo: http://weibo.com/2030683111
+ * Email: 1132234509@qq.com
+ */
 public class MainActivity extends BaseActivity {
 
     @InjectView(R.id.fab)
     FloatingActionButton fab;
-    @InjectView(R.id.swipe_refresh)
-    SwipeRefreshLayout mSwipeRefreshLayout;
     @InjectView(R.id.recycler_view)
     RecyclerView mRecyclerView;
-
     private List<FeedItem> feedList;
-
     private PictureAdapter mAdapter;
 
 
@@ -95,16 +97,12 @@ public class MainActivity extends BaseActivity {
     }
 
     private void initView() {
+        titleBar.hideLeftBtn();
+        titleBar.hideRightBtn();
 
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
         mAdapter = new PictureAdapter();
         mRecyclerView.setAdapter(mAdapter);
-        mSwipeRefreshLayout.setColorSchemeResources(android.R.color.holo_blue_bright,
-                android.R.color.holo_green_light,
-                android.R.color.holo_orange_light,
-                android.R.color.holo_red_light);
-
-
         fab.setOnClickListener(v -> CameraManager.getInst().openCamera(MainActivity.this));
     }
 
@@ -161,15 +159,15 @@ public class MainActivity extends BaseActivity {
 
         @Override
         public void onViewRecycled(ViewHolder holder) {
-            // FIXME: 15/7/19 这里也有问题 可能会报错
-            holder.pictureLayout.removeViews(1,holder.pictureLayout.getChildCount() - 1);
+            // 将标签移除,避免回收使用时标签重复
+            holder.pictureLayout.removeViews(1, holder.pictureLayout.getChildCount() - 1);
             super.onViewRecycled(holder);
         }
 
         @Override
         public void onViewAttachedToWindow(ViewHolder holder) {
             super.onViewAttachedToWindow(holder);
-            // FIXME: 15/7/19 这里有问题 延迟200毫秒加载是为了等pictureLayout已经在屏幕上显示getWidth才为具体的值
+            // 这里可能有问题 延迟200毫秒加载是为了等pictureLayout已经在屏幕上显示getWidth才为具体的值
             holder.pictureLayout.getHandler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -182,7 +180,7 @@ public class MainActivity extends BaseActivity {
                                 feedImageTag.isLeft());
                     }
                 }
-            },200);
+            }, 200);
         }
     }
 
@@ -192,10 +190,12 @@ public class MainActivity extends BaseActivity {
         @InjectView(R.id.picture)
         ImageView picture;
 
-        private List<TagItem>   tagList = new ArrayList<>();
+        private List<TagItem> tagList = new ArrayList<>();
+
         public List<TagItem> getTagList() {
             return tagList;
         }
+
         public void setTagList(List<TagItem> tagList) {
             if (this.tagList.size() > 0) {
                 this.tagList.clear();

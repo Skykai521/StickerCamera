@@ -59,6 +59,8 @@ import jp.co.cyberagent.android.gpuimage.GPUImageView;
 /**
  * 图片处理界面
  * Created by sky on 2015/7/8.
+ * Weibo: http://weibo.com/2030683111
+ * Email: 1132234509@qq.com
  */
 public class PhotoProcessActivity extends CameraBaseActivity {
 

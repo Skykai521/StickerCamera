@@ -122,6 +122,12 @@ public class CommonTitleBar extends RelativeLayout {
         findViewById(R.id.title_left_area).setOnClickListener(null);
     }
 
+    public void hideRightBtn() {
+        rightButton.setVisibility(View.GONE);
+        rightButtonImg.setVisibility(View.GONE);
+        findViewById(R.id.title_right_area).setOnClickListener(null);
+    }
+
     public void setLeftBtnOnclickListener(OnClickListener listener) {
         OnClickListener myListener = new GlobalLimitClickOnClickListener(listener, BTN_LIMIT_TIME);
         findViewById(R.id.title_left_area).setOnClickListener(myListener);

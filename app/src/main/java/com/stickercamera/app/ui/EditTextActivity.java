@@ -22,6 +22,9 @@ import butterknife.InjectView;
 
 /**
  * 编辑文字
+ * Created by sky on 2015/7/20.
+ * Weibo: http://weibo.com/2030683111
+ * Email: 1132234509@qq.com
  */
 public class EditTextActivity extends BaseActivity {
 

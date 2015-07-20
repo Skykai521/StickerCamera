@@ -261,6 +261,10 @@ public class CameraActivity extends CameraBaseActivity {
             handler.postDelayed(() -> focusIndex.setVisibility(View.INVISIBLE), 800);
         });
 
+        takePhotoPanel.setOnClickListener(v -> {
+            //doNothing 防止聚焦框出现在拍照区域
+        });
+
     }
 
     @Override

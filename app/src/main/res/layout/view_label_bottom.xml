@@ -7,12 +7,13 @@
 
     <TextView
         android:id="@+id/tag_input_tips"
-        android:layout_width="100dp"
-        android:layout_height="44dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="常用标签"
         android:textColor="#9b6b6c"
         android:gravity="center"
-        android:textSize="16sp" />
+        android:textSize="16sp"
+        android:padding="10dp"/>
 
     <View
         android:id="@+id/split_line"
@@ -27,68 +28,32 @@
         android:gravity="start|top">
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/pink"
-            android:padding="10dp"
-            android:text="这只是一个标签~"
-            android:clickable="true"
-            android:onClick="tagClick"/>
+            style="@style/text_default"
+            android:text="这只是一个标签~"/>
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/pink"
-            android:text="nice"
-            android:padding="10dp"
-            android:clickable="true"
-            android:onClick="tagClick"/>
+            style="@style/text_default"
+            android:text="nice"/>
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/pink"
-            android:text="cute"
-            android:padding="10dp"
-            android:clickable="true"
-            android:onClick="tagClick"/>
+            style="@style/text_default"
+            android:text="cute"/>
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/pink"
-            android:text="哈哈哈哈"
-            android:padding="10dp"
-            android:clickable="true"
-            android:onClick="tagClick"/>
+            style="@style/text_default"
+            android:text="哈哈哈哈"/>
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/pink"
-            android:text="我也不知道该推荐什么"
-            android:padding="10dp"
-            android:clickable="true"
-            android:onClick="tagClick"/>
+            style="@style/text_default"
+            android:text="我也不知道该推荐什么"/>
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/pink"
-            android:text="\@只是游客sky"
-            android:padding="10dp"
-            android:clickable="true"
-            android:onClick="tagClick"/>
+            style="@style/text_default"
+            android:text="\@达达达达sky"/>
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/pink"
-            android:text="你好,夏天"
-            android:padding="10dp"
-            android:clickable="true"
-            android:onClick="tagClick"/>
-
+            style="@style/text_default"
+            android:text="你好,夏天"/>
 
     </com.customview.FlowLayout>
 
