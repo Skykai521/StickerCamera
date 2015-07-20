@@ -169,6 +169,7 @@ public class CropPhotoActivity extends CameraBaseActivity {
                 i.setData(Uri.parse("file://" + FileUtils.getInst().getCacheDir()
                         + "/croppedcache"));
                 setResult(RESULT_OK, i);
+                dismissProgressDialog();
                 finish();
             } catch (Exception e) {
                 e.printStackTrace();
