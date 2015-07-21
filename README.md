@@ -34,6 +34,11 @@
 - [cropimage](https://github.com/biokys/cropimage)
 - [EventBus](https://github.com/greenrobot/EventBus)
 
+# contributors
+
+- [ouyezi](https://github.com/ouyezi)
+- [Skykai521](https://github.com/Skykai521)
+
 # 联系我
 
 - Weibo: http://weibo.com/2030683111
