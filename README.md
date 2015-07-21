@@ -22,8 +22,7 @@
 <img src="./screenshot/Screenshot_2015-07-19-11-23-04.png" width="30%" height="30%">
 
 
-
-# 感谢以下开源项目
+# Thanks
 
 - [Gpu-image](https://github.com/CyberAgent/android-gpuimage)
 - [Android-Universal-Image-Loader](https://github.com/nostra13/Android-Universal-Image-Loader)
@@ -34,12 +33,15 @@
 - [cropimage](https://github.com/biokys/cropimage)
 - [EventBus](https://github.com/greenrobot/EventBus)
 
-# contributors
+# Contributors
 
 - [ouyezi](https://github.com/ouyezi)
 - [Skykai521](https://github.com/Skykai521)
 
-# 联系我
+# Apk Demo
+Change screenshot/StickerCamera.zip to StickerCamera.apk
+
+# Contact Me
 
 - Weibo: http://weibo.com/2030683111
 - Email: 1132234509@qq.com

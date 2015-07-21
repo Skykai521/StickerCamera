@@ -1,6 +1,3 @@
-/**
- * Copyright (C) 2014 xiaobudian Inc.
- */
 package com.stickercamera.app.camera;
 
 import com.stickercamera.app.camera.effect.FilterEffect;

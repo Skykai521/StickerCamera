@@ -1,6 +1,3 @@
-/**
- * Copyright (C) 2014 xiaobudian Inc.
- */
 package com.customview;
 
 import android.content.Context;
