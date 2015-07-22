@@ -60,9 +60,7 @@ public class App extends Application {
                 .diskCacheSize(100 * 1024 * 1024).tasksProcessingOrder(QueueProcessingType.LIFO)
                 .memoryCache(new LruMemoryCache(2 * 1024 * 1024)).memoryCacheSize(2 * 1024 * 1024)
                 .threadPoolSize(3)
-                        //              .writeDebugLogs() // Remove for release app
                 .build();
-        // Initialize ImageLoader with configuration.
         ImageLoader.getInstance().init(config);
     }
 

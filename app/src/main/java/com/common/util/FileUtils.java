@@ -76,25 +76,6 @@ public class FileUtils {
         }
     }
 
-    /**
-     * 远程服务器的图片
-     * @param stickerUrl
-     * @return
-     */
-    public Bitmap getAddonImage(final int packageId, final String stickerUrl) {
-        File f = new File(getImageFilePath(packageId, stickerUrl));
-        if (!f.exists()) {
-            new Thread() {
-                public void run() {
-                    saveBmpToFolder(packageId, stickerUrl);
-                }
-            }.start();
-            return null;
-        } else {
-            Bitmap result = BitmapFactory.decodeFile(getImageFilePath(packageId, stickerUrl));
-            return result;
-        }
-    }
 
     public String getBasePath(int packageId) {
         return STICKER_BASE_PATH + packageId + "/";
@@ -129,7 +110,7 @@ public class FileUtils {
     public void removeAddonFolder(int packageId) {
         String filename = getBasePath(packageId);
         File file = new File(filename);
-        if (file.exists()) {//FIXME 是否需要判断是否为图片并作清除处理
+        if (file.exists()) {
             delete(file);
         }
     }
@@ -151,42 +132,6 @@ public class FileUtils {
                 delete(childFiles[i]);
             }
             file.delete();
-        }
-    }
-
-    public boolean saveBmpToFolder(int packageId, String stickerUrl) {
-
-        String filename = getImageFilePath(packageId, stickerUrl);
-        File file = new File(filename);
-        if (file.exists()) {
-            return true;
-        }
-        InputStream inputStream = null;
-        OutputStream outStream = null;
-        try {
-            if (file.exists()) {//FIXME 是否需要判断是否为图片并作清除处理
-                delete(file);
-            }
-
-            if (stickerUrl.startsWith("http://") || stickerUrl.startsWith("https://")) {
-                inputStream = new URL(stickerUrl).openStream();
-            } else {
-                inputStream = App.getApp().getAssets().open("preinstall/" + stickerUrl);
-            }
-            createFile(file);
-            outStream = new FileOutputStream(file);
-            byte[] buffer = new byte[2048];
-            int len = -1;
-            while ((len = inputStream.read(buffer)) != -1) {
-                outStream.write(buffer, 0, len);
-            }
-            outStream.flush();
-            return true;
-        } catch (Exception e) {
-            return false;
-        } finally {
-            IOUtil.closeStream(inputStream);
-            IOUtil.closeStream(outStream);
         }
     }
 

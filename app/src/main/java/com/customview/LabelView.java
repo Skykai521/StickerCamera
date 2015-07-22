@@ -1,5 +1,7 @@
 package com.customview;
 
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -22,16 +24,15 @@ import com.stickercamera.app.model.TagItem;
 
 /**
  * @author tongqian.ni
- *
  */
 public class LabelView extends LinearLayout {
 
-    private TagItem tagInfo      = new TagItem();
-    private float     parentWidth  = 0;
-    private float     parentHeight = 0;
+    private TagItem tagInfo = new TagItem();
+    private float parentWidth = 0;
+    private float parentHeight = 0;
     private ImageView labelIcon;
-    private TextView  labelTxtLeft;
-    private TextView  labelTxtRight;
+    private TextView labelTxtLeft;
+    private TextView labelTxtRight;
 
     public TagItem getTagInfo() {
         return tagInfo;
@@ -66,6 +67,7 @@ public class LabelView extends LinearLayout {
 
     /**
      * 将标签放置于对应RelativeLayout的对应位置，考虑引入postion作为参数？？
+     *
      * @param parent
      * @param left
      * @param top
@@ -93,6 +95,7 @@ public class LabelView extends LinearLayout {
 
     /**
      * 将标签放置于对应RelativeLayout的对应位置，考虑引入postion作为参数？？
+     *
      * @param parent
      * @param left
      * @param top
@@ -140,7 +143,7 @@ public class LabelView extends LinearLayout {
         this.top = topLoc;
 
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
-            LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+                LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 
         if (getImageWidth() - left - getWidth() < 0) {
             left = getImageWidth() - getWidth();
@@ -173,12 +176,12 @@ public class LabelView extends LinearLayout {
         return imageWidth <= 0 ? App.getApp().getScreenWidth() : imageWidth;
     }
 
-    private int left       = -1, top = -1;
+    private int left = -1, top = -1;
     private int imageWidth = 0;
 
     private static final int ANIMATIONEACHOFFSET = 600;
 
-    private boolean          emptyItem           = false;
+    private boolean emptyItem = false;
 
     public void setEmpty() {
         emptyItem = true;
@@ -188,8 +191,8 @@ public class LabelView extends LinearLayout {
 
     public void wave() {
         AnimationSet as = new AnimationSet(true);
-        ScaleAnimation sa = new ScaleAnimation(1f, 2f, 1f, 2f, ScaleAnimation.RELATIVE_TO_SELF,
-            0.5f, ScaleAnimation.RELATIVE_TO_SELF, 0.5f);
+        ScaleAnimation sa = new ScaleAnimation(1f, 1.5f, 1f, 1.5f, ScaleAnimation.RELATIVE_TO_SELF,
+                0.5f, ScaleAnimation.RELATIVE_TO_SELF, 0.5f);
         sa.setDuration(ANIMATIONEACHOFFSET * 3);
         sa.setRepeatCount(10);// 设置循环
         AlphaAnimation aniAlp = new AlphaAnimation(1, 0.1f);

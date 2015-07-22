@@ -32,6 +32,9 @@
 - [SystemBarTint](https://github.com/jgilfelt/SystemBarTint)
 - [cropimage](https://github.com/biokys/cropimage)
 - [EventBus](https://github.com/greenrobot/EventBus)
+- [Aviary-Android-SDK](https://github.com/kitek/Aviary-Android-SDK)
+- [fastjson](https://github.com/alibaba/fastjson)
+- [PagerSlidingTabStrip](https://github.com/astuetz/PagerSlidingTabStrip)
 
 # Contributors
 

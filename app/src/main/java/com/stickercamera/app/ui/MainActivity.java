@@ -172,12 +172,13 @@ public class MainActivity extends BaseActivity {
                 @Override
                 public void run() {
                     for (TagItem feedImageTag : holder.getTagList()) {
-                        LabelView tagview = new LabelView(MainActivity.this);
-                        tagview.init(feedImageTag);
-                        tagview.draw(holder.pictureLayout,
+                        LabelView tagView = new LabelView(MainActivity.this);
+                        tagView.init(feedImageTag);
+                        tagView.draw(holder.pictureLayout,
                                 (int) (feedImageTag.getX() * ((double) holder.pictureLayout.getWidth() / (double) 1242)),
                                 (int) (feedImageTag.getY() * ((double) holder.pictureLayout.getWidth() / (double) 1242)),
                                 feedImageTag.isLeft());
+                        tagView.wave();
                     }
                 }
             }, 200);

@@ -224,26 +224,21 @@ public class PhotoProcessActivity extends CameraBaseActivity {
 
     //保存图片
     private void savePicture(){
-        if (!currentBitmap.isMutable()) {
-            currentBitmap = currentBitmap.copy(Bitmap.Config.ARGB_8888, true);
-        }
-
         //加滤镜
-        final Bitmap newbmp = Bitmap.createBitmap(mImageView.getWidth(), mImageView.getHeight(),
+        final Bitmap newBitmap = Bitmap.createBitmap(mImageView.getWidth(), mImageView.getHeight(),
                 Bitmap.Config.ARGB_8888);
-        Canvas cv = new Canvas(newbmp);
+        Canvas cv = new Canvas(newBitmap);
         RectF dst = new RectF(0, 0, mImageView.getWidth(), mImageView.getHeight());
         try {
             cv.drawBitmap(mGPUImageView.capture(), null, dst, null);
-        } catch (InterruptedException e1) {
-            e1.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
             cv.drawBitmap(currentBitmap, null, dst, null);
         }
-
         //加贴纸水印
         EffectUtil.applyOnSave(cv, mImageView);
 
-        new SavePicToFileTask().execute(newbmp);
+        new SavePicToFileTask().execute(newBitmap);
     }
 
     private class SavePicToFileTask extends AsyncTask<Bitmap,Void,String>{
@@ -370,8 +365,6 @@ public class PhotoProcessActivity extends CameraBaseActivity {
                         });
             }
         });
-
-
         setCurrentBtn(stickerBtn);
     }
 
@@ -393,7 +386,7 @@ public class PhotoProcessActivity extends CameraBaseActivity {
                     GPUImageFilterTools.FilterAdjuster mFilterAdjuster = new GPUImageFilterTools.FilterAdjuster(filter);
                     //可调节颜色的滤镜
                     if (mFilterAdjuster.canAdjust()) {
-                        //mFilterAdjuster.adjust(100);//FIXME 给可调节的滤镜选一个合适的值
+                        //mFilterAdjuster.adjust(100); 给可调节的滤镜选一个合适的值
                     }
                 }
             }

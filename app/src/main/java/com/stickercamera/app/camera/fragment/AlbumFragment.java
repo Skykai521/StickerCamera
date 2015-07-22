@@ -14,14 +14,13 @@ import com.github.skykai.stickercamera.R;
 import com.stickercamera.app.camera.CameraManager;
 import com.stickercamera.app.camera.adapter.GalleryAdapter;
 import com.stickercamera.app.model.PhotoItem;
-import com.stickercamera.base.BaseFragment;
 
 import java.util.ArrayList;
 
 /**
  * @author tongqian.ni
  */
-public class AlbumFragment extends BaseFragment {
+public class AlbumFragment extends Fragment {
     private ArrayList<PhotoItem> photos = new ArrayList<PhotoItem>();
 
     public AlbumFragment() {
