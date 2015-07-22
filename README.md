@@ -35,6 +35,7 @@
 - [Aviary-Android-SDK](https://github.com/kitek/Aviary-Android-SDK)
 - [fastjson](https://github.com/alibaba/fastjson)
 - [PagerSlidingTabStrip](https://github.com/astuetz/PagerSlidingTabStrip)
+- [android-common](https://github.com/Trinea/android-common)
 
 # Contributors
 
