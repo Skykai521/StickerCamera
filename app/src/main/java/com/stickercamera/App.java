@@ -95,7 +95,7 @@ public class App extends Application {
         return (int)(0.5F + f * getScreenDensity());
     }
 
-    public  int px2dp(float pxValue) {
+    public int px2dp(float pxValue) {
         return (int) (pxValue / getScreenDensity() + 0.5f);
     }
 

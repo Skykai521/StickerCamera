@@ -33,6 +33,7 @@ import android.widget.Toast;
 import com.common.util.DistanceUtil;
 import com.common.util.FileUtils;
 import com.common.util.IOUtil;
+import com.common.util.ImageLoaderUtils;
 import com.common.util.ImageUtils;
 import com.common.util.StringUtils;
 import com.customview.CameraGrid;
@@ -145,7 +146,7 @@ public class CameraActivity extends CameraBaseActivity {
     private void addPhoto(PhotoItem photoItem) {
         ImageView photo = new ImageView(this);
         if (StringUtils.isNotBlank(photoItem.getImageUri())) {
-            ImageLoader.getInstance().displayLocalImage(photoItem.getImageUri(), photo, null);
+            ImageLoaderUtils.displayLocalImage(photoItem.getImageUri(), photo, null);
         } else {
             photo.setImageResource(R.drawable.default_img);
         }

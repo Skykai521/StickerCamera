@@ -8,6 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
 
+import com.common.util.ImageLoaderUtils;
 import com.github.skykai.stickercamera.R;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.stickercamera.app.model.Addon;
@@ -67,7 +68,7 @@ public class StickerToolAdapter extends BaseAdapter {
     private View showItem(View convertView, EffectHolder holder, final Addon sticker) {
 
         holder.container.setVisibility(View.GONE);
-        ImageLoader.getInstance().displayDrawableImage(sticker.getId()+"",holder.logo,null);
+        ImageLoaderUtils.displayDrawableImage(sticker.getId() + "", holder.logo, null);
 
         return convertView;
     }

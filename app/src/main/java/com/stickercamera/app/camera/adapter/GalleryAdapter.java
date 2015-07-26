@@ -9,6 +9,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
 import com.common.util.DistanceUtil;
+import com.common.util.ImageLoaderUtils;
 import com.github.skykai.stickercamera.R;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.stickercamera.app.model.PhotoItem;
@@ -65,7 +66,7 @@ public class GalleryAdapter extends BaseAdapter {
         }
         final PhotoItem gallery = (PhotoItem) getItem(position);
 
-        ImageLoader.getInstance().displayLocalImage(gallery.getImageUri(), holder.sample,null);
+        ImageLoaderUtils.displayLocalImage(gallery.getImageUri(), holder.sample,null);
         
         return convertView;
     }
