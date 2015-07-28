@@ -1,15 +1,18 @@
 # StickerCamera
 
 This is an Android application with camera,picture cropping,collage sticking and tagging.
+
 这是一款集成了相机,图片裁剪,给图片贴贴图打标签的APP。
 
 # Feature
-- Achieve the function of camera;
-- Achieve the function of photo cropping;
-- Achieve the function of photo filter;
-- Can stick collage on photo (collage can be moved,enlarged, and rotated)
-- Can tag in pictures(also can be moved)
+
+- Achieve the function of camera.
+- Achieve the function of photo cropping.
+- Achieve the function of photo filter.
+- Can stick collage on photo (collage can be moved,enlarged, and rotated).
+- Can tag in pictures(also can be moved).
 - Save the completed pictures locally, show more custom views and better framework.
+
 
 - 实现相机功能
 - 实现对图片进行裁剪的功能
@@ -18,6 +21,9 @@ This is an Android application with camera,picture cropping,collage sticking and
 - 能为图片添加标签(同样可以移动)
 - 本地保存制作好的图片,并展示
 - 较多的自定义控件,不错的项目架构
+
+
+  (Translation powered by Amy)
 
 # ScreenShot
 
@@ -45,6 +51,7 @@ This is an Android application with camera,picture cropping,collage sticking and
 - [fastjson](https://github.com/alibaba/fastjson)
 - [PagerSlidingTabStrip](https://github.com/astuetz/PagerSlidingTabStrip)
 - [android-common](https://github.com/Trinea/android-common)
+
 
 # Contributors
 
