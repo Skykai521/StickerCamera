@@ -208,7 +208,7 @@ public class MyHighlightView implements EditableDrawable.OnSizeChange {
                 outlinePath.reset();
                 outlinePath.addRect(mTempRect, Path.Direction.CW);
                 outlinePaint.setColor(Color.WHITE);
-                outlinePaint.setStrokeWidth(App.getApp().dp2px(2));
+                outlinePaint.setStrokeWidth(App.getApp().dp2px(1));
                 canvas.drawPath(outlinePath, outlinePaint);
 
                 final int left = (int) (mTempRect.left);
@@ -763,7 +763,6 @@ public class MyHighlightView implements EditableDrawable.OnSizeChange {
         return false;
     }
 
-    @Deprecated
     public void setPadding(int value) {
         mPadding = value;
     }
