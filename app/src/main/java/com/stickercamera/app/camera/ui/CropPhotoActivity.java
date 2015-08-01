@@ -199,7 +199,7 @@ public class CropPhotoActivity extends CameraBaseActivity {
             BitmapRegionDecoder decoder = BitmapRegionDecoder.newInstance(is, false);
             croppedImage = decoder.decodeRegion(rect, new BitmapFactory.Options());
         } catch (Throwable e) {
-//            LogUtil.appError("照片处理失败", e);
+
         } finally {
             IOUtil.closeStream(is);
         }

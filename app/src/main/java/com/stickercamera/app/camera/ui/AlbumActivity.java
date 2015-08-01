@@ -12,9 +12,9 @@ import com.common.util.ImageUtils;
 import com.common.util.StringUtils;
 import com.customview.PagerSlidingTabStrip;
 import com.github.skykai.stickercamera.R;
+import com.stickercamera.AppConstants;
 import com.stickercamera.app.camera.CameraBaseActivity;
 import com.stickercamera.app.camera.fragment.AlbumFragment;
-import com.stickercamera.app.camera.util.Crop;
 import com.stickercamera.app.model.Album;
 
 import java.util.ArrayList;
@@ -59,18 +59,14 @@ public class AlbumActivity extends CameraBaseActivity {
 
     @Override
     protected void onActivityResult(final int requestCode, final int resultCode, final Intent result) {
-        if (requestCode == Crop.REQUEST_CROP && resultCode == RESULT_OK) {
+        if (requestCode == AppConstants.REQUEST_CROP && resultCode == RESULT_OK) {
             Intent newIntent = new Intent(this, PhotoProcessActivity.class);
             newIntent.setData(result.getData());
             startActivity(newIntent);
         }
     }
 
-    /**
-     * ViewPager适配器
-     * @author len
-     *
-     */
+
     class TabPageIndicatorAdapter extends FragmentPagerAdapter {
         public TabPageIndicatorAdapter(FragmentManager fm) {
             super(fm);

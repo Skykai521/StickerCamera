@@ -2,9 +2,13 @@ package com.customview;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Matrix;
+import android.graphics.Paint;
+import android.graphics.Path;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.graphics.Region;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -87,6 +91,9 @@ public class MyHighlightView implements EditableDrawable.OnSizeChange {
     private static final int[]    STATE_SET_SELECTED_PRESSED = new int[] {
             android.R.attr.state_selected, android.R.attr.state_pressed };
     private static final int[]    STATE_SET_SELECTED_FOCUSED = new int[] { android.R.attr.state_focused };
+
+    private final Paint outlinePaint = new Paint();
+    private Path outlinePath;
 
     public void setMoveable(boolean moveable) {
         this.mMoveEnabled = moveable;
@@ -197,6 +204,13 @@ public class MyHighlightView implements EditableDrawable.OnSizeChange {
         if (is_selected || is_focused) {
 
             if (mShowAnchors) {
+                //绘制边框
+                outlinePath.reset();
+                outlinePath.addRect(mTempRect, Path.Direction.CW);
+                outlinePaint.setColor(Color.WHITE);
+                outlinePaint.setStrokeWidth(App.getApp().dp2px(2));
+                canvas.drawPath(outlinePath, outlinePaint);
+
                 final int left = (int) (mTempRect.left);
                 final int right = (int) (mTempRect.right);
                 final int top = (int) (mTempRect.top);
@@ -214,6 +228,8 @@ public class MyHighlightView implements EditableDrawable.OnSizeChange {
                         left + mAnchorDeleteWidth, top + mAnchorDeleteHeight);
                     mAnchorDelete.draw(canvas);
                 }
+
+
             }
         }
 
@@ -668,6 +684,9 @@ public class MyHighlightView implements EditableDrawable.OnSizeChange {
         mMatrix = new Matrix(m);
         mRotation = 0;
         mRotateMatrix = new Matrix();
+        outlinePaint.setStyle(Paint.Style.STROKE);
+        outlinePaint.setAntiAlias(true);
+        outlinePath = new Path();
         mCropRect = cropRect;
         setMode(NONE);
         invalidate();
@@ -678,6 +697,9 @@ public class MyHighlightView implements EditableDrawable.OnSizeChange {
         mMatrix = new Matrix(m);
         mRotation = rotation;
         mRotateMatrix = new Matrix();
+        outlinePaint.setStyle(Paint.Style.STROKE);
+        outlinePaint.setAntiAlias(true);
+        outlinePath = new Path();
         mCropRect = cropRect;
         setMode(NONE);
         invalidate();

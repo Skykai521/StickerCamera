@@ -5,17 +5,14 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.BitmapRegionDecoder;
-import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.PixelFormat;
 import android.graphics.Rect;
-import android.graphics.RectF;
 import android.hardware.Camera;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.PersistableBundle;
 import android.util.FloatMath;
 import android.util.Log;
 import android.view.Gravity;
@@ -38,19 +35,16 @@ import com.common.util.ImageUtils;
 import com.common.util.StringUtils;
 import com.customview.CameraGrid;
 import com.github.skykai.stickercamera.R;
-import com.nostra13.universalimageloader.core.ImageLoader;
 import com.stickercamera.App;
+import com.stickercamera.AppConstants;
 import com.stickercamera.app.camera.CameraBaseActivity;
 import com.stickercamera.app.camera.CameraManager;
 import com.stickercamera.app.camera.util.CameraHelper;
-import com.stickercamera.app.camera.util.Crop;
 import com.stickercamera.app.model.PhotoItem;
 
 import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.lang.ref.SoftReference;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -270,12 +264,12 @@ public class CameraActivity extends CameraBaseActivity {
 
     @Override
     protected void onActivityResult(final int requestCode, final int resultCode, final Intent result) {
-        if (requestCode == Crop.REQUEST_PICK && resultCode == RESULT_OK) {
+        if (requestCode == AppConstants.REQUEST_PICK && resultCode == RESULT_OK) {
             CameraManager.getInst().processPhotoItem(
                     CameraActivity.this,
                     new PhotoItem(result.getData().getPath(), System
                             .currentTimeMillis()));
-        } else if (requestCode == Crop.REQUEST_CROP && resultCode == RESULT_OK) {
+        } else if (requestCode == AppConstants.REQUEST_CROP && resultCode == RESULT_OK) {
             Intent newIntent = new Intent(this, PhotoProcessActivity.class);
             newIntent.setData(result.getData());
             startActivity(newIntent);
