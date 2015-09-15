@@ -21,10 +21,7 @@ public class LabelSelector extends LinearLayout {
     private ImageView addrLabelBtn;
 
     public LabelSelector(Context context) {
-        super(context);
-        LayoutInflater.from(context).inflate(R.layout.view_label_layout, this);
-        txtLabelBtn = (ImageView) findViewById(R.id.iv_tag_tip);
-        addrLabelBtn = (ImageView) findViewById(R.id.iv_tag_address);
+        this(context,null);
     }
 
     public LabelSelector(Context context, AttributeSet attr) {

@@ -44,7 +44,7 @@
     <style name="text_default">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:textColor">@color/pink</item>
+        <item name="android:textColor">@color/blue</item>
         <item name="android:clickable">true</item>
         <item name="android:onClick">tagClick</item>
         <item name="android:padding">10dp</item>

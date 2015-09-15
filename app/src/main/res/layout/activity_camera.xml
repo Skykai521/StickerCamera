@@ -34,8 +34,8 @@
 
             <ImageView
                 android:id="@+id/back"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="20dp"
@@ -50,7 +50,6 @@
                 android:layout_centerVertical="true"
                 android:layout_marginRight="20dp"
                 android:padding="5dp"
-                android:scaleType="fitXY"
                 android:src="@drawable/camera_library" />
         </RelativeLayout>
 

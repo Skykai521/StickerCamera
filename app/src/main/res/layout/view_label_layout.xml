@@ -9,16 +9,16 @@
 
     <ImageView
         android:id="@+id/iv_tag_tip"
-        android:layout_width="60dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/tip" />
 
     <ImageView
         android:id="@+id/iv_tag_address"
-        android:layout_width="80dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="20.0dip"
+        android:layout_marginLeft="20dp"
         android:padding="10.0dip"
-        android:src="@drawable/postion" />
+        android:src="@drawable/position" />
 
 </LinearLayout>
