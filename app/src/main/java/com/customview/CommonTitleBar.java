@@ -29,14 +29,12 @@ public class CommonTitleBar extends RelativeLayout {
     private TextView         middleButton;
     private TextView         rightButton;
     private ImageView        rightButtonImg;
-
     private int              leftBtnIconId;
     private String           leftBtnStr;
     private String           titleTxtStr;
     private String           rightBtnStr;
     private int              rightBtnIconId;
 
-    private String           bgStyle;             //RED,WHITE 默认RED.红底与白底的
 
     public CommonTitleBar(Context context) {
         super(context);
@@ -51,14 +49,13 @@ public class CommonTitleBar extends RelativeLayout {
         titleTxtStr = arr.getString(R.styleable.CommonTitleBar_titleTxt);
         rightBtnStr = arr.getString(R.styleable.CommonTitleBar_rightBtnTxt);
         rightBtnIconId = arr.getResourceId(R.styleable.CommonTitleBar_rightBtnIcon, 0);
-        bgStyle = arr.getString(R.styleable.CommonTitleBar_baseStyle);
         if (isInEditMode()) {
             LayoutInflater.from(context).inflate(R.layout.view_title_bar, this);
             return;
         }
 
         LayoutInflater.from(context).inflate(R.layout.view_title_bar, this);
-        findViewById(R.id.title_out_frame).setBackgroundResource(R.color.pink);
+        findViewById(R.id.title_out_frame).setBackgroundResource(R.color.blue);
         arr.recycle();
     }
 

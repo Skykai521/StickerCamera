@@ -57,7 +57,7 @@
         android:id="@+id/btn_area"
         android:layout_width="fill_parent"
         android:layout_height="50dp"
-        android:background="#ff004a"
+        android:background="@color/blue"
         android:orientation="horizontal" >
 
         <TextView
@@ -67,7 +67,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="贴纸"
-            android:textColor="#d0beb9"
+            android:textColor="@color/white"
             android:textSize="22sp" />
 
         <TextView
@@ -77,7 +77,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="滤镜"
-            android:textColor="#d0beb9"
+            android:textColor="@color/white"
             android:textSize="22sp" />
 
         <TextView
@@ -87,7 +87,7 @@
             android:layout_weight="1"
             android:gravity="center"
             android:text="标签"
-            android:textColor="#d0beb9"
+            android:textColor="@color/white"
             android:textSize="22sp" />
     </LinearLayout>
 

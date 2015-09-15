@@ -334,11 +334,9 @@ public class PhotoProcessActivity extends CameraBaseActivity {
         } else if (currentBtn.equals(btn)) {
             return false;
         } else {
-            currentBtn.setTextColor(Color.rgb(208, 190, 185));
             currentBtn.setCompoundDrawablesWithIntrinsicBounds(null, null, null, null);
         }
         Drawable myImage = getResources().getDrawable(R.drawable.select_icon);
-        btn.setTextColor(Color.rgb(255, 255, 255));
         btn.setCompoundDrawablesWithIntrinsicBounds(null, null, null, myImage);
         currentBtn = btn;
         return true;

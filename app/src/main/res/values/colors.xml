@@ -12,7 +12,6 @@
 	<color name="brown">#cccccc</color>
     <color name="pale_pink">#cbc4c6</color>
     <color name="divider">#e8e3e3</color>
-    <color name="blue">#3299cc</color>
     <color name="tabcolor">#6e686a</color>
     <!-- [begin]crop -->
     
@@ -29,6 +28,10 @@
     <color name="dark_red">#F4511E</color>
     <color name="accent_red">#FF5722</color>
     <!--Theme-->
+
+    <color name="blue">#2196F3</color>
+    <color name="dark_blue">#1976D2</color>
+    <color name="accent_blue">#448AFF</color>
 
     <color name="background_tab_pressed">#6633B5E5</color>
     <color name="light_grey">#ffbebebe</color>

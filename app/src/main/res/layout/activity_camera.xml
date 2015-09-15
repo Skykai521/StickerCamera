@@ -1,7 +1,7 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ffffff" >
+    android:background="#ffffff">
 
     <!-- 显示预览图形 -->
 
@@ -13,24 +13,24 @@
     <RelativeLayout
         android:id="@+id/buttonLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="match_parent">
 
         <RelativeLayout
             android:id="@+id/panel_take_photo"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:padding="2dp"
-            android:gravity="center_vertical"
             android:layout_alignParentBottom="true"
-            android:background="@color/white" >
+            android:background="@color/white"
+            android:gravity="center_vertical"
+            android:padding="2dp">
 
 
-            <ImageView
+            <Button
                 android:id="@+id/takepicture"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:layout_centerInParent="true"
-                android:src="@drawable/camera_trigger" />
+                android:background="@drawable/btn_take_photo" />
 
             <ImageView
                 android:id="@+id/back"
@@ -38,62 +38,63 @@
                 android:layout_height="30dp"
                 android:layout_alignParentLeft="true"
                 android:layout_centerVertical="true"
-                android:padding="5dp"
                 android:layout_marginLeft="20dp"
+                android:padding="5dp"
                 android:src="@drawable/camera_back" />
+
             <ImageView
                 android:id="@+id/next"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:padding="5dp"
-                android:src="@drawable/camera_library"
                 android:layout_marginRight="20dp"
-                android:scaleType="fitXY" />
+                android:padding="5dp"
+                android:scaleType="fitXY"
+                android:src="@drawable/camera_library" />
         </RelativeLayout>
 
 
-        <LinearLayout 
+        <LinearLayout
+            android:id="@+id/photo_area"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/photo_area"
+            android:layout_above="@id/panel_take_photo"
             android:layout_centerVertical="true"
-            android:orientation="horizontal"
-            android:background="@color/white" 
-            android:layout_above="@id/panel_take_photo">
-        </LinearLayout>
-            
+            android:background="@color/white"
+            android:orientation="horizontal"></LinearLayout>
+
 
         <RelativeLayout
             android:id="@+id/camera_top"
             android:layout_width="fill_parent"
             android:layout_height="40dp"
             android:layout_alignParentTop="true"
-            android:background="#00000000" >
+            android:background="#00000000">
 
             <ImageView
                 android:id="@+id/flashBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="fill_parent"
                 android:layout_alignParentLeft="true"
+                android:paddingBottom="10dp"
                 android:paddingLeft="10dp"
                 android:paddingTop="10dp"
-                android:paddingBottom="10dp"
                 android:src="@drawable/camera_flash_off" />
-            
+
             <ImageView
                 android:id="@+id/change"
                 android:layout_width="wrap_content"
                 android:layout_height="fill_parent"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:paddingTop="10dp"
                 android:paddingBottom="10dp"
                 android:paddingRight="10dp"
+                android:paddingTop="10dp"
                 android:src="@drawable/camera_flip" />
-            
+
         </RelativeLayout>
+
         <com.customview.CameraGrid
             android:id="@+id/masking"
             android:layout_width="match_parent"

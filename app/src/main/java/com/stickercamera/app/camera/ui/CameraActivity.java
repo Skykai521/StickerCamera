@@ -22,6 +22,7 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.ScaleAnimation;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -84,7 +85,7 @@ public class CameraActivity extends CameraBaseActivity {
     @InjectView(R.id.panel_take_photo)
     View takePhotoPanel;
     @InjectView(R.id.takepicture)
-    View takePicture;
+    Button takePicture;
     @InjectView(R.id.flashBtn)
     ImageView flashBtn;
     @InjectView(R.id.change)
@@ -92,7 +93,7 @@ public class CameraActivity extends CameraBaseActivity {
     @InjectView(R.id.back)
     ImageView backBtn;
     @InjectView(R.id.next)
-    ImageView galaryBtn;
+    ImageView galleryBtn;
     @InjectView(R.id.focus_index)
     View focusIndex;
     @InjectView(R.id.surfaceView)
@@ -197,7 +198,7 @@ public class CameraActivity extends CameraBaseActivity {
             changeBtn.setOnClickListener(v -> switchCamera());
         }
         //跳转相册
-        galaryBtn.setOnClickListener(v -> startActivity(new Intent(CameraActivity.this, AlbumActivity.class)));
+        galleryBtn.setOnClickListener(v -> startActivity(new Intent(CameraActivity.this, AlbumActivity.class)));
         //返回按钮
         backBtn.setOnClickListener(v -> finish());
         surfaceView.setOnTouchListener((v, event) -> {
