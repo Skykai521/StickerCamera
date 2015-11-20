@@ -13,6 +13,7 @@ import com.common.util.ImageLoaderUtils;
 import com.github.skykai.stickercamera.R;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.stickercamera.app.model.PhotoItem;
+import com.tickercamera.ImageLoaderUtils.ImageInternalFetcher;
 
 import java.util.List;
 
@@ -66,13 +67,24 @@ public class GalleryAdapter extends BaseAdapter {
         }
         final PhotoItem gallery = (PhotoItem) getItem(position);
 
-        ImageLoaderUtils.displayLocalImage(gallery.getImageUri(), holder.sample,null);
-        
+       
+        //ImageLoaderUtils.displayLocalImage(gallery.getImageUri(), holder.sample,null);
+       
+       /***instead of using the ImageLoaderUtils provided which was loading images
+        * not only slowly but also starting from the buttom then going up
+        * I employ A custom Async dual Thread Class from polypicker, which was initially 
+        * Copied from JB release framework:
+        * https://android.googlesource.com/platform/frameworks/base/+/jb-release/core/java/android/os/AsyncTask.java
+        *this loads images 2x faster than the stock supplied thread
+        **/
+        holder.imageFetcher.loadImage(Uri.parse(gallery.getImageUri()), holder.sample);
+      
         return convertView;
     }
 
     class GalleryHolder {
         ImageView sample;
+         ImageInternalFetcher imageFetcher = new ImageInternalFetcher(mContext, 300);
     }
 
 }
