@@ -9,7 +9,6 @@ package com.common.util;
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
-
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Locale;
@@ -46,7 +45,6 @@ public class StringUtils {
 
     // Empty
     // --------------------------------------------------------------------------
-
     /**
      * <p>
      * Removes control characters, including whitespace, from both ends of this String, handling <code>null</code> by
@@ -198,7 +196,6 @@ public class StringUtils {
 
     // Equals and IndexOf
     // --------------------------------------------------------------------------
-
     /**
      * <p>
      * Compares two Strings, returning <code>true</code> if they are equal.
@@ -256,22 +253,18 @@ public class StringUtils {
             return -1;
         }
         int sz = searchStrs.length;
-
         // String's can't have a MAX_VALUEth index.
         int ret = Integer.MAX_VALUE;
-
         int tmp = 0;
         for (int i = 0; i < sz; i++) {
             tmp = str.indexOf(searchStrs[i]);
             if (tmp == -1) {
                 continue;
             }
-
             if (tmp < ret) {
                 ret = tmp;
             }
         }
-
         return (ret == Integer.MAX_VALUE) ? -1 : ret;
     }
 
@@ -307,7 +300,6 @@ public class StringUtils {
 
     // Substring
     // --------------------------------------------------------------------------
-
     /**
      * <p>
      * Gets a substring from the specified string avoiding exceptions.
@@ -326,19 +318,17 @@ public class StringUtils {
         if (str == null) {
             return null;
         }
-
         // handle negatives, which means last n characters
         if (start < 0) {
-            start = str.length() + start; // remember start is negative
+            // remember start is negative
+            start = str.length() + start;
         }
-
         if (start < 0) {
             start = 0;
         }
         if (start > str.length()) {
             return "";
         }
-
         return str.substring(start);
     }
 
@@ -362,33 +352,30 @@ public class StringUtils {
         if (str == null) {
             return null;
         }
-
         // handle negatives
         if (end < 0) {
-            end = str.length() + end; // remember end is negative
+            // remember end is negative
+            end = str.length() + end;
         }
         if (start < 0) {
-            start = str.length() + start; // remember start is negative
+            // remember start is negative
+            start = str.length() + start;
         }
-
         // check length next
         if (end > str.length()) {
             // check this works.
             end = str.length();
         }
-
         // if start is greater than end, return ""
         if (start > end) {
             return "";
         }
-
         if (start < 0) {
             start = 0;
         }
         if (end < 0) {
             end = 0;
         }
-
         return str.substring(start, end);
     }
 
@@ -409,8 +396,7 @@ public class StringUtils {
      */
     public static String left(String str, int len) {
         if (len < 0) {
-            throw new IllegalArgumentException("Requested String length " + len
-                    + " is less than zero");
+            throw new IllegalArgumentException("Requested String length " + len + " is less than zero");
         }
         if ((str == null) || (str.length() <= len)) {
             return str;
@@ -436,8 +422,7 @@ public class StringUtils {
      */
     public static String right(String str, int len) {
         if (len < 0) {
-            throw new IllegalArgumentException("Requested String length " + len
-                    + " is less than zero");
+            throw new IllegalArgumentException("Requested String length " + len + " is less than zero");
         }
         if ((str == null) || (str.length() <= len)) {
             return str;
@@ -468,8 +453,7 @@ public class StringUtils {
             throw new StringIndexOutOfBoundsException("String index " + pos + " is out of bounds");
         }
         if (len < 0) {
-            throw new IllegalArgumentException("Requested String length " + len
-                    + " is less than zero");
+            throw new IllegalArgumentException("Requested String length " + len + " is less than zero");
         }
         if (str == null) {
             return null;
@@ -483,7 +467,6 @@ public class StringUtils {
 
     // Splitting
     // --------------------------------------------------------------------------
-
     /**
      * <p>
      * Splits the provided text into a array, using whitespace as the separator.
@@ -537,12 +520,10 @@ public class StringUtils {
         } else {
             tok = new StringTokenizer(str, separator);
         }
-
         int listSize = tok.countTokens();
         if ((max > 0) && (listSize > max)) {
             listSize = max;
         }
-
         String[] list = new String[listSize];
         int i = 0;
         int lastTokenBegin = 0;
@@ -568,7 +549,6 @@ public class StringUtils {
 
     // Joining
     // --------------------------------------------------------------------------
-
     /**
      * <p>
      * Concatenates elements of an array into a single String.
@@ -603,10 +583,8 @@ public class StringUtils {
             separator = "";
         }
         int arraySize = array.length;
-        int bufSize = (arraySize == 0 ? 0 : (array[0].toString().length() + separator.length())
-                * arraySize);
+        int bufSize = (arraySize == 0 ? 0 : (array[0].toString().length() + separator.length()) * arraySize);
         StringBuilder buf = new StringBuilder(bufSize);
-
         for (int i = 0; i < arraySize; i++) {
             if (i > 0) {
                 buf.append(separator);
@@ -634,7 +612,8 @@ public class StringUtils {
         if (separator == null) {
             separator = "";
         }
-        StringBuilder buf = new StringBuilder(256); // Java default is 16, probably too small
+        // Java default is 16, probably too small
+        StringBuilder buf = new StringBuilder(256);
         while (iterator.hasNext()) {
             buf.append(iterator.next());
             if (iterator.hasNext()) {
@@ -646,7 +625,6 @@ public class StringUtils {
 
     // Replacing
     // --------------------------------------------------------------------------
-
     /**
      * <p>
      * Replace a char with another char inside a larger String, once.
@@ -763,13 +741,11 @@ public class StringUtils {
         if ((text == null) || (repl == null) || (with == null) || (repl.length() == 0)) {
             return text;
         }
-
         StringBuilder buf = new StringBuilder(text.length());
         int start = 0, end = 0;
         while ((end = text.indexOf(repl, start)) != -1) {
             buf.append(text.substring(start, end)).append(with);
             start = end + repl.length();
-
             if (--max == 0) {
                 break;
             }
@@ -791,14 +767,11 @@ public class StringUtils {
      * @throws NullPointerException if text or overlay is <code>null</code>
      */
     public static String overlayString(String text, String overlay, int start, int end) {
-        return new StringBuilder(start + overlay.length() + text.length() - end + 1)
-                .append(text.substring(0, start)).append(overlay).append(text.substring(end))
-                .toString();
+        return new StringBuilder(start + overlay.length() + text.length() - end + 1).append(text.substring(0, start)).append(overlay).append(text.substring(end)).toString();
     }
 
     // Centering
     // --------------------------------------------------------------------------
-
     /**
      * <p>
      * Center a String in a larger String of size <code>n</code>.
@@ -846,7 +819,6 @@ public class StringUtils {
 
     // Chomping
     // --------------------------------------------------------------------------
-
     /**
      * <p>
      * Remove the last newline, and everything after it from a String.
@@ -975,7 +947,6 @@ public class StringUtils {
 
     // Chopping
     // --------------------------------------------------------------------------
-
     /**
      * <p>
      * Remove the last character from a String.
@@ -1032,9 +1003,7 @@ public class StringUtils {
 
     // Conversion
     // --------------------------------------------------------------------------
-
     // spec 3.10.6
-
     /**
      * <p>
      * Escapes any values it finds into their String form.
@@ -1055,7 +1024,6 @@ public class StringUtils {
         StringBuilder buffer = new StringBuilder(2 * sz);
         for (int i = 0; i < sz; i++) {
             char ch = str.charAt(i);
-
             // handle unicode
             if (ch > 0xfff) {
                 buffer.append("\\u" + Integer.toHexString(ch));
@@ -1064,7 +1032,7 @@ public class StringUtils {
             } else if (ch > 0x7f) {
                 buffer.append("\\u00" + Integer.toHexString(ch));
             } else if (ch < 32) {
-                switch (ch) {
+                switch(ch) {
                     case '\b':
                         buffer.append('\\');
                         buffer.append('b');
@@ -1094,7 +1062,7 @@ public class StringUtils {
                         break;
                 }
             } else {
-                switch (ch) {
+                switch(ch) {
                     case '\'':
                         buffer.append('\\');
                         buffer.append('\'');
@@ -1118,7 +1086,6 @@ public class StringUtils {
 
     // Padding
     // --------------------------------------------------------------------------
-
     /**
      * <p>
      * Repeat a String <code>n</code> times to form a new string.
@@ -1218,7 +1185,6 @@ public class StringUtils {
 
     // Stripping
     // --------------------------------------------------------------------------
-
     /**
      * <p>
      * Remove whitespace from the front and back of a String.
@@ -1300,7 +1266,6 @@ public class StringUtils {
             return null;
         }
         int end = str.length();
-
         if (strip == null) {
             while ((end != 0) && Character.isWhitespace(str.charAt(end - 1))) {
                 end--;
@@ -1330,11 +1295,8 @@ public class StringUtils {
         if (str == null) {
             return null;
         }
-
         int start = 0;
-
         int sz = str.length();
-
         if (strip == null) {
             while ((start != sz) && Character.isWhitespace(str.charAt(start))) {
                 start++;
@@ -1349,7 +1311,6 @@ public class StringUtils {
 
     // Case conversion
     // --------------------------------------------------------------------------
-
     /**
      * <p>
      * Convert a String to upper case, <code>null</code> String returns <code>null</code>.
@@ -1398,8 +1359,7 @@ public class StringUtils {
         } else if (str.length() == 0) {
             return "";
         } else {
-            return new StringBuilder(str.length()).append(Character.toLowerCase(str.charAt(0)))
-                    .append(str.substring(1)).toString();
+            return new StringBuilder(str.length()).append(Character.toLowerCase(str.charAt(0))).append(str.substring(1)).toString();
         }
     }
 
@@ -1421,8 +1381,7 @@ public class StringUtils {
         } else if (str.length() == 0) {
             return "";
         } else {
-            return new StringBuilder(str.length()).append(Character.toTitleCase(str.charAt(0)))
-                    .append(str.substring(1)).toString();
+            return new StringBuilder(str.length()).append(Character.toTitleCase(str.charAt(0))).append(str.substring(1)).toString();
         }
     }
 
@@ -1448,11 +1407,9 @@ public class StringUtils {
         }
         int sz = str.length();
         StringBuilder buffer = new StringBuilder(sz);
-
         boolean whitespace = false;
         char ch;
         char tmp;
-
         for (int i = 0; i < sz; i++) {
             ch = str.charAt(i);
             if (Character.isUpperCase(ch)) {
@@ -1552,7 +1509,6 @@ public class StringUtils {
 
     // Nested extraction
     // --------------------------------------------------------------------------
-
     /**
      * <p>
      * Get the String that is nested in between two instances of the same String.
@@ -1628,7 +1584,6 @@ public class StringUtils {
 
     // Character Tests
     // --------------------------------------------------------------------------
-
     /**
      * <p>
      * Checks if the String contains only unicode letters.
@@ -1806,7 +1761,6 @@ public class StringUtils {
 
     // Defaults
     // --------------------------------------------------------------------------
-
     /**
      * <p>
      * Returns either the passed in <code>Object</code> as a String, or, if the <code>Object</code> is <code>null</code>
@@ -1836,7 +1790,6 @@ public class StringUtils {
 
     // Reversing
     // --------------------------------------------------------------------------
-
     /**
      * <p>
      * Reverse a String.
@@ -1893,7 +1846,6 @@ public class StringUtils {
         int i = 0;
         int j = array.length - 1;
         Object tmp;
-
         while (j > i) {
             tmp = array[j];
             array[j] = array[i];
@@ -1905,7 +1857,6 @@ public class StringUtils {
 
     // Abbreviating
     // --------------------------------------------------------------------------
-
     /**
      * Turn "Now is the time for all good men" into "Now is the time for..."
      * <p/>
@@ -1958,7 +1909,6 @@ public class StringUtils {
 
     // Difference
     // --------------------------------------------------------------------------
-
     /**
      * Compare two strings, and return the portion where they differ. (More precisely, return the remainder of the
      * second string, starting from where it's different from the first.)
@@ -2007,20 +1957,14 @@ public class StringUtils {
     @SuppressWarnings("rawtypes")
     public static String interpolate(String text, Map namespace) {
         Iterator keys = namespace.keySet().iterator();
-
         while (keys.hasNext()) {
             String key = keys.next().toString();
-
             Object obj = namespace.get(key);
-
             if (obj == null) {
                 throw new NullPointerException("The value of the key '" + key + "' is null.");
             }
-
             String value = obj.toString();
-
             text = StringUtils.replace(text, "${" + key + "}", value);
-
             if (key.indexOf(" ") == -1) {
                 text = StringUtils.replace(text, "$" + key, value);
             }
@@ -2044,19 +1988,13 @@ public class StringUtils {
      */
     public static String removeAndHump(String data, String replaceThis) {
         String temp;
-
         StringBuilder out = new StringBuilder();
-
         temp = data;
-
         StringTokenizer st = new StringTokenizer(temp, replaceThis);
-
         while (st.hasMoreTokens()) {
             String element = (String) st.nextElement();
-
             out.append(capitalizeFirstLetter(element));
         }
-
         return out.toString();
     }
 
@@ -2072,9 +2010,7 @@ public class StringUtils {
      */
     public static String capitalizeFirstLetter(String data) {
         char firstLetter = Character.toTitleCase(data.substring(0, 1).charAt(0));
-
         String restLetters = data.substring(1);
-
         return firstLetter + restLetters;
     }
 
@@ -2090,9 +2026,7 @@ public class StringUtils {
      */
     public static String lowercaseFirstLetter(String data) {
         char firstLetter = Character.toLowerCase(data.substring(0, 1).charAt(0));
-
         String restLetters = data.substring(1);
-
         return firstLetter + restLetters;
     }
 
@@ -2106,15 +2040,12 @@ public class StringUtils {
      */
     public static String addAndDeHump(String input) {
         StringBuilder sb = new StringBuilder();
-
         for (int i = 0; i < input.length(); i++) {
             if ((i != 0) && Character.isUpperCase(input.charAt(i))) {
                 sb.append('-');
             }
-
             sb.append(input.charAt(i));
         }
-
         return sb.toString().trim().toLowerCase(Locale.ENGLISH);
     }
 
@@ -2139,8 +2070,7 @@ public class StringUtils {
      * @since 1.5.1
      */
     public static String quoteAndEscape(String source, char quoteChar) {
-        return quoteAndEscape(source, quoteChar, new char[] { quoteChar }, new char[] { ' ' },
-                '\\', false);
+        return quoteAndEscape(source, quoteChar, new char[] { quoteChar }, new char[] { ' ' }, '\\', false);
     }
 
     /**
@@ -2156,8 +2086,7 @@ public class StringUtils {
      * @since 1.5.1
      */
     public static String quoteAndEscape(String source, char quoteChar, char[] quotingTriggers) {
-        return quoteAndEscape(source, quoteChar, new char[] { quoteChar }, quotingTriggers, '\\',
-                false);
+        return quoteAndEscape(source, quoteChar, new char[] { quoteChar }, quotingTriggers, '\\', false);
     }
 
     /**
@@ -2170,10 +2099,8 @@ public class StringUtils {
      * @see #quoteAndEscape(String, char, char[], char[], char, boolean)
      * @since 1.5.1
      */
-    public static String quoteAndEscape(String source, char quoteChar, final char[] escapedChars,
-                                        char escapeChar, boolean force) {
-        return quoteAndEscape(source, quoteChar, escapedChars, new char[] { ' ' }, escapeChar,
-                force);
+    public static String quoteAndEscape(String source, char quoteChar, final char[] escapedChars, char escapeChar, boolean force) {
+        return quoteAndEscape(source, quoteChar, escapedChars, new char[] { ' ' }, escapeChar, force);
     }
 
     /**
@@ -2186,19 +2113,14 @@ public class StringUtils {
      * @return the String quoted and escaped
      * @since 1.5.1
      */
-    public static String quoteAndEscape(String source, char quoteChar, final char[] escapedChars,
-                                        final char[] quotingTriggers, char escapeChar, boolean force) {
+    public static String quoteAndEscape(String source, char quoteChar, final char[] escapedChars, final char[] quotingTriggers, char escapeChar, boolean force) {
         if (source == null) {
             return null;
         }
-
-        if (!force && source.startsWith(Character.toString(quoteChar))
-                && source.endsWith(Character.toString(quoteChar))) {
+        if (!force && source.startsWith(Character.toString(quoteChar)) && source.endsWith(Character.toString(quoteChar))) {
             return source;
         }
-
         String escaped = escape(source, escapedChars, escapeChar);
-
         boolean quote = false;
         if (force) {
             quote = true;
@@ -2212,11 +2134,9 @@ public class StringUtils {
                 }
             }
         }
-
         if (quote) {
             return quoteChar + escaped + quoteChar;
         }
-
         return escaped;
     }
 
@@ -2231,27 +2151,21 @@ public class StringUtils {
         if (source == null) {
             return null;
         }
-
         char[] eqc = new char[escapedChars.length];
         System.arraycopy(escapedChars, 0, eqc, 0, escapedChars.length);
         Arrays.sort(eqc);
-
         StringBuilder buffer = new StringBuilder(source.length());
-
         @SuppressWarnings("unused")
         int escapeCount = 0;
         for (int i = 0; i < source.length(); i++) {
             final char c = source.charAt(i);
             int result = Arrays.binarySearch(eqc, c);
-
             if (result > -1) {
                 buffer.append(escapeChar);
                 escapeCount++;
             }
-
             buffer.append(c);
         }
-
         return buffer.toString();
     }
 
@@ -2302,24 +2216,19 @@ public class StringUtils {
         if (s == null) {
             return null;
         }
-
         if (ls == null) {
             ls = System.getProperty("line.separator");
         }
-
         if (!(ls.equals("\n") || ls.equals("\r") || ls.equals("\r\n"))) {
             throw new IllegalArgumentException("Requested line separator is invalid.");
         }
-
         int length = s.length();
-
         StringBuilder buffer = new StringBuilder(length);
         for (int i = 0; i < length; i++) {
             if (s.charAt(i) == '\r') {
                 if ((i + 1) < length && s.charAt(i + 1) == '\n') {
                     i++;
                 }
-
                 buffer.append(ls);
             } else if (s.charAt(i) == '\n') {
                 buffer.append(ls);
@@ -2327,7 +2236,6 @@ public class StringUtils {
                 buffer.append(s.charAt(i));
             }
         }
-
         return buffer.toString();
     }
 
@@ -2397,14 +2305,12 @@ public class StringUtils {
         String str = "^([a-zA-Z0-9_\\-\\.]+)@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.)|(([a-zA-Z0-9\\-]+\\.)+))([a-zA-Z]{2,4}|[0-9]{1,3})(\\]?)$";
         Pattern p = Pattern.compile(str);
         Matcher m = p.matcher(email);
-
         return m.matches();
     }
 
     public static boolean isMobileNo(String mobiles) {
         Pattern p = Pattern.compile("^((13[0-9])|(15[^4,\\D])|(18[0,5-9]))\\d{8}$");
         Matcher m = p.matcher(mobiles);
-
         return m.matches();
     }
 }

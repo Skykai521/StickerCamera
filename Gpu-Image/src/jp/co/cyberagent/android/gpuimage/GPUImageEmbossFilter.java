@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package jp.co.cyberagent.android.gpuimage;
 
 /**
@@ -22,6 +21,7 @@ package jp.co.cyberagent.android.gpuimage;
  * Intensity ranges from 0.0 to 4.0, with 1.0 as the normal level
  */
 public class GPUImageEmbossFilter extends GPUImage3x3ConvolutionFilter {
+
     private float mIntensity;
 
     public GPUImageEmbossFilter() {
@@ -41,11 +41,7 @@ public class GPUImageEmbossFilter extends GPUImage3x3ConvolutionFilter {
 
     public void setIntensity(final float intensity) {
         mIntensity = intensity;
-        setConvolutionKernel(new float[] {
-                intensity * (-2.0f), -intensity, 0.0f,
-                -intensity, 1.0f, intensity,
-                0.0f, intensity, intensity * 2.0f,
-        });
+        setConvolutionKernel(new float[] { intensity * (-2.0f), -intensity, 0.0f, -intensity, 1.0f, intensity, 0.0f, intensity, intensity * 2.0f });
     }
 
     public float getIntensity() {

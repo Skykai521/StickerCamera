@@ -25,7 +25,7 @@ import android.content.SharedPreferences;
  * <li>get float {@link #getFloat(Context, String)}, {@link #getFloat(Context, String, float)}</li>
  * <li>get boolean {@link #getBoolean(Context, String)}, {@link #getBoolean(Context, String, boolean)}</li>
  * </ul>
- * 
+ *
  * @author <a href="http://www.trinea.cn" target="_blank">Trinea</a> 2013-3-6
  */
 public class PreferencesUtils {
@@ -38,7 +38,7 @@ public class PreferencesUtils {
 
     /**
      * put string preferences
-     * 
+     *
      * @param context
      * @param key The name of the preference to modify
      * @param value The new value for the preference
@@ -53,7 +53,7 @@ public class PreferencesUtils {
 
     /**
      * get string preferences
-     * 
+     *
      * @param context
      * @param key The name of the preference to retrieve
      * @return The preference value if it exists, or null. Throws ClassCastException if there is a preference with this
@@ -66,7 +66,7 @@ public class PreferencesUtils {
 
     /**
      * get string preferences
-     * 
+     *
      * @param context
      * @param key The name of the preference to retrieve
      * @param defaultValue Value to return if this preference does not exist
@@ -80,7 +80,7 @@ public class PreferencesUtils {
 
     /**
      * put int preferences
-     * 
+     *
      * @param context
      * @param key The name of the preference to modify
      * @param value The new value for the preference
@@ -95,7 +95,7 @@ public class PreferencesUtils {
 
     /**
      * get int preferences
-     * 
+     *
      * @param context
      * @param key The name of the preference to retrieve
      * @return The preference value if it exists, or -1. Throws ClassCastException if there is a preference with this
@@ -108,7 +108,7 @@ public class PreferencesUtils {
 
     /**
      * get int preferences
-     * 
+     *
      * @param context
      * @param key The name of the preference to retrieve
      * @param defaultValue Value to return if this preference does not exist
@@ -122,7 +122,7 @@ public class PreferencesUtils {
 
     /**
      * put long preferences
-     * 
+     *
      * @param context
      * @param key The name of the preference to modify
      * @param value The new value for the preference
@@ -137,7 +137,7 @@ public class PreferencesUtils {
 
     /**
      * get long preferences
-     * 
+     *
      * @param context
      * @param key The name of the preference to retrieve
      * @return The preference value if it exists, or -1. Throws ClassCastException if there is a preference with this
@@ -150,7 +150,7 @@ public class PreferencesUtils {
 
     /**
      * get long preferences
-     * 
+     *
      * @param context
      * @param key The name of the preference to retrieve
      * @param defaultValue Value to return if this preference does not exist
@@ -164,7 +164,7 @@ public class PreferencesUtils {
 
     /**
      * put float preferences
-     * 
+     *
      * @param context
      * @param key The name of the preference to modify
      * @param value The new value for the preference
@@ -179,7 +179,7 @@ public class PreferencesUtils {
 
     /**
      * get float preferences
-     * 
+     *
      * @param context
      * @param key The name of the preference to retrieve
      * @return The preference value if it exists, or -1. Throws ClassCastException if there is a preference with this
@@ -192,7 +192,7 @@ public class PreferencesUtils {
 
     /**
      * get float preferences
-     * 
+     *
      * @param context
      * @param key The name of the preference to retrieve
      * @param defaultValue Value to return if this preference does not exist
@@ -206,7 +206,7 @@ public class PreferencesUtils {
 
     /**
      * put boolean preferences
-     * 
+     *
      * @param context
      * @param key The name of the preference to modify
      * @param value The new value for the preference
@@ -221,7 +221,7 @@ public class PreferencesUtils {
 
     /**
      * get boolean preferences, default is false
-     * 
+     *
      * @param context
      * @param key The name of the preference to retrieve
      * @return The preference value if it exists, or false. Throws ClassCastException if there is a preference with this
@@ -234,7 +234,7 @@ public class PreferencesUtils {
 
     /**
      * get boolean preferences
-     * 
+     *
      * @param context
      * @param key The name of the preference to retrieve
      * @param defaultValue Value to return if this preference does not exist

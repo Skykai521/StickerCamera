@@ -13,16 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package jp.co.cyberagent.android.gpuimage;
 
 import android.opengl.GLES20;
 
 public class GPUImageTwoPassTextureSamplingFilter extends GPUImageTwoPassFilter {
-    public GPUImageTwoPassTextureSamplingFilter(String firstVertexShader, String firstFragmentShader,
-                                                String secondVertexShader, String secondFragmentShader) {
-        super(firstVertexShader, firstFragmentShader,
-                secondVertexShader, secondFragmentShader);
+
+    public GPUImageTwoPassTextureSamplingFilter(String firstVertexShader, String firstFragmentShader, String secondVertexShader, String secondFragmentShader) {
+        super(firstVertexShader, firstFragmentShader, secondVertexShader, secondFragmentShader);
     }
 
     @Override
@@ -38,7 +36,6 @@ public class GPUImageTwoPassTextureSamplingFilter extends GPUImageTwoPassFilter 
         int texelHeightOffsetLocation = GLES20.glGetUniformLocation(filter.getProgram(), "texelHeightOffset");
         filter.setFloat(texelWidthOffsetLocation, ratio / mOutputWidth);
         filter.setFloat(texelHeightOffsetLocation, 0);
-
         ratio = getVerticalTexelOffsetRatio();
         filter = mFilters.get(1);
         texelWidthOffsetLocation = GLES20.glGetUniformLocation(filter.getProgram(), "texelWidthOffset");

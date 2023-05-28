@@ -2,7 +2,6 @@ package com.stickercamera.base;
 
 import android.support.v4.app.FragmentActivity;
 import android.view.View;
-
 import com.customview.CommonTitleBar;
 import com.github.skykai.stickercamera.R;
 
@@ -19,6 +18,7 @@ public class BaseFragmentActivity extends FragmentActivity {
         //titleBar = (CommonTitleBar) findViewById(R.id.title_layout);
         if (titleBar != null)
             titleBar.setLeftBtnOnclickListener(new View.OnClickListener() {
+
                 @Override
                 public void onClick(View v) {
                     finish();

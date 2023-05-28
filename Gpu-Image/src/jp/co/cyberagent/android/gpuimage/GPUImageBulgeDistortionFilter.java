@@ -13,49 +13,29 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package jp.co.cyberagent.android.gpuimage;
 
 import android.graphics.PointF;
 import android.opengl.GLES20;
 
 public class GPUImageBulgeDistortionFilter extends GPUImageFilter {
-    public static final String BULGE_FRAGMENT_SHADER = "" +
-            "varying highp vec2 textureCoordinate;\n" +
-            "\n" +
-            "uniform sampler2D inputImageTexture;\n" +
-            "\n" +
-            "uniform highp float aspectRatio;\n" +
-            "uniform highp vec2 center;\n" +
-            "uniform highp float radius;\n" +
-            "uniform highp float scale;\n" +
-            "\n" +
-            "void main()\n" +
-            "{\n" +
-            "highp vec2 textureCoordinateToUse = vec2(textureCoordinate.x, (textureCoordinate.y * aspectRatio + 0.5 - 0.5 * aspectRatio));\n" +
-            "highp float dist = distance(center, textureCoordinateToUse);\n" +
-            "textureCoordinateToUse = textureCoordinate;\n" +
-            "\n" +
-            "if (dist < radius)\n" +
-            "{\n" +
-            "textureCoordinateToUse -= center;\n" +
-            "highp float percent = 1.0 - ((radius - dist) / radius) * scale;\n" +
-            "percent = percent * percent;\n" +
-            "\n" +
-            "textureCoordinateToUse = textureCoordinateToUse * percent;\n" +
-            "textureCoordinateToUse += center;\n" +
-            "}\n" +
-            "\n" +
-            "gl_FragColor = texture2D(inputImageTexture, textureCoordinateToUse );    \n" +
-            "}\n";
+
+    public static final String BULGE_FRAGMENT_SHADER = "" + "varying highp vec2 textureCoordinate;\n" + "\n" + "uniform sampler2D inputImageTexture;\n" + "\n" + "uniform highp float aspectRatio;\n" + "uniform highp vec2 center;\n" + "uniform highp float radius;\n" + "uniform highp float scale;\n" + "\n" + "void main()\n" + "{\n" + "highp vec2 textureCoordinateToUse = vec2(textureCoordinate.x, (textureCoordinate.y * aspectRatio + 0.5 - 0.5 * aspectRatio));\n" + "highp float dist = distance(center, textureCoordinateToUse);\n" + "textureCoordinateToUse = textureCoordinate;\n" + "\n" + "if (dist < radius)\n" + "{\n" + "textureCoordinateToUse -= center;\n" + "highp float percent = 1.0 - ((radius - dist) / radius) * scale;\n" + "percent = percent * percent;\n" + "\n" + "textureCoordinateToUse = textureCoordinateToUse * percent;\n" + "textureCoordinateToUse += center;\n" + "}\n" + "\n" + "gl_FragColor = texture2D(inputImageTexture, textureCoordinateToUse );    \n" + "}\n";
 
     private float mScale;
+
     private int mScaleLocation;
+
     private float mRadius;
+
     private int mRadiusLocation;
+
     private PointF mCenter;
+
     private int mCenterLocation;
+
     private float mAspectRatio;
+
     private int mAspectRatioLocation;
 
     public GPUImageBulgeDistortionFilter() {

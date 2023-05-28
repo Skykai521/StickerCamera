@@ -8,13 +8,17 @@ import android.widget.Toast;
 
 public class UIUtils {
 
-    public static final int HIGHLIGHT_MODE_PRESSED  = 2;
-    public static final int HIGHLIGHT_MODE_CHECKED  = 4;
+    public static final int HIGHLIGHT_MODE_PRESSED = 2;
+
+    public static final int HIGHLIGHT_MODE_CHECKED = 4;
+
     public static final int HIGHLIGHT_MODE_SELECTED = 8;
 
-    public static final int GLOW_MODE_PRESSED       = 2;
-    public static final int GLOW_MODE_CHECKED       = 4;
-    public static final int GLOW_MODE_SELECTED      = 8;
+    public static final int GLOW_MODE_PRESSED = 2;
+
+    public static final int GLOW_MODE_CHECKED = 4;
+
+    public static final int GLOW_MODE_SELECTED = 8;
 
     public static boolean checkBits(int status, int checkBit) {
         return (status & checkBit) == checkBit;
@@ -22,7 +26,7 @@ public class UIUtils {
 
     /**
      * Creates a custom {@link Toast} with a custom layout View
-     * 
+     *
      * @param context
      *            the context
      * @param resId
@@ -37,5 +41,4 @@ public class UIUtils {
         t.setGravity(Gravity.CENTER, 0, 0);
         return t;
     }
-
 }

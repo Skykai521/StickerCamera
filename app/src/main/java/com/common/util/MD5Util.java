@@ -1,4 +1,3 @@
-
 package com.common.util;
 
 import java.security.MessageDigest;
@@ -8,7 +7,7 @@ public class MD5Util {
 
     /**
      * MD5加密
-     * 
+     *
      * @param val
      * @return
      * @throws NoSuchAlgorithmException
@@ -18,12 +17,12 @@ public class MD5Util {
         try {
             md5 = MessageDigest.getInstance("MD5");
             md5.update(val.getBytes());
-            byte[] m = md5.digest();// 加密
+            // 加密
+            byte[] m = md5.digest();
             return getString(m);
         } catch (NoSuchAlgorithmException e) {
             return val;
         }
-
     }
 
     private static String getString(byte[] b) {
@@ -33,5 +32,4 @@ public class MD5Util {
         }
         return sb.toString();
     }
-
 }

@@ -6,7 +6,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-
 import com.common.util.FileUtils;
 import com.common.util.ImageUtils;
 import com.common.util.StringUtils;
@@ -16,11 +15,9 @@ import com.stickercamera.AppConstants;
 import com.stickercamera.app.camera.CameraBaseActivity;
 import com.stickercamera.app.camera.fragment.AlbumFragment;
 import com.stickercamera.app.model.Album;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
@@ -33,10 +30,12 @@ import butterknife.InjectView;
 public class AlbumActivity extends CameraBaseActivity {
 
     private Map<String, Album> albums;
+
     private List<String> paths = new ArrayList<String>();
 
     @InjectView(R.id.indicator)
     PagerSlidingTabStrip tab;
+
     @InjectView(R.id.pager)
     ViewPager pager;
 
@@ -66,8 +65,8 @@ public class AlbumActivity extends CameraBaseActivity {
         }
     }
 
-
     class TabPageIndicatorAdapter extends FragmentPagerAdapter {
+
         public TabPageIndicatorAdapter(FragmentManager fm) {
             super(fm);
         }
@@ -81,8 +80,7 @@ public class AlbumActivity extends CameraBaseActivity {
         @Override
         public CharSequence getPageTitle(int position) {
             Album album = albums.get(paths.get(position % paths.size()));
-            if (StringUtils.equalsIgnoreCase(FileUtils.getInst().getSystemPhotoPath(),
-                    album.getAlbumUri())) {
+            if (StringUtils.equalsIgnoreCase(FileUtils.getInst().getSystemPhotoPath(), album.getAlbumUri())) {
                 return "胶卷相册";
             } else if (album.getTitle().length() > 13) {
                 return album.getTitle().substring(0, 11) + "...";
@@ -95,6 +93,4 @@ public class AlbumActivity extends CameraBaseActivity {
             return paths.size();
         }
     }
-
-
 }

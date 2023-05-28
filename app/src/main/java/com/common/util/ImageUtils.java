@@ -11,11 +11,9 @@ import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.provider.MediaStore;
-
 import com.stickercamera.App;
 import com.stickercamera.app.model.Album;
 import com.stickercamera.app.model.PhotoItem;
-
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -31,7 +29,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
 
 /**
  * 图片工具类
@@ -55,7 +52,6 @@ public class ImageUtils {
     //图片是不是正方形
     public static boolean isSquare(Uri imageUri) {
         ContentResolver resolver = App.getApp().getContentResolver();
-
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;
         try {
@@ -73,26 +69,27 @@ public class ImageUtils {
         if (isDir) {
             File fileFolder = new File(fileFolderStr);
             Date date = new Date();
-            SimpleDateFormat format = new SimpleDateFormat("yyyyMMddHHmmss"); // 格式化时间
+            // 格式化时间
+            SimpleDateFormat format = new SimpleDateFormat("yyyyMMddHHmmss");
             String filename = format.format(date) + ".jpg";
-            if (!fileFolder.exists()) { // 如果目录不存在，则创建一个名为"finger"的目录
+            if (!fileFolder.exists()) {
+                // 如果目录不存在，则创建一个名为"finger"的目录
                 FileUtils.getInst().mkdir(fileFolder);
             }
             jpgFile = new File(fileFolder, filename);
         } else {
             jpgFile = new File(fileFolderStr);
-            if (!jpgFile.getParentFile().exists()) { // 如果目录不存在，则创建一个名为"finger"的目录
+            if (!jpgFile.getParentFile().exists()) {
+                // 如果目录不存在，则创建一个名为"finger"的目录
                 FileUtils.getInst().mkdir(jpgFile.getParentFile());
             }
         }
-        FileOutputStream outputStream = new FileOutputStream(jpgFile); // 文件输出流
-
+        // 文件输出流
+        FileOutputStream outputStream = new FileOutputStream(jpgFile);
         croppedImage.compress(Bitmap.CompressFormat.JPEG, 70, outputStream);
         IOUtil.closeStream(outputStream);
         return jpgFile.getPath();
     }
-
-
 
     //从文件中读取Bitmap
     public static Bitmap decodeBitmapWithOrientation(String pathName, int width, int height) {
@@ -103,29 +100,23 @@ public class ImageUtils {
         return decodeBitmapWithSize(pathName, width, height, true);
     }
 
-    private static Bitmap decodeBitmapWithSize(String pathName, int width, int height,
-                                               boolean useBigger) {
+    private static Bitmap decodeBitmapWithSize(String pathName, int width, int height, boolean useBigger) {
         final BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;
         options.inInputShareable = true;
         options.inPurgeable = true;
         BitmapFactory.decodeFile(pathName, options);
-
         int decodeWidth = width, decodeHeight = height;
         final int degrees = getImageDegrees(pathName);
         if (degrees == 90 || degrees == 270) {
             decodeWidth = height;
             decodeHeight = width;
         }
-
         if (useBigger) {
-            options.inSampleSize = (int) Math.min(((float) options.outWidth / decodeWidth),
-                    ((float) options.outHeight / decodeHeight));
+            options.inSampleSize = (int) Math.min(((float) options.outWidth / decodeWidth), ((float) options.outHeight / decodeHeight));
         } else {
-            options.inSampleSize = (int) Math.max(((float) options.outWidth / decodeWidth),
-                    ((float) options.outHeight / decodeHeight));
+            options.inSampleSize = (int) Math.max(((float) options.outWidth / decodeWidth), ((float) options.outHeight / decodeHeight));
         }
-
         options.inJustDecodeBounds = false;
         Bitmap sourceBm = BitmapFactory.decodeFile(pathName, options);
         return imageWithFixedRotation(sourceBm, degrees);
@@ -135,9 +126,8 @@ public class ImageUtils {
         int degrees = 0;
         try {
             ExifInterface exifInterface = new ExifInterface(pathName);
-            int orientation = exifInterface.getAttributeInt(ExifInterface.TAG_ORIENTATION,
-                    ExifInterface.ORIENTATION_NORMAL);
-            switch (orientation) {
+            int orientation = exifInterface.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+            switch(orientation) {
                 case ExifInterface.ORIENTATION_ROTATE_90:
                     degrees = 90;
                     break;
@@ -157,19 +147,15 @@ public class ImageUtils {
     public static Bitmap imageWithFixedRotation(Bitmap bm, int degrees) {
         if (bm == null || bm.isRecycled())
             return null;
-
         if (degrees == 0)
             return bm;
-
         final Matrix matrix = new Matrix();
         matrix.postRotate(degrees);
         Bitmap result = Bitmap.createBitmap(bm, 0, 0, bm.getWidth(), bm.getHeight(), matrix, true);
         if (result != bm)
             bm.recycle();
         return result;
-
     }
-
 
     public static float getImageRadio(ContentResolver resolver, Uri fileUri) {
         InputStream inputStream = null;
@@ -180,8 +166,7 @@ public class ImageUtils {
             BitmapFactory.decodeStream(inputStream, null, options);
             int initWidth = options.outWidth;
             int initHeight = options.outHeight;
-            float rate = initHeight > initWidth ? (float) initHeight / (float) initWidth
-                    : (float) initWidth / (float) initHeight;
+            float rate = initHeight > initWidth ? (float) initHeight / (float) initWidth : (float) initWidth / (float) initHeight;
             return rate;
         } catch (Exception e) {
             e.printStackTrace();
@@ -189,7 +174,6 @@ public class ImageUtils {
         } finally {
             IOUtil.closeStream(inputStream);
         }
-
     }
 
     public static Bitmap byteToBitmap(byte[] imgByte) {
@@ -198,13 +182,11 @@ public class ImageUtils {
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inSampleSize = 1;
         input = new ByteArrayInputStream(imgByte);
-        SoftReference softRef = new SoftReference(BitmapFactory.decodeStream(
-                input, null, options));
+        SoftReference softRef = new SoftReference(BitmapFactory.decodeStream(input, null, options));
         bitmap = (Bitmap) softRef.get();
         if (imgByte != null) {
             imgByte = null;
         }
-
         try {
             if (input != null) {
                 input.close();
@@ -216,18 +198,16 @@ public class ImageUtils {
         return bitmap;
     }
 
-
     public static Map<String, Album> findGalleries(Context mContext, List<String> paths, long babyId) {
         paths.clear();
         paths.add(FileUtils.getInst().getSystemPhotoPath());
-        String[] projection = { MediaStore.Images.Media._ID, MediaStore.Images.Media.DATA,
-                MediaStore.Images.Media.DATE_ADDED };//FIXME 拍照时间为新增照片时间
-        Cursor cursor = mContext.getContentResolver().query(
-                MediaStore.Images.Media.EXTERNAL_CONTENT_URI, projection,//指定所要查询的字段
-                MediaStore.Images.Media.SIZE + ">?",//查询条件
-                new String[] { "100000" }, //查询条件中问号对应的值
-                MediaStore.Images.Media.DATE_ADDED + " desc");
-
+        String[] projection = { MediaStore.Images.Media._ID, MediaStore.Images.Media.DATA, //FIXME 拍照时间为新增照片时间
+        MediaStore.Images.Media.DATE_ADDED };
+        Cursor cursor = mContext.getContentResolver().query(//指定所要查询的字段
+        MediaStore.Images.Media.EXTERNAL_CONTENT_URI, //指定所要查询的字段
+        projection, //查询条件
+        MediaStore.Images.Media.SIZE + ">?", //查询条件中问号对应的值
+        new String[] { "100000" }, MediaStore.Images.Media.DATE_ADDED + " desc");
         cursor.moveToFirst();
         //文件夹照片
         Map<String, Album> galleries = new HashMap<String, Album>();
@@ -244,15 +224,12 @@ public class ImageUtils {
                 }
                 galleries.put(sub, new Album(name, sub, new ArrayList<PhotoItem>()));
             }
-
             galleries.get(sub).getPhotos().add(new PhotoItem(data, (long) (cursor.getInt(2)) * 1000));
         }
         //系统相机照片
-        ArrayList<PhotoItem> sysPhotos = FileUtils.getInst().findPicsInDir(
-                FileUtils.getInst().getSystemPhotoPath());
+        ArrayList<PhotoItem> sysPhotos = FileUtils.getInst().findPicsInDir(FileUtils.getInst().getSystemPhotoPath());
         if (!sysPhotos.isEmpty()) {
-            galleries.put(FileUtils.getInst().getSystemPhotoPath(), new Album("胶卷相册", FileUtils
-                    .getInst().getSystemPhotoPath(), sysPhotos));
+            galleries.put(FileUtils.getInst().getSystemPhotoPath(), new Album("胶卷相册", FileUtils.getInst().getSystemPhotoPath(), sysPhotos));
         } else {
             galleries.remove(FileUtils.getInst().getSystemPhotoPath());
             paths.remove(FileUtils.getInst().getSystemPhotoPath());
@@ -260,10 +237,9 @@ public class ImageUtils {
         return galleries;
     }
 
-
-
     //异步加载图片
     public static interface LoadImageCallback {
+
         public void callback(Bitmap result);
     }
 
@@ -272,8 +248,11 @@ public class ImageUtils {
     }
 
     private static class LoadImageUriTask extends AsyncTask<Void, Void, Bitmap> {
-        private final Uri         imageUri;
-        private final Context     context;
+
+        private final Uri imageUri;
+
+        private final Context context;
+
         private LoadImageCallback callback;
 
         public LoadImageUriTask(Context context, Uri imageUri, LoadImageCallback callback) {
@@ -286,8 +265,7 @@ public class ImageUtils {
         protected Bitmap doInBackground(Void... params) {
             try {
                 InputStream inputStream;
-                if (imageUri.getScheme().startsWith("http")
-                        || imageUri.getScheme().startsWith("https")) {
+                if (imageUri.getScheme().startsWith("http") || imageUri.getScheme().startsWith("https")) {
                     inputStream = new URL(imageUri.toString()).openStream();
                 } else {
                     inputStream = context.getContentResolver().openInputStream(imageUri);
@@ -313,8 +291,10 @@ public class ImageUtils {
 
     private static class LoadSmallPicTask extends AsyncTask<Void, Void, Bitmap> {
 
-        private final Uri         imageUri;
-        private final Context     context;
+        private final Uri imageUri;
+
+        private final Context context;
+
         private LoadImageCallback callback;
 
         public LoadSmallPicTask(Context context, Uri imageUri, LoadImageCallback callback) {
@@ -333,7 +313,6 @@ public class ImageUtils {
             super.onPostExecute(result);
             callback.callback(result);
         }
-
     }
 
     //得到指定大小的Bitmap对象
@@ -342,10 +321,8 @@ public class ImageUtils {
         try {
             BitmapFactory.Options options = new BitmapFactory.Options();
             options.inJustDecodeBounds = true;
-
             inputStream = context.getContentResolver().openInputStream(imageUri);
             BitmapFactory.decodeStream(inputStream, null, options);
-
             options.outWidth = width;
             options.outHeight = height;
             options.inJustDecodeBounds = false;
@@ -359,6 +336,4 @@ public class ImageUtils {
         }
         return null;
     }
-
-
 }

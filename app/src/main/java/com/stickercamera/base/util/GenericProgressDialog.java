@@ -6,23 +6,27 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-
 import com.github.skykai.stickercamera.R;
 
-
 public class GenericProgressDialog extends AlertDialog {
-    private ProgressBar  mProgress;
-    private TextView     mMessageView;
+
+    private ProgressBar mProgress;
+
+    private TextView mMessageView;
+
     private CharSequence mMessage;
-    private boolean      mIndeterminate;
-    private boolean      mProgressVisiable;
+
+    private boolean mIndeterminate;
+
+    private boolean mProgressVisiable;
 
     public GenericProgressDialog(Context context) {
-        super(context/*,R.style.Float*/);
+        super(context);
     }
 
     public GenericProgressDialog(Context context, int theme) {
-        super(context,/*, R.style.Float*/theme);
+        super(context, /*, R.style.Float*/
+        theme);
     }
 
     @Override
@@ -31,18 +35,15 @@ public class GenericProgressDialog extends AlertDialog {
         setContentView(R.layout.view_progress_dialog);
         mProgress = (ProgressBar) findViewById(android.R.id.progress);
         mMessageView = (TextView) findViewById(R.id.message);
-
         setMessageAndView();
         setIndeterminate(mIndeterminate);
     }
 
     private void setMessageAndView() {
         mMessageView.setText(mMessage);
-
         if (mMessage == null || "".equals(mMessage)) {
             mMessageView.setVisibility(View.GONE);
         }
-
         mProgress.setVisibility(mProgressVisiable ? View.VISIBLE : View.GONE);
     }
 

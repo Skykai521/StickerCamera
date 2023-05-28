@@ -2,7 +2,6 @@ package com.stickercamera;
 
 import android.app.Application;
 import android.util.DisplayMetrics;
-
 import com.common.util.DataUtils;
 import com.nostra13.universalimageloader.cache.disc.impl.UnlimitedDiskCache;
 import com.nostra13.universalimageloader.cache.disc.naming.Md5FileNameGenerator;
@@ -19,10 +18,11 @@ import com.nostra13.universalimageloader.utils.StorageUtils;
  */
 public class App extends Application {
 
-    protected static App       mInstance;
-    private DisplayMetrics     displayMetrics = null;
+    protected static App mInstance;
 
-    public App(){
+    private DisplayMetrics displayMetrics = null;
+
+    public App() {
         mInstance = this;
     }
 
@@ -43,27 +43,11 @@ public class App extends Application {
         mInstance = this;
     }
 
-
     private void initImageLoader() {
-        DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder()
-                .cacheInMemory(false)
-                .imageScaleType(ImageScaleType.EXACTLY)
-                .cacheOnDisk(true)
-                .build();
-
-        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(this)
-                .threadPriority(Thread.NORM_PRIORITY - 2)
-                .defaultDisplayImageOptions(defaultOptions)
-                .denyCacheImageMultipleSizesInMemory()
-                .diskCacheFileNameGenerator(new Md5FileNameGenerator())
-                .diskCache(new UnlimitedDiskCache(StorageUtils.getOwnCacheDirectory(this, AppConstants.APP_IMAGE)))
-                .diskCacheSize(100 * 1024 * 1024).tasksProcessingOrder(QueueProcessingType.LIFO)
-                .memoryCache(new LruMemoryCache(2 * 1024 * 1024)).memoryCacheSize(2 * 1024 * 1024)
-                .threadPoolSize(3)
-                .build();
+        DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder().cacheInMemory(false).imageScaleType(ImageScaleType.EXACTLY).cacheOnDisk(true).build();
+        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(this).threadPriority(Thread.NORM_PRIORITY - 2).defaultDisplayImageOptions(defaultOptions).denyCacheImageMultipleSizesInMemory().diskCacheFileNameGenerator(new Md5FileNameGenerator()).diskCache(new UnlimitedDiskCache(StorageUtils.getOwnCacheDirectory(this, AppConstants.APP_IMAGE))).diskCacheSize(100 * 1024 * 1024).tasksProcessingOrder(QueueProcessingType.LIFO).memoryCache(new LruMemoryCache(2 * 1024 * 1024)).memoryCacheSize(2 * 1024 * 1024).threadPoolSize(3).build();
         ImageLoader.getInstance().init(config);
     }
-
 
     public float getScreenDensity() {
         if (this.displayMetrics == null) {
@@ -90,9 +74,8 @@ public class App extends Application {
         this.displayMetrics = DisplayMetrics;
     }
 
-    public int dp2px(float f)
-    {
-        return (int)(0.5F + f * getScreenDensity());
+    public int dp2px(float f) {
+        return (int) (0.5F + f * getScreenDensity());
     }
 
     public int px2dp(float pxValue) {
@@ -108,7 +91,4 @@ public class App extends Application {
     public String getCacheDirPath() {
         return getCacheDir().getAbsolutePath();
     }
-
-
-
 }

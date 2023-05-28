@@ -2,7 +2,7 @@ package com.common.util;
 
 /**
  * Object Utils
- * 
+ *
  * @author <a href="http://www.trinea.cn" target="_blank">Trinea</a> 2011-10-24
  */
 public class ObjectUtils {
@@ -13,7 +13,7 @@ public class ObjectUtils {
 
     /**
      * compare two object
-     * 
+     *
      * @param actual
      * @param expected
      * @return <ul>
@@ -27,23 +27,23 @@ public class ObjectUtils {
 
     /**
      * null Object to empty string
-     * 
+     *
      * <pre>
      * nullStrToEmpty(null) = &quot;&quot;;
      * nullStrToEmpty(&quot;&quot;) = &quot;&quot;;
      * nullStrToEmpty(&quot;aa&quot;) = &quot;aa&quot;;
      * </pre>
-     * 
+     *
      * @param str
      * @return
      */
     public static String nullStrToEmpty(Object str) {
-        return (str == null ? "" : (str instanceof String ? (String)str : str.toString()));
+        return (str == null ? "" : (str instanceof String ? (String) str : str.toString()));
     }
 
     /**
      * convert long array to Long array
-     * 
+     *
      * @param source
      * @return
      */
@@ -57,7 +57,7 @@ public class ObjectUtils {
 
     /**
      * convert Long array to long array
-     * 
+     *
      * @param source
      * @return
      */
@@ -71,7 +71,7 @@ public class ObjectUtils {
 
     /**
      * convert int array to Integer array
-     * 
+     *
      * @param source
      * @return
      */
@@ -85,7 +85,7 @@ public class ObjectUtils {
 
     /**
      * convert Integer array to int array
-     * 
+     *
      * @param source
      * @return
      */
@@ -112,13 +112,13 @@ public class ObjectUtils {
      * <li>if v1 is not null, v2 is null, then return 1</li>
      * <li>return v1.{@link Comparable#compareTo(Object)}</li>
      * </ul>
-     * 
+     *
      * @param v1
      * @param v2
      * @return
      */
-    @SuppressWarnings({"unchecked", "rawtypes"})
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     public static <V> int compare(V v1, V v2) {
-        return v1 == null ? (v2 == null ? 0 : -1) : (v2 == null ? 1 : ((Comparable)v1).compareTo(v2));
+        return v1 == null ? (v2 == null ? 0 : -1) : (v2 == null ? 1 : ((Comparable) v1).compareTo(v2));
     }
 }

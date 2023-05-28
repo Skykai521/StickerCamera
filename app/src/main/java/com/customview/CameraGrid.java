@@ -14,10 +14,11 @@ import android.view.View;
 public class CameraGrid extends View {
 
     private int topBannerWidth = 0;
+
     private Paint mPaint;
 
     public CameraGrid(Context context) {
-        this(context,null);
+        this(context, null);
     }
 
     public CameraGrid(Context context, AttributeSet attrs) {
@@ -25,13 +26,12 @@ public class CameraGrid extends View {
         init();
     }
 
-    private void init(){
+    private void init() {
         mPaint = new Paint();
         mPaint.setColor(Color.WHITE);
         mPaint.setAlpha(120);
         mPaint.setStrokeWidth(1f);
     }
-
 
     //画一个井字,上下画两条灰边，中间为正方形
     @Override

@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package jp.co.cyberagent.android.gpuimage;
 
 import android.opengl.GLES20;
@@ -24,31 +23,15 @@ import android.opengl.GLES20;
  * This is similar to a UV filter.
  */
 public class GPUImageHazeFilter extends GPUImageFilter {
-    public static final String HAZE_FRAGMENT_SHADER = "" +
-            "varying highp vec2 textureCoordinate;\n" +
-            "\n" +
-            "uniform sampler2D inputImageTexture;\n" +
-            "\n" +
-            "uniform lowp float distance;\n" +
-            "uniform highp float slope;\n" +
-            "\n" +
-            "void main()\n" +
-            "{\n" +
-            "	//todo reconsider precision modifiers	 \n" +
-            "	 highp vec4 color = vec4(1.0);//todo reimplement as a parameter\n" +
-            "\n" +
-            "	 highp float  d = textureCoordinate.y * slope  +  distance; \n" +
-            "\n" +
-            "	 highp vec4 c = texture2D(inputImageTexture, textureCoordinate) ; // consider using unpremultiply\n" +
-            "\n" +
-            "	 c = (c - d * color) / (1.0 -d);\n" +
-            "\n" +
-            "	 gl_FragColor = c; //consider using premultiply(c);\n" +
-            "}\n";
+
+    public static final String HAZE_FRAGMENT_SHADER = "" + "varying highp vec2 textureCoordinate;\n" + "\n" + "uniform sampler2D inputImageTexture;\n" + "\n" + "uniform lowp float distance;\n" + "uniform highp float slope;\n" + "\n" + "void main()\n" + "{\n" + "	//todo reconsider precision modifiers	 \n" + "	 highp vec4 color = vec4(1.0);//todo reimplement as a parameter\n" + "\n" + "	 highp float  d = textureCoordinate.y * slope  +  distance; \n" + "\n" + "	 highp vec4 c = texture2D(inputImageTexture, textureCoordinate) ; // consider using unpremultiply\n" + "\n" + "	 c = (c - d * color) / (1.0 -d);\n" + "\n" + "	 gl_FragColor = c; //consider using premultiply(c);\n" + "}\n";
 
     private float mDistance;
+
     private int mDistanceLocation;
+
     private float mSlope;
+
     private int mSlopeLocation;
 
     public GPUImageHazeFilter() {

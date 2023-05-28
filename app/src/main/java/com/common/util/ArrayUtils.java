@@ -15,7 +15,7 @@ package com.common.util;
  * <li>{@link #getNext(int[], int, int, boolean)}</li>
  * <li>{@link #getNext(long[], long, long, boolean)}</li>
  * </ul>
- * 
+ *
  * @author <a href="http://www.trinea.cn" target="_blank">Trinea</a> 2011-10-24
  */
 public class ArrayUtils {
@@ -26,7 +26,7 @@ public class ArrayUtils {
 
     /**
      * is null or its length is 0
-     * 
+     *
      * @param <V>
      * @param sourceArray
      * @return
@@ -44,7 +44,7 @@ public class ArrayUtils {
      * <li>if target element exist in array and its index is 0, return the last one in array if isCircle is true, else
      * return defaultValue</li>
      * </ul>
-     * 
+     *
      * @param <V>
      * @param sourceArray
      * @param value value of target element
@@ -56,7 +56,6 @@ public class ArrayUtils {
         if (isEmpty(sourceArray)) {
             return defaultValue;
         }
-
         int currentPosition = -1;
         for (int i = 0; i < sourceArray.length; i++) {
             if (ObjectUtils.isEquals(value, sourceArray[i])) {
@@ -67,7 +66,6 @@ public class ArrayUtils {
         if (currentPosition == -1) {
             return defaultValue;
         }
-
         if (currentPosition == 0) {
             return isCircle ? sourceArray[sourceArray.length - 1] : defaultValue;
         }
@@ -83,7 +81,7 @@ public class ArrayUtils {
      * <li>if target element exist in array and the last one in array, return the first one in array if isCircle is
      * true, else return defaultValue</li>
      * </ul>
-     * 
+     *
      * @param <V>
      * @param sourceArray
      * @param value value of target element
@@ -95,7 +93,6 @@ public class ArrayUtils {
         if (isEmpty(sourceArray)) {
             return defaultValue;
         }
-
         int currentPosition = -1;
         for (int i = 0; i < sourceArray.length; i++) {
             if (ObjectUtils.isEquals(value, sourceArray[i])) {
@@ -106,7 +103,6 @@ public class ArrayUtils {
         if (currentPosition == -1) {
             return defaultValue;
         }
-
         if (currentPosition == sourceArray.length - 1) {
             return isCircle ? sourceArray[0] : defaultValue;
         }
@@ -134,10 +130,8 @@ public class ArrayUtils {
         if (sourceArray.length == 0) {
             throw new IllegalArgumentException("The length of source array must be greater than 0.");
         }
-
         Long[] array = ObjectUtils.transformLongArray(sourceArray);
         return getLast(array, value, defaultValue, isCircle);
-
     }
 
     /**
@@ -147,7 +141,6 @@ public class ArrayUtils {
         if (sourceArray.length == 0) {
             throw new IllegalArgumentException("The length of source array must be greater than 0.");
         }
-
         Long[] array = ObjectUtils.transformLongArray(sourceArray);
         return getNext(array, value, defaultValue, isCircle);
     }
@@ -159,10 +152,8 @@ public class ArrayUtils {
         if (sourceArray.length == 0) {
             throw new IllegalArgumentException("The length of source array must be greater than 0.");
         }
-
         Integer[] array = ObjectUtils.transformIntArray(sourceArray);
         return getLast(array, value, defaultValue, isCircle);
-
     }
 
     /**
@@ -172,7 +163,6 @@ public class ArrayUtils {
         if (sourceArray.length == 0) {
             throw new IllegalArgumentException("The length of source array must be greater than 0.");
         }
-
         Integer[] array = ObjectUtils.transformIntArray(sourceArray);
         return getNext(array, value, defaultValue, isCircle);
     }

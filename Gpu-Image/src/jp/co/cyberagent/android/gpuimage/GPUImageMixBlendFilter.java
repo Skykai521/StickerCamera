@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package jp.co.cyberagent.android.gpuimage;
 
 import android.opengl.GLES20;
@@ -21,6 +20,7 @@ import android.opengl.GLES20;
 public class GPUImageMixBlendFilter extends GPUImageTwoInputFilter {
 
     private int mMixLocation;
+
     private float mMix;
 
     public GPUImageMixBlendFilter(String fragmentShader) {

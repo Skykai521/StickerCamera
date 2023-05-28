@@ -8,19 +8,17 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
-
-
 import com.github.skykai.stickercamera.R;
 import com.stickercamera.app.camera.CameraManager;
 import com.stickercamera.app.camera.adapter.GalleryAdapter;
 import com.stickercamera.app.model.PhotoItem;
-
 import java.util.ArrayList;
 
 /**
  * @author tongqian.ni
  */
 public class AlbumFragment extends Fragment {
+
     private ArrayList<PhotoItem> photos = new ArrayList<PhotoItem>();
 
     public AlbumFragment() {
@@ -51,7 +49,7 @@ public class AlbumFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
                 PhotoItem photo = photos.get(arg2);
-				CameraManager.getInst().processPhotoItem(getActivity(), photo);
+                CameraManager.getInst().processPhotoItem(getActivity(), photo);
             }
         });
         return root;
@@ -63,5 +61,5 @@ public class AlbumFragment extends Fragment {
         albums.setAdapter(new GalleryAdapter(getActivity(), photos));
     }
 
-	private GridView albums;
+    private GridView albums;
 }

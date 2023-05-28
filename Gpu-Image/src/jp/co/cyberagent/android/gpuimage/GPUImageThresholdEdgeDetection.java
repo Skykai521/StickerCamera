@@ -4,6 +4,7 @@ package jp.co.cyberagent.android.gpuimage;
  * Applies sobel edge detection on the image.
  */
 public class GPUImageThresholdEdgeDetection extends GPUImageFilterGroup {
+
     public GPUImageThresholdEdgeDetection() {
         super();
         addFilter(new GPUImageGrayscaleFilter());

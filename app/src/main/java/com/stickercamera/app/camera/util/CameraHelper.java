@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.stickercamera.app.camera.util;
 
 import android.app.Activity;
@@ -21,11 +20,11 @@ import android.content.Context;
 import android.hardware.Camera;
 import android.hardware.Camera.CameraInfo;
 import android.view.Surface;
-
 import static android.os.Build.VERSION.SDK_INT;
 import static android.os.Build.VERSION_CODES.GINGERBREAD;
 
 public class CameraHelper {
+
     private final CameraHelperImpl mImpl;
 
     public CameraHelper(final Context context) {
@@ -37,6 +36,7 @@ public class CameraHelper {
     }
 
     public interface CameraHelperImpl {
+
         int getNumberOfCameras();
 
         Camera openCamera(int id);
@@ -82,8 +82,7 @@ public class CameraHelper {
         mImpl.getCameraInfo(cameraId, cameraInfo);
     }
 
-    public void setCameraDisplayOrientation(final Activity activity, final int cameraId,
-                                            final Camera camera) {
+    public void setCameraDisplayOrientation(final Activity activity, final int cameraId, final Camera camera) {
         int result = getCameraDisplayOrientation(activity, cameraId);
         camera.setDisplayOrientation(result);
     }
@@ -91,7 +90,7 @@ public class CameraHelper {
     public int getCameraDisplayOrientation(final Activity activity, final int cameraId) {
         int rotation = activity.getWindowManager().getDefaultDisplay().getRotation();
         int degrees = 0;
-        switch (rotation) {
+        switch(rotation) {
             case Surface.ROTATION_0:
                 degrees = 0;
                 break;
@@ -105,20 +104,22 @@ public class CameraHelper {
                 degrees = 270;
                 break;
         }
-
         int result;
         CameraInfo2 info = new CameraInfo2();
         getCameraInfo(cameraId, info);
         if (info.facing == CameraInfo.CAMERA_FACING_FRONT) {
             result = (info.orientation + degrees) % 360;
-        } else { // back-facing
+        } else {
+            // back-facing
             result = (info.orientation - degrees + 360) % 360;
         }
         return result;
     }
 
     public static class CameraInfo2 {
+
         public int facing;
+
         public int orientation;
     }
 }

@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package jp.co.cyberagent.android.gpuimage;
 
 import android.annotation.TargetApi;
@@ -25,9 +24,7 @@ import android.hardware.Camera.PreviewCallback;
 import android.hardware.Camera.Size;
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView.Renderer;
-
 import jp.co.cyberagent.android.gpuimage.util.TextureRotationUtil;
-
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 import java.io.IOException;
@@ -37,55 +34,58 @@ import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
 import java.util.LinkedList;
 import java.util.Queue;
-
 import static jp.co.cyberagent.android.gpuimage.util.TextureRotationUtil.TEXTURE_NO_ROTATION;
 
 @TargetApi(11)
 public class GPUImageRenderer implements Renderer, PreviewCallback {
+
     public static final int NO_IMAGE = -1;
-    static final float CUBE[] = {
-            -1.0f, -1.0f,
-            1.0f, -1.0f,
-            -1.0f, 1.0f,
-            1.0f, 1.0f,
-    };
+
+    static final float[] CUBE = { -1.0f, -1.0f, 1.0f, -1.0f, -1.0f, 1.0f, 1.0f, 1.0f };
 
     private GPUImageFilter mFilter;
 
     public final Object mSurfaceChangedWaiter = new Object();
 
     private int mGLTextureId = NO_IMAGE;
+
     private SurfaceTexture mSurfaceTexture = null;
+
     private final FloatBuffer mGLCubeBuffer;
+
     private final FloatBuffer mGLTextureBuffer;
+
     private IntBuffer mGLRgbBuffer;
 
     private int mOutputWidth;
+
     private int mOutputHeight;
+
     private int mImageWidth;
+
     private int mImageHeight;
+
     private int mAddedPadding;
 
     private final Queue<Runnable> mRunOnDraw;
+
     private final Queue<Runnable> mRunOnDrawEnd;
+
     private Rotation mRotation;
+
     private boolean mFlipHorizontal;
+
     private boolean mFlipVertical;
+
     private GPUImage.ScaleType mScaleType = GPUImage.ScaleType.CENTER_CROP;
 
     public GPUImageRenderer(final GPUImageFilter filter) {
         mFilter = filter;
         mRunOnDraw = new LinkedList<Runnable>();
         mRunOnDrawEnd = new LinkedList<Runnable>();
-
-        mGLCubeBuffer = ByteBuffer.allocateDirect(CUBE.length * 4)
-                .order(ByteOrder.nativeOrder())
-                .asFloatBuffer();
+        mGLCubeBuffer = ByteBuffer.allocateDirect(CUBE.length * 4).order(ByteOrder.nativeOrder()).asFloatBuffer();
         mGLCubeBuffer.put(CUBE).position(0);
-
-        mGLTextureBuffer = ByteBuffer.allocateDirect(TEXTURE_NO_ROTATION.length * 4)
-                .order(ByteOrder.nativeOrder())
-                .asFloatBuffer();
+        mGLTextureBuffer = ByteBuffer.allocateDirect(TEXTURE_NO_ROTATION.length * 4).order(ByteOrder.nativeOrder()).asFloatBuffer();
         setRotation(Rotation.NORMAL, false, false);
     }
 
@@ -136,13 +136,12 @@ public class GPUImageRenderer implements Renderer, PreviewCallback {
         }
         if (mRunOnDraw.isEmpty()) {
             runOnDraw(new Runnable() {
+
                 @Override
                 public void run() {
-                    GPUImageNativeLibrary.YUVtoRBGA(data, previewSize.width, previewSize.height,
-                            mGLRgbBuffer.array());
+                    GPUImageNativeLibrary.YUVtoRBGA(data, previewSize.width, previewSize.height, mGLRgbBuffer.array());
                     mGLTextureId = OpenGlUtils.loadTexture(mGLRgbBuffer, previewSize, mGLTextureId);
                     camera.addCallbackBuffer(data);
-
                     if (mImageWidth != previewSize.width) {
                         mImageWidth = previewSize.width;
                         mImageHeight = previewSize.height;
@@ -155,6 +154,7 @@ public class GPUImageRenderer implements Renderer, PreviewCallback {
 
     public void setUpSurfaceTexture(final Camera camera) {
         runOnDraw(new Runnable() {
+
             @Override
             public void run() {
                 int[] textures = new int[1];
@@ -193,9 +193,7 @@ public class GPUImageRenderer implements Renderer, PreviewCallback {
 
             @Override
             public void run() {
-                GLES20.glDeleteTextures(1, new int[]{
-                        mGLTextureId
-                }, 0);
+                GLES20.glDeleteTextures(1, new int[] { mGLTextureId }, 0);
                 mGLTextureId = NO_IMAGE;
             }
         });
@@ -209,15 +207,13 @@ public class GPUImageRenderer implements Renderer, PreviewCallback {
         if (bitmap == null) {
             return;
         }
-
         runOnDraw(new Runnable() {
 
             @Override
             public void run() {
                 Bitmap resizedBitmap = null;
                 if (bitmap.getWidth() % 2 == 1) {
-                    resizedBitmap = Bitmap.createBitmap(bitmap.getWidth() + 1, bitmap.getHeight(),
-                            Bitmap.Config.ARGB_8888);
+                    resizedBitmap = Bitmap.createBitmap(bitmap.getWidth() + 1, bitmap.getHeight(), Bitmap.Config.ARGB_8888);
                     Canvas can = new Canvas(resizedBitmap);
                     can.drawARGB(0x00, 0x00, 0x00, 0x00);
                     can.drawBitmap(bitmap, 0, 0, null);
@@ -225,9 +221,7 @@ public class GPUImageRenderer implements Renderer, PreviewCallback {
                 } else {
                     mAddedPadding = 0;
                 }
-
-                mGLTextureId = OpenGlUtils.loadTexture(
-                        resizedBitmap != null ? resizedBitmap : bitmap, mGLTextureId, recycle);
+                mGLTextureId = OpenGlUtils.loadTexture(resizedBitmap != null ? resizedBitmap : bitmap, mGLTextureId, recycle);
                 if (resizedBitmap != null) {
                     resizedBitmap.recycle();
                 }
@@ -257,36 +251,22 @@ public class GPUImageRenderer implements Renderer, PreviewCallback {
             outputWidth = mOutputHeight;
             outputHeight = mOutputWidth;
         }
-
         float ratio1 = outputWidth / mImageWidth;
         float ratio2 = outputHeight / mImageHeight;
         float ratioMax = Math.max(ratio1, ratio2);
         int imageWidthNew = Math.round(mImageWidth * ratioMax);
         int imageHeightNew = Math.round(mImageHeight * ratioMax);
-
         float ratioWidth = imageWidthNew / outputWidth;
         float ratioHeight = imageHeightNew / outputHeight;
-
         float[] cube = CUBE;
         float[] textureCords = TextureRotationUtil.getRotation(mRotation, mFlipHorizontal, mFlipVertical);
         if (mScaleType == GPUImage.ScaleType.CENTER_CROP) {
             float distHorizontal = (1 - 1 / ratioWidth) / 2;
             float distVertical = (1 - 1 / ratioHeight) / 2;
-            textureCords = new float[]{
-                    addDistance(textureCords[0], distHorizontal), addDistance(textureCords[1], distVertical),
-                    addDistance(textureCords[2], distHorizontal), addDistance(textureCords[3], distVertical),
-                    addDistance(textureCords[4], distHorizontal), addDistance(textureCords[5], distVertical),
-                    addDistance(textureCords[6], distHorizontal), addDistance(textureCords[7], distVertical),
-            };
+            textureCords = new float[] { addDistance(textureCords[0], distHorizontal), addDistance(textureCords[1], distVertical), addDistance(textureCords[2], distHorizontal), addDistance(textureCords[3], distVertical), addDistance(textureCords[4], distHorizontal), addDistance(textureCords[5], distVertical), addDistance(textureCords[6], distHorizontal), addDistance(textureCords[7], distVertical) };
         } else {
-            cube = new float[]{
-                    CUBE[0] / ratioHeight, CUBE[1] / ratioWidth,
-                    CUBE[2] / ratioHeight, CUBE[3] / ratioWidth,
-                    CUBE[4] / ratioHeight, CUBE[5] / ratioWidth,
-                    CUBE[6] / ratioHeight, CUBE[7] / ratioWidth,
-            };
+            cube = new float[] { CUBE[0] / ratioHeight, CUBE[1] / ratioWidth, CUBE[2] / ratioHeight, CUBE[3] / ratioWidth, CUBE[4] / ratioHeight, CUBE[5] / ratioWidth, CUBE[6] / ratioHeight, CUBE[7] / ratioWidth };
         }
-
         mGLCubeBuffer.clear();
         mGLCubeBuffer.put(cube).position(0);
         mGLTextureBuffer.clear();
@@ -297,8 +277,7 @@ public class GPUImageRenderer implements Renderer, PreviewCallback {
         return coordinate == 0.0f ? distance : 1 - distance;
     }
 
-    public void setRotationCamera(final Rotation rotation, final boolean flipHorizontal,
-            final boolean flipVertical) {
+    public void setRotationCamera(final Rotation rotation, final boolean flipHorizontal, final boolean flipVertical) {
         setRotation(rotation, flipVertical, flipHorizontal);
     }
 
@@ -307,8 +286,7 @@ public class GPUImageRenderer implements Renderer, PreviewCallback {
         adjustImageScaling();
     }
 
-    public void setRotation(final Rotation rotation,
-                            final boolean flipHorizontal, final boolean flipVertical) {
+    public void setRotation(final Rotation rotation, final boolean flipHorizontal, final boolean flipVertical) {
         mFlipHorizontal = flipHorizontal;
         mFlipVertical = flipVertical;
         setRotation(rotation);

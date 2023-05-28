@@ -7,21 +7,19 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-
 import com.github.skykai.stickercamera.R;
-
 
 /**
  * @author tongqian.ni
- *
  */
 public class LabelSelector extends LinearLayout {
 
     private ImageView txtLabelBtn;
+
     private ImageView addrLabelBtn;
 
     public LabelSelector(Context context) {
-        this(context,null);
+        this(context, null);
     }
 
     public LabelSelector(Context context, AttributeSet attr) {
@@ -48,12 +46,14 @@ public class LabelSelector extends LinearLayout {
     }
 
     private float mLastTouchX = -1;
+
     private float mLastTouchY = -1;
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        switch (event.getAction()) {
-            case MotionEvent.ACTION_UP:// 手指离开时 
+        switch(event.getAction()) {
+            // 手指离开时
+            case MotionEvent.ACTION_UP:
             case MotionEvent.ACTION_CANCEL:
                 mLastTouchX = event.getX();
                 mLastTouchY = event.getY();
@@ -72,5 +72,4 @@ public class LabelSelector extends LinearLayout {
     public void hide() {
         setVisibility(View.GONE);
     }
-
 }
