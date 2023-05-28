@@ -1,7 +1,6 @@
 package com.common.util;
 
 import java.util.List;
-
 import android.app.ActivityManager;
 import android.app.ActivityManager.RunningAppProcessInfo;
 import android.app.ActivityManager.RunningTaskInfo;
@@ -13,7 +12,7 @@ import android.content.Context;
  * <ul>
  * <li>{@link AppUtils#isNamedProcess(Context, String)}</li>
  * </ul>
- * 
+ *
  * @author <a href="http://www.trinea.cn" target="_blank">Trinea</a> 2014-5-07
  */
 public class AppUtils {
@@ -24,7 +23,7 @@ public class AppUtils {
 
     /**
      * whether this process is named with processName
-     * 
+     *
      * @param context
      * @param processName
      * @return <ul>
@@ -39,17 +38,14 @@ public class AppUtils {
         if (context == null) {
             return false;
         }
-
         int pid = android.os.Process.myPid();
-        ActivityManager manager = (ActivityManager)context.getSystemService(Context.ACTIVITY_SERVICE);
+        ActivityManager manager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
         List<RunningAppProcessInfo> processInfoList = manager.getRunningAppProcesses();
         if (ListUtils.isEmpty(processInfoList)) {
             return false;
         }
-
         for (RunningAppProcessInfo processInfo : processInfoList) {
-            if (processInfo != null && processInfo.pid == pid
-                    && ObjectUtils.isEquals(processName, processInfo.processName)) {
+            if (processInfo != null && processInfo.pid == pid && ObjectUtils.isEquals(processName, processInfo.processName)) {
                 return true;
             }
         }
@@ -61,12 +57,12 @@ public class AppUtils {
      * <ul>
      * <li>need use permission android.permission.GET_TASKS in Manifest.xml</li>
      * </ul>
-     * 
+     *
      * @param context
      * @return if application is in background return true, otherwise return false
      */
     public static boolean isApplicationInBackground(Context context) {
-        ActivityManager am = (ActivityManager)context.getSystemService(Context.ACTIVITY_SERVICE);
+        ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
         List<RunningTaskInfo> taskList = am.getRunningTasks(1);
         if (taskList != null && !taskList.isEmpty()) {
             ComponentName topActivity = taskList.get(0).topActivity;

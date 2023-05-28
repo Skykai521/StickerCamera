@@ -10,11 +10,9 @@ import android.util.TypedValue;
 import android.view.Menu;
 import android.view.View;
 import android.view.WindowManager;
-
 import com.github.skykai.stickercamera.R;
 import com.customview.CommonTitleBar;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
-
 import butterknife.ButterKnife;
 
 /**
@@ -23,16 +21,15 @@ import butterknife.ButterKnife;
 public class BaseActivity extends AppCompatActivity implements ActivityResponsable {
 
     protected CommonTitleBar titleBar;
-    //Activity辅助类
-    private ActivityHelper           mActivityHelper;
 
+    //Activity辅助类
+    private ActivityHelper mActivityHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mActivityHelper = new ActivityHelper(this);
         initWindow();
-
     }
 
     @TargetApi(19)
@@ -62,6 +59,7 @@ public class BaseActivity extends AppCompatActivity implements ActivityResponsab
         titleBar = (CommonTitleBar) findViewById(R.id.title_layout);
         if (titleBar != null)
             titleBar.setLeftBtnOnclickListener(new View.OnClickListener() {
+
                 @Override
                 public void onClick(View v) {
                     finish();
@@ -86,9 +84,7 @@ public class BaseActivity extends AppCompatActivity implements ActivityResponsab
      *            否定回调
      */
     @Override
-    public void alert(String title, String msg, String positive,
-                      DialogInterface.OnClickListener positiveListener, String negative,
-                      DialogInterface.OnClickListener negativeListener) {
+    public void alert(String title, String msg, String positive, DialogInterface.OnClickListener positiveListener, String negative, DialogInterface.OnClickListener negativeListener) {
         mActivityHelper.alert(title, msg, positive, positiveListener, negative, negativeListener);
     }
 
@@ -111,12 +107,8 @@ public class BaseActivity extends AppCompatActivity implements ActivityResponsab
      *            外部点是否可以取消对话框
      */
     @Override
-    public void alert(String title, String msg, String positive,
-                      DialogInterface.OnClickListener positiveListener, String negative,
-                      DialogInterface.OnClickListener negativeListener,
-                      Boolean isCanceledOnTouchOutside) {
-        mActivityHelper.alert(title, msg, positive, positiveListener, negative, negativeListener,
-                isCanceledOnTouchOutside);
+    public void alert(String title, String msg, String positive, DialogInterface.OnClickListener positiveListener, String negative, DialogInterface.OnClickListener negativeListener, Boolean isCanceledOnTouchOutside) {
+        mActivityHelper.alert(title, msg, positive, positiveListener, negative, negativeListener, isCanceledOnTouchOutside);
     }
 
     /**
@@ -149,8 +141,7 @@ public class BaseActivity extends AppCompatActivity implements ActivityResponsab
      * @param msg
      *            消息
      */
-    public void showProgressDialog(final String msg, final boolean cancelable,
-                                   final DialogInterface.OnCancelListener cancelListener) {
+    public void showProgressDialog(final String msg, final boolean cancelable, final DialogInterface.OnCancelListener cancelListener) {
         mActivityHelper.showProgressDialog(msg, cancelable, cancelListener);
     }
 

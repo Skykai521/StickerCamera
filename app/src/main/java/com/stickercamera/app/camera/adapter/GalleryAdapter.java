@@ -7,23 +7,22 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-
 import com.common.util.DistanceUtil;
 import com.common.util.ImageLoaderUtils;
 import com.github.skykai.stickercamera.R;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.stickercamera.app.model.PhotoItem;
-
 import java.util.List;
 
 /**
  * @author tongqian.ni
- *
  */
 public class GalleryAdapter extends BaseAdapter {
 
-    private Context             mContext;
-    private List<PhotoItem>     values;
+    private Context mContext;
+
+    private List<PhotoItem> values;
+
     public static GalleryHolder holder;
 
     /**
@@ -65,14 +64,12 @@ public class GalleryAdapter extends BaseAdapter {
             holder = (GalleryHolder) convertView.getTag();
         }
         final PhotoItem gallery = (PhotoItem) getItem(position);
-
-        ImageLoaderUtils.displayLocalImage(gallery.getImageUri(), holder.sample,null);
-        
+        ImageLoaderUtils.displayLocalImage(gallery.getImageUri(), holder.sample, null);
         return convertView;
     }
 
     class GalleryHolder {
+
         ImageView sample;
     }
-
 }

@@ -13,49 +13,40 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package jp.co.cyberagent.android.gpuimage;
 
 import android.content.Context;
 import android.content.res.AssetManager;
 import android.graphics.PointF;
 import android.opengl.GLES20;
-
 import java.io.InputStream;
 import java.nio.FloatBuffer;
 import java.util.LinkedList;
 
 public class GPUImageFilter {
-    public static final String NO_FILTER_VERTEX_SHADER = "" +
-            "attribute vec4 position;\n" +
-            "attribute vec4 inputTextureCoordinate;\n" +
-            " \n" +
-            "varying vec2 textureCoordinate;\n" +
-            " \n" +
-            "void main()\n" +
-            "{\n" +
-            "    gl_Position = position;\n" +
-            "    textureCoordinate = inputTextureCoordinate.xy;\n" +
-            "}";
-    public static final String NO_FILTER_FRAGMENT_SHADER = "" +
-            "varying highp vec2 textureCoordinate;\n" +
-            " \n" +
-            "uniform sampler2D inputImageTexture;\n" +
-            " \n" +
-            "void main()\n" +
-            "{\n" +
-            "     gl_FragColor = texture2D(inputImageTexture, textureCoordinate);\n" +
-            "}";
+
+    public static final String NO_FILTER_VERTEX_SHADER = "" + "attribute vec4 position;\n" + "attribute vec4 inputTextureCoordinate;\n" + " \n" + "varying vec2 textureCoordinate;\n" + " \n" + "void main()\n" + "{\n" + "    gl_Position = position;\n" + "    textureCoordinate = inputTextureCoordinate.xy;\n" + "}";
+
+    public static final String NO_FILTER_FRAGMENT_SHADER = "" + "varying highp vec2 textureCoordinate;\n" + " \n" + "uniform sampler2D inputImageTexture;\n" + " \n" + "void main()\n" + "{\n" + "     gl_FragColor = texture2D(inputImageTexture, textureCoordinate);\n" + "}";
 
     private final LinkedList<Runnable> mRunOnDraw;
+
     private final String mVertexShader;
+
     private final String mFragmentShader;
+
     protected int mGLProgId;
+
     protected int mGLAttribPosition;
+
     protected int mGLUniformTexture;
+
     protected int mGLAttribTextureCoordinate;
+
     protected int mOutputWidth;
+
     protected int mOutputHeight;
+
     private boolean mIsInitialized;
 
     public GPUImageFilter() {
@@ -78,8 +69,7 @@ public class GPUImageFilter {
         mGLProgId = OpenGlUtils.loadProgram(mVertexShader, mFragmentShader);
         mGLAttribPosition = GLES20.glGetAttribLocation(mGLProgId, "position");
         mGLUniformTexture = GLES20.glGetUniformLocation(mGLProgId, "inputImageTexture");
-        mGLAttribTextureCoordinate = GLES20.glGetAttribLocation(mGLProgId,
-                "inputTextureCoordinate");
+        mGLAttribTextureCoordinate = GLES20.glGetAttribLocation(mGLProgId, "inputTextureCoordinate");
         mIsInitialized = true;
     }
 
@@ -100,20 +90,17 @@ public class GPUImageFilter {
         mOutputHeight = height;
     }
 
-    public void onDraw(final int textureId, final FloatBuffer cubeBuffer,
-                       final FloatBuffer textureBuffer) {
+    public void onDraw(final int textureId, final FloatBuffer cubeBuffer, final FloatBuffer textureBuffer) {
         GLES20.glUseProgram(mGLProgId);
         runPendingOnDrawTasks();
         if (!mIsInitialized) {
             return;
         }
-
         cubeBuffer.position(0);
         GLES20.glVertexAttribPointer(mGLAttribPosition, 2, GLES20.GL_FLOAT, false, 0, cubeBuffer);
         GLES20.glEnableVertexAttribArray(mGLAttribPosition);
         textureBuffer.position(0);
-        GLES20.glVertexAttribPointer(mGLAttribTextureCoordinate, 2, GLES20.GL_FLOAT, false, 0,
-                textureBuffer);
+        GLES20.glVertexAttribPointer(mGLAttribTextureCoordinate, 2, GLES20.GL_FLOAT, false, 0, textureBuffer);
         GLES20.glEnableVertexAttribArray(mGLAttribTextureCoordinate);
         if (textureId != OpenGlUtils.NO_TEXTURE) {
             GLES20.glActiveTexture(GLES20.GL_TEXTURE0);
@@ -127,7 +114,8 @@ public class GPUImageFilter {
         GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, 0);
     }
 
-    protected void onDrawArraysPre() {}
+    protected void onDrawArraysPre() {
+    }
 
     protected void runPendingOnDrawTasks() {
         while (!mRunOnDraw.isEmpty()) {
@@ -165,6 +153,7 @@ public class GPUImageFilter {
 
     protected void setInteger(final int location, final int intValue) {
         runOnDraw(new Runnable() {
+
             @Override
             public void run() {
                 GLES20.glUniform1i(location, intValue);
@@ -174,6 +163,7 @@ public class GPUImageFilter {
 
     protected void setFloat(final int location, final float floatValue) {
         runOnDraw(new Runnable() {
+
             @Override
             public void run() {
                 GLES20.glUniform1f(location, floatValue);
@@ -183,6 +173,7 @@ public class GPUImageFilter {
 
     protected void setFloatVec2(final int location, final float[] arrayValue) {
         runOnDraw(new Runnable() {
+
             @Override
             public void run() {
                 GLES20.glUniform2fv(location, 1, FloatBuffer.wrap(arrayValue));
@@ -192,6 +183,7 @@ public class GPUImageFilter {
 
     protected void setFloatVec3(final int location, final float[] arrayValue) {
         runOnDraw(new Runnable() {
+
             @Override
             public void run() {
                 GLES20.glUniform3fv(location, 1, FloatBuffer.wrap(arrayValue));
@@ -201,6 +193,7 @@ public class GPUImageFilter {
 
     protected void setFloatVec4(final int location, final float[] arrayValue) {
         runOnDraw(new Runnable() {
+
             @Override
             public void run() {
                 GLES20.glUniform4fv(location, 1, FloatBuffer.wrap(arrayValue));
@@ -210,6 +203,7 @@ public class GPUImageFilter {
 
     protected void setFloatArray(final int location, final float[] arrayValue) {
         runOnDraw(new Runnable() {
+
             @Override
             public void run() {
                 GLES20.glUniform1fv(location, arrayValue.length, FloatBuffer.wrap(arrayValue));
@@ -260,14 +254,12 @@ public class GPUImageFilter {
         try {
             AssetManager assetManager = context.getAssets();
             InputStream ims = assetManager.open(file);
-
             String re = convertStreamToString(ims);
             ims.close();
             return re;
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         return "";
     }
 

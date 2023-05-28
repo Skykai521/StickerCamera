@@ -7,28 +7,25 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
-
-
 import com.github.skykai.stickercamera.R;
 import com.stickercamera.app.camera.effect.FilterEffect;
 import com.stickercamera.app.camera.util.GPUImageFilterTools;
-
 import java.util.List;
-
 import jp.co.cyberagent.android.gpuimage.GPUImageFilter;
 import jp.co.cyberagent.android.gpuimage.GPUImageView;
 
 /**
  * @author tongqian.ni
- *
  */
 public class FilterAdapter extends BaseAdapter {
 
     List<FilterEffect> filterUris;
-    Context            mContext;
-    private Bitmap     background;
 
-    private int        selectFilter = 0;
+    Context mContext;
+
+    private Bitmap background;
+
+    private int selectFilter = 0;
 
     public void setSelectFilter(int selectFilter) {
         this.selectFilter = selectFilter;
@@ -72,21 +69,19 @@ public class FilterAdapter extends BaseAdapter {
         } else {
             holder = (EffectHolder) convertView.getTag();
         }
-
         final FilterEffect effect = (FilterEffect) getItem(position);
-
         holder.filteredImg.setImage(background);
         holder.filterName.setText(effect.getTitle());
         //if (!effect.isOri() && effect.getType() != null) {
         GPUImageFilter filter = GPUImageFilterTools.createFilterForType(mContext, effect.getType());
         holder.filteredImg.setFilter(filter);
-
         return convertView;
     }
 
     class EffectHolder {
-        GPUImageView filteredImg;
-        TextView     filterName;
-    }
 
+        GPUImageView filteredImg;
+
+        TextView filterName;
+    }
 }

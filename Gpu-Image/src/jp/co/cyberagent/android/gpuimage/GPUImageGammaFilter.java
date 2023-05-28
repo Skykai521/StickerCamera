@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package jp.co.cyberagent.android.gpuimage;
 
 import android.opengl.GLES20;
@@ -22,20 +21,11 @@ import android.opengl.GLES20;
  * gamma value ranges from 0.0 to 3.0, with 1.0 as the normal level
  */
 public class GPUImageGammaFilter extends GPUImageFilter {
-    public static final String GAMMA_FRAGMENT_SHADER = "" +
-            "varying highp vec2 textureCoordinate;\n" +
-            " \n" +
-            " uniform sampler2D inputImageTexture;\n" +
-            " uniform lowp float gamma;\n" +
-            " \n" +
-            " void main()\n" +
-            " {\n" +
-            "     lowp vec4 textureColor = texture2D(inputImageTexture, textureCoordinate);\n" +
-            "     \n" +
-            "     gl_FragColor = vec4(pow(textureColor.rgb, vec3(gamma)), textureColor.w);\n" +
-            " }";
+
+    public static final String GAMMA_FRAGMENT_SHADER = "" + "varying highp vec2 textureCoordinate;\n" + " \n" + " uniform sampler2D inputImageTexture;\n" + " uniform lowp float gamma;\n" + " \n" + " void main()\n" + " {\n" + "     lowp vec4 textureColor = texture2D(inputImageTexture, textureCoordinate);\n" + "     \n" + "     gl_FragColor = vec4(pow(textureColor.rgb, vec3(gamma)), textureColor.w);\n" + " }";
 
     private int mGammaLocation;
+
     private float mGamma;
 
     public GPUImageGammaFilter() {

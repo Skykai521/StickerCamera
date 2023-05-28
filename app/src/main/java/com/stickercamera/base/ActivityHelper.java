@@ -3,18 +3,16 @@ package com.stickercamera.base;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
-
 import com.stickercamera.base.util.DialogHelper;
 
-
 public class ActivityHelper {
+
     final static String TAG = ActivityHelper.class.getSimpleName();
 
     /**
      * 对应的Activity
      */
     private Activity mActivity;
-
 
     /**
      * 对话框帮助类
@@ -27,7 +25,7 @@ public class ActivityHelper {
     }
 
     public void finish() {
-        mDialogHelper.dismissProgressDialog();
+        dismiss();
     }
 
     /**
@@ -40,12 +38,9 @@ public class ActivityHelper {
      * @param negative         否定
      * @param negativeListener 否定回调
      */
-    public void alert(String title, String msg, String positive,
-                      DialogInterface.OnClickListener positiveListener, String negative,
-                      DialogInterface.OnClickListener negativeListener) {
+    public void alert(String title, String msg, String positive, DialogInterface.OnClickListener positiveListener, String negative, DialogInterface.OnClickListener negativeListener) {
         mDialogHelper.alert(title, msg, positive, positiveListener, negative, negativeListener);
     }
-
 
     /**
      * 弹对话框
@@ -58,12 +53,8 @@ public class ActivityHelper {
      * @param negativeListener         否定回调
      * @param isCanceledOnTouchOutside 外部是否可点取消
      */
-    public void alert(String title, String msg, String positive,
-                      DialogInterface.OnClickListener positiveListener, String negative,
-                      DialogInterface.OnClickListener negativeListener,
-                      Boolean isCanceledOnTouchOutside) {
-        mDialogHelper.alert(title, msg, positive, positiveListener, negative, negativeListener,
-                isCanceledOnTouchOutside);
+    public void alert(String title, String msg, String positive, DialogInterface.OnClickListener positiveListener, String negative, DialogInterface.OnClickListener negativeListener, Boolean isCanceledOnTouchOutside) {
+        mDialogHelper.alert(title, msg, positive, positiveListener, negative, negativeListener, isCanceledOnTouchOutside);
     }
 
     /**
@@ -90,13 +81,15 @@ public class ActivityHelper {
      *
      * @param msg 消息
      */
-    public void showProgressDialog(final String msg, final boolean cancelable,
-                                   final OnCancelListener cancelListener) {
+    public void showProgressDialog(final String msg, final boolean cancelable, final OnCancelListener cancelListener) {
         mDialogHelper.showProgressDialog(msg, cancelable, cancelListener, true);
     }
 
     public void dismissProgressDialog() {
-        mDialogHelper.dismissProgressDialog();
+        dismiss();
     }
 
+    private void dismiss() {
+        mDialogHelper.dismissProgressDialog();
+    }
 }

@@ -5,12 +5,10 @@ import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Environment;
-
 import com.alibaba.fastjson.JSON;
 import com.stickercamera.App;
 import com.stickercamera.app.model.Addon;
 import com.stickercamera.app.model.PhotoItem;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileFilter;
@@ -28,8 +26,9 @@ import java.util.List;
 
 public class FileUtils {
 
-    private static String    BASE_PATH;
-    private static String    STICKER_BASE_PATH;
+    private static String BASE_PATH;
+
+    private static String STICKER_BASE_PATH;
 
     private static FileUtils mInstance;
 
@@ -76,7 +75,6 @@ public class FileUtils {
         }
     }
 
-
     public String getBasePath(int packageId) {
         return STICKER_BASE_PATH + packageId + "/";
     }
@@ -85,6 +83,7 @@ public class FileUtils {
         String md5Str = MD5Util.getMD5(imageUrl).replace("-", "mm");
         return getBasePath(packageId) + md5Str;
     }
+
     //读取assets文件
     public String readFromAsset(String fileName) {
         InputStream is = null;
@@ -120,14 +119,12 @@ public class FileUtils {
             file.delete();
             return;
         }
-
         if (file.isDirectory()) {
             File[] childFiles = file.listFiles();
             if (childFiles == null || childFiles.length == 0) {
                 file.delete();
                 return;
             }
-
             for (int i = 0; i < childFiles.length; i++) {
                 delete(childFiles[i]);
             }
@@ -136,28 +133,25 @@ public class FileUtils {
     }
 
     public String getPhotoSavedPath() {
-        return BASE_PATH + "stickercamera";
+        return concatenatePathWithCamera();
     }
 
     public String getPhotoTempPath() {
-        return BASE_PATH + "stickercamera";
+        return concatenatePathWithCamera();
     }
 
     public String getSystemPhotoPath() {
         return Environment.getExternalStorageDirectory().getAbsolutePath() + "/DCIM/Camera";
     }
 
-
     private FileUtils() {
         String sdcardState = Environment.getExternalStorageState();
         //如果没SD卡则放缓存
         if (Environment.MEDIA_MOUNTED.equals(sdcardState)) {
-            BASE_PATH = Environment.getExternalStorageDirectory().getAbsolutePath()
-                        + "/stickercamera/";
+            BASE_PATH = Environment.getExternalStorageDirectory().getAbsolutePath() + "/stickercamera/";
         } else {
             BASE_PATH = App.getApp().getCacheDirPath();
         }
-
         STICKER_BASE_PATH = BASE_PATH + "/stickers/";
     }
 
@@ -199,7 +193,6 @@ public class FileUtils {
         BufferedReader br = null;
         try {
             br = new BufferedReader(new FileReader(file));
-
             String line = br.readLine();
             if (StringUtils.isNotEmpty(line)) {
                 sb.append(line.trim());
@@ -246,7 +239,6 @@ public class FileUtils {
             is = context.getAssets().open(filename);
             createFile(of);
             os = new FileOutputStream(of);
-
             int readedBytes;
             byte[] buf = new byte[1024];
             while ((readedBytes = is.read(buf)) > 0) {
@@ -269,8 +261,8 @@ public class FileUtils {
         return of.exists() && !nf.exists() && of.renameTo(nf);
     }
 
-    /**  
-     * 复制单个文件  
+    /**
+     * 复制单个文件
      */
     public void copyFile(String oldPath, String newPath) {
         InputStream inStream = null;
@@ -279,12 +271,15 @@ public class FileUtils {
             int bytesum = 0;
             int byteread = 0;
             File oldfile = new File(oldPath);
-            if (oldfile.exists()) { //文件存在时   
-                inStream = new FileInputStream(oldPath); //读入原文件   
+            if (oldfile.exists()) {
+                //文件存在时
+                //读入原文件
+                inStream = new FileInputStream(oldPath);
                 fs = new FileOutputStream(newPath);
                 byte[] buffer = new byte[1444];
                 while ((byteread = inStream.read(buffer)) != -1) {
-                    bytesum += byteread; //字节数 文件大小   
+                    //字节数 文件大小
+                    bytesum += byteread;
                     System.out.println(bytesum);
                     fs.write(buffer, 0, byteread);
                 }
@@ -296,13 +291,11 @@ public class FileUtils {
             IOUtil.closeStream(inStream);
             IOUtil.closeStream(fs);
         }
-
     }
 
     public File getCacheDir() {
         return App.getApp().getCacheDir();
     }
-
 
     //获取path路径下的图片
     public ArrayList<PhotoItem> findPicsInDir(String path) {
@@ -314,8 +307,7 @@ public class FileUtils {
                 @Override
                 public boolean accept(File pathname) {
                     String filePath = pathname.getAbsolutePath();
-                    return (filePath.endsWith(".png") || filePath.endsWith(".jpg") || filePath
-                            .endsWith(".jepg"));
+                    return (filePath.endsWith(".png") || filePath.endsWith(".jpg") || filePath.endsWith(".jepg"));
                 }
             })) {
                 photos.add(new PhotoItem(file.getAbsolutePath(), file.lastModified()));
@@ -325,5 +317,7 @@ public class FileUtils {
         return photos;
     }
 
-
+    private String concatenatePathWithCamera() {
+        return BASE_PATH + "stickercamera";
+    }
 }

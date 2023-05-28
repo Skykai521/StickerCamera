@@ -6,24 +6,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-
-
 import com.common.util.ImageLoaderUtils;
 import com.github.skykai.stickercamera.R;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.stickercamera.app.model.Addon;
-
 import java.util.List;
 
 /**
- * 
  * 贴纸适配器
  * @author tongqian.ni
  */
 public class StickerToolAdapter extends BaseAdapter {
 
     List<Addon> filterUris;
-    Context     mContext;
+
+    Context mContext;
 
     public StickerToolAdapter(Context context, List<Addon> effects) {
         filterUris = effects;
@@ -59,23 +56,20 @@ public class StickerToolAdapter extends BaseAdapter {
         } else {
             holder = (EffectHolder) convertView.getTag();
         }
-
         final Addon effect = (Addon) getItem(position);
-
         return showItem(convertView, holder, effect);
     }
 
     private View showItem(View convertView, EffectHolder holder, final Addon sticker) {
-
         holder.container.setVisibility(View.GONE);
         ImageLoaderUtils.displayDrawableImage(sticker.getId() + "", holder.logo, null);
-
         return convertView;
     }
 
     class EffectHolder {
+
         ImageView logo;
+
         ImageView container;
     }
-
 }

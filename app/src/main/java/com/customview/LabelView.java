@@ -14,13 +14,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import com.github.skykai.stickercamera.R;
 import com.stickercamera.App;
 import com.stickercamera.AppConstants;
 import com.stickercamera.app.camera.util.EffectUtil;
 import com.stickercamera.app.model.TagItem;
-
 
 /**
  * @author tongqian.ni
@@ -28,10 +26,15 @@ import com.stickercamera.app.model.TagItem;
 public class LabelView extends LinearLayout {
 
     private TagItem tagInfo = new TagItem();
+
     private float parentWidth = 0;
+
     private float parentHeight = 0;
+
     private ImageView labelIcon;
+
     private TextView labelTxtLeft;
+
     private TextView labelTxtRight;
 
     public TagItem getTagInfo() {
@@ -90,7 +93,6 @@ public class LabelView extends LinearLayout {
             setupLocation(left, top);
             parent.addView(this);
         }
-
     }
 
     /**
@@ -125,8 +127,8 @@ public class LabelView extends LinearLayout {
             labelTxtLeft.setVisibility(View.INVISIBLE);
             setupLocation(20, 20);
             parent.addView(this);
-
             post(new Runnable() {
+
                 @Override
                 public void run() {
                     int toLeft = left - getWidth() + labelIcon.getWidth();
@@ -135,16 +137,12 @@ public class LabelView extends LinearLayout {
                 }
             });
         }
-
     }
 
     private void setupLocation(int leftLoc, int topLoc) {
         this.left = leftLoc;
         this.top = topLoc;
-
-        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
-                LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
         if (getImageWidth() - left - getWidth() < 0) {
             left = getImageWidth() - getWidth();
         }
@@ -162,7 +160,6 @@ public class LabelView extends LinearLayout {
         } else {
             params.setMargins(left, top, 0, 0);
         }
-
         tagInfo.setX(EffectUtil.getStandDis(left, this.parentWidth));
         tagInfo.setY(EffectUtil.getStandDis(top, this.parentHeight));
         setLayoutParams(params);
@@ -177,6 +174,7 @@ public class LabelView extends LinearLayout {
     }
 
     private int left = -1, top = -1;
+
     private int imageWidth = 0;
 
     private static final int ANIMATIONEACHOFFSET = 600;
@@ -191,12 +189,13 @@ public class LabelView extends LinearLayout {
 
     public void wave() {
         AnimationSet as = new AnimationSet(true);
-        ScaleAnimation sa = new ScaleAnimation(1f, 1.5f, 1f, 1.5f, ScaleAnimation.RELATIVE_TO_SELF,
-                0.5f, ScaleAnimation.RELATIVE_TO_SELF, 0.5f);
+        ScaleAnimation sa = new ScaleAnimation(1f, 1.5f, 1f, 1.5f, ScaleAnimation.RELATIVE_TO_SELF, 0.5f, ScaleAnimation.RELATIVE_TO_SELF, 0.5f);
         sa.setDuration(ANIMATIONEACHOFFSET * 3);
-        sa.setRepeatCount(10);// 设置循环
+        // 设置循环
+        sa.setRepeatCount(10);
         AlphaAnimation aniAlp = new AlphaAnimation(1, 0.1f);
-        aniAlp.setRepeatCount(10);// 设置循环
+        // 设置循环
+        aniAlp.setRepeatCount(10);
         as.setDuration(ANIMATIONEACHOFFSET * 3);
         as.addAnimation(sa);
         as.addAnimation(aniAlp);

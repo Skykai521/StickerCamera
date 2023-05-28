@@ -8,14 +8,14 @@ import java.util.List;
  */
 public class FeedItem {
 
-    private String          imgPath;
-    private List<TagItem>   tagList;
+    private String imgPath;
 
-    public FeedItem(){
+    private List<TagItem> tagList;
 
+    public FeedItem() {
     }
 
-    public FeedItem(List<TagItem> tagList,String imgPath){
+    public FeedItem(List<TagItem> tagList, String imgPath) {
         this.imgPath = imgPath;
         this.tagList = tagList;
     }

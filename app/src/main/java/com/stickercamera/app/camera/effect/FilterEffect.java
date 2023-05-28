@@ -1,17 +1,17 @@
 package com.stickercamera.app.camera.effect;
 
-
 import com.stickercamera.app.camera.util.GPUImageFilterTools;
 
 /**
  * @author tongqian.ni
- *
  */
-public class FilterEffect  {
+public class FilterEffect {
 
-    private String     title;
+    private String title;
+
     private GPUImageFilterTools.FilterType type;
-    private int        degree;
+
+    private int degree;
 
     /**
      * @param title
@@ -22,7 +22,6 @@ public class FilterEffect  {
         this.degree = degree;
         this.title = title;
     }
-
 
     public GPUImageFilterTools.FilterType getType() {
         return type;
@@ -35,5 +34,4 @@ public class FilterEffect  {
     public int getDegree() {
         return degree;
     }
-
 }

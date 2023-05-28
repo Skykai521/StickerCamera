@@ -11,9 +11,10 @@ import java.io.InputStreamReader;
  * IO工具
  */
 public class IOUtil {
+
     /**
      * 把流读成字符串
-     * 
+     *
      * @param is
      *            输入流
      * @return 字符串
@@ -27,12 +28,10 @@ public class IOUtil {
                 sb.append(line);
             }
         } catch (IOException e) {
-
         } finally {
             try {
                 is.close();
             } catch (IOException e) {
-
             }
         }
         return sb.toString();
@@ -40,7 +39,7 @@ public class IOUtil {
 
     /**
      * 关闭流
-     * 
+     *
      * @param stream
      *            可关闭的流
      */
@@ -49,18 +48,16 @@ public class IOUtil {
             if (stream != null)
                 stream.close();
         } catch (IOException e) {
-
         }
     }
 
     public static byte[] InputStreamToByte(InputStream is) throws IOException {
-
         ByteArrayOutputStream bytestream = new ByteArrayOutputStream();
         int ch;
         while ((ch = is.read()) != -1) {
             bytestream.write(ch);
         }
-        byte byteData[] = bytestream.toByteArray();
+        byte[] byteData = bytestream.toByteArray();
         bytestream.close();
         return byteData;
     }

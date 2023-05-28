@@ -7,28 +7,34 @@ import java.util.Map.Entry;
 
 /**
  * Map Utils
- * 
+ *
  * @author <a href="http://www.trinea.cn" target="_blank">Trinea</a> 2011-7-22
  */
 public class MapUtils {
 
-    /** default separator between key and value **/
-    public static final String DEFAULT_KEY_AND_VALUE_SEPARATOR      = ":";
-    /** default separator between key-value pairs **/
+    /**
+     * default separator between key and value *
+     */
+    public static final String DEFAULT_KEY_AND_VALUE_SEPARATOR = ":";
+
+    /**
+     * default separator between key-value pairs *
+     */
     public static final String DEFAULT_KEY_AND_VALUE_PAIR_SEPARATOR = ",";
-    
+
     private MapUtils() {
         throw new AssertionError();
     }
+
     /**
      * is null or its size is 0
-     * 
+     *
      * <pre>
      * isEmpty(null)   =   true;
      * isEmpty({})     =   true;
      * isEmpty({1, 2})    =   false;
      * </pre>
-     * 
+     *
      * @param sourceMap
      * @return if map is null or its size is 0, return true, else return false.
      */
@@ -38,7 +44,7 @@ public class MapUtils {
 
     /**
      * add key-value pair to map, and key need not null or empty
-     * 
+     *
      * @param map
      * @param key
      * @param value
@@ -52,14 +58,13 @@ public class MapUtils {
         if (map == null || StringUtils.isEmpty(key)) {
             return false;
         }
-
         map.put(key, value);
         return true;
     }
 
     /**
      * add key-value pair to map, both key and value need not null or empty
-     * 
+     *
      * @param map
      * @param key
      * @param value
@@ -74,14 +79,13 @@ public class MapUtils {
         if (map == null || StringUtils.isEmpty(key) || StringUtils.isEmpty(value)) {
             return false;
         }
-
         map.put(key, value);
         return true;
     }
 
     /**
      * add key-value pair to map, key need not null or empty
-     * 
+     *
      * @param map
      * @param key
      * @param value
@@ -93,19 +97,17 @@ public class MapUtils {
      *         <li>if value is neither null nor empty，put value, return true</li>
      *         </ul>
      */
-    public static boolean putMapNotEmptyKeyAndValue(Map<String, String> map, String key, String value,
-            String defaultValue) {
+    public static boolean putMapNotEmptyKeyAndValue(Map<String, String> map, String key, String value, String defaultValue) {
         if (map == null || StringUtils.isEmpty(key)) {
             return false;
         }
-
         map.put(key, StringUtils.isEmpty(value) ? defaultValue : value);
         return true;
     }
 
     /**
      * add key-value pair to map, key need not null
-     * 
+     *
      * @param map
      * @param key
      * @param value
@@ -119,14 +121,13 @@ public class MapUtils {
         if (map == null || key == null) {
             return false;
         }
-
         map.put(key, value);
         return true;
     }
 
     /**
      * add key-value pair to map, both key and value need not null
-     * 
+     *
      * @param map
      * @param key
      * @param value
@@ -141,7 +142,6 @@ public class MapUtils {
         if (map == null || key == null || value == null) {
             return false;
         }
-
         map.put(key, value);
         return true;
     }
@@ -152,7 +152,7 @@ public class MapUtils {
      * <strong>Attentions:</strong>
      * <li>for HashMap, the order of entry not same to put order, so you may need to use TreeMap</li>
      * </ul>
-     * 
+     *
      * @param <V>
      * @param map
      * @param value
@@ -166,7 +166,6 @@ public class MapUtils {
         if (isEmpty(map)) {
             return null;
         }
-
         for (Entry<K, V> entry : map.entrySet()) {
             if (ObjectUtils.isEquals(entry.getValue(), value)) {
                 return entry.getKey();
@@ -177,7 +176,7 @@ public class MapUtils {
 
     /**
      * parse key-value pairs to map, ignore empty key
-     * 
+     *
      * <pre>
      * parseKeyAndValueToMap("","","",true)=null
      * parseKeyAndValueToMap(null,"","",true)=null
@@ -190,19 +189,17 @@ public class MapUtils {
      * parseKeyAndValueToMap("a=b; c=d","=", ";", false)={(a,b),( c,d)}
      * parseKeyAndValueToMap("a=b, c=d", ",", ";", false)={(a=b, c=d)}
      * </pre>
-     * 
+     *
      * @param source key-value pairs
      * @param keyAndValueSeparator separator between key and value
      * @param keyAndValuePairSeparator separator between key-value pairs
      * @param ignoreSpace whether ignore space at the begging or end of key and value
      * @return
      */
-    public static Map<String, String> parseKeyAndValueToMap(String source, String keyAndValueSeparator,
-            String keyAndValuePairSeparator, boolean ignoreSpace) {
+    public static Map<String, String> parseKeyAndValueToMap(String source, String keyAndValueSeparator, String keyAndValuePairSeparator, boolean ignoreSpace) {
         if (StringUtils.isEmpty(source)) {
             return null;
         }
-
         if (StringUtils.isEmpty(keyAndValueSeparator)) {
             keyAndValueSeparator = DEFAULT_KEY_AND_VALUE_SEPARATOR;
         }
@@ -214,18 +211,15 @@ public class MapUtils {
         if (keyAndValueArray == null) {
             return null;
         }
-
         int seperator;
         for (String valueEntity : keyAndValueArray) {
             if (!StringUtils.isEmpty(valueEntity)) {
                 seperator = valueEntity.indexOf(keyAndValueSeparator);
                 if (seperator != -1) {
                     if (ignoreSpace) {
-                        MapUtils.putMapNotEmptyKey(keyAndValueMap, valueEntity.substring(0, seperator).trim(),
-                                valueEntity.substring(seperator + 1).trim());
+                        MapUtils.putMapNotEmptyKey(keyAndValueMap, valueEntity.substring(0, seperator).trim(), valueEntity.substring(seperator + 1).trim());
                     } else {
-                        MapUtils.putMapNotEmptyKey(keyAndValueMap, valueEntity.substring(0, seperator),
-                                valueEntity.substring(seperator + 1));
+                        MapUtils.putMapNotEmptyKey(keyAndValueMap, valueEntity.substring(0, seperator), valueEntity.substring(seperator + 1));
                     }
                 }
             }
@@ -235,7 +229,7 @@ public class MapUtils {
 
     /**
      * parse key-value pairs to map, ignore empty key
-     * 
+     *
      * @param source key-value pairs
      * @param ignoreSpace whether ignore space at the begging or end of key and value
      * @return
@@ -244,13 +238,12 @@ public class MapUtils {
      *      {@link #DEFAULT_KEY_AND_VALUE_PAIR_SEPARATOR}
      */
     public static Map<String, String> parseKeyAndValueToMap(String source, boolean ignoreSpace) {
-        return parseKeyAndValueToMap(source, DEFAULT_KEY_AND_VALUE_SEPARATOR, DEFAULT_KEY_AND_VALUE_PAIR_SEPARATOR,
-                ignoreSpace);
+        return parseKeyAndValueToMap(source, DEFAULT_KEY_AND_VALUE_SEPARATOR, DEFAULT_KEY_AND_VALUE_PAIR_SEPARATOR, ignoreSpace);
     }
 
     /**
      * parse key-value pairs to map, ignore empty key, ignore space at the begging or end of key and value
-     * 
+     *
      * @param source key-value pairs
      * @return
      * @see {@link MapUtils#parseKeyAndValueToMap(String, String, String, boolean)}, keyAndValueSeparator is
@@ -258,13 +251,12 @@ public class MapUtils {
      *      {@link #DEFAULT_KEY_AND_VALUE_PAIR_SEPARATOR}, ignoreSpace is true
      */
     public static Map<String, String> parseKeyAndValueToMap(String source) {
-        return parseKeyAndValueToMap(source, DEFAULT_KEY_AND_VALUE_SEPARATOR, DEFAULT_KEY_AND_VALUE_PAIR_SEPARATOR,
-                true);
+        return parseKeyAndValueToMap(source, DEFAULT_KEY_AND_VALUE_SEPARATOR, DEFAULT_KEY_AND_VALUE_PAIR_SEPARATOR, true);
     }
 
     /**
      * join map
-     * 
+     *
      * @param map
      * @return
      */
@@ -272,12 +264,11 @@ public class MapUtils {
         if (map == null || map.size() == 0) {
             return null;
         }
-
         StringBuilder paras = new StringBuilder();
         paras.append("{");
         Iterator<Entry<String, String>> ite = map.entrySet().iterator();
         while (ite.hasNext()) {
-            Entry<String, String> entry = (Entry<String, String>)ite.next();
+            Entry<String, String> entry = (Entry<String, String>) ite.next();
             paras.append("\"").append(entry.getKey()).append("\":\"").append(entry.getValue()).append("\"");
             if (ite.hasNext()) {
                 paras.append(",");

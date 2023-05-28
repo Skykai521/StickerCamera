@@ -9,14 +9,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.github.skykai.stickercamera.R;
 
-
 public class DialogHelper {
-    private Activity    mActivity;
+
+    private Activity mActivity;
+
     private AlertDialog mAlertDialog;
-    private Toast       mToast;
+
+    private Toast mToast;
 
     public DialogHelper(Activity activity) {
         mActivity = activity;
@@ -24,7 +25,7 @@ public class DialogHelper {
 
     /**
      * 弹对话框
-     * 
+     *
      * @param title
      *            标题
      * @param msg
@@ -38,15 +39,13 @@ public class DialogHelper {
      * @param negativeListener
      *            否定回调
      */
-    public void alert(final String title, final String msg, final String positive,
-                      final DialogInterface.OnClickListener positiveListener,
-                      final String negative, final DialogInterface.OnClickListener negativeListener) {
+    public void alert(final String title, final String msg, final String positive, final DialogInterface.OnClickListener positiveListener, final String negative, final DialogInterface.OnClickListener negativeListener) {
         alert(title, msg, positive, positiveListener, negative, negativeListener, false);
     }
 
     /**
      * 弹对话框
-     * 
+     *
      * @param title
      *            标题
      * @param msg
@@ -62,13 +61,8 @@ public class DialogHelper {
      * @param isCanceledOnTouchOutside
      *            是否可以点击外围框
      */
-    public void alert(final String title, final String msg, final String positive,
-                      final DialogInterface.OnClickListener positiveListener,
-                      final String negative,
-                      final DialogInterface.OnClickListener negativeListener,
-                      final Boolean isCanceledOnTouchOutside) {
+    public void alert(final String title, final String msg, final String positive, final DialogInterface.OnClickListener positiveListener, final String negative, final DialogInterface.OnClickListener negativeListener, final Boolean isCanceledOnTouchOutside) {
         dismissProgressDialog();
-
         mActivity.runOnUiThread(new Runnable() {
 
             @Override
@@ -98,7 +92,7 @@ public class DialogHelper {
 
     /**
      * TOAST
-     * 
+     *
      * @param msg
      *            消息
      * @param period
@@ -110,13 +104,11 @@ public class DialogHelper {
             @Override
             public void run() {
                 mToast = new Toast(mActivity);
-                View view = LayoutInflater.from(mActivity).inflate(
-                    R.layout.view_transient_notification, null);
+                View view = LayoutInflater.from(mActivity).inflate(R.layout.view_transient_notification, null);
                 TextView tv = (TextView) view.findViewById(android.R.id.message);
                 tv.setText(msg);
                 mToast.setView(view);
                 mToast.setDuration(period);
-
                 mToast.setGravity(Gravity.CENTER, 0, 0);
                 mToast.show();
             }
@@ -125,7 +117,7 @@ public class DialogHelper {
 
     /**
      * 显示对话框
-     * 
+     *
      * @param showProgressBar
      *            是否显示圈圈
      * @param msg
@@ -137,7 +129,7 @@ public class DialogHelper {
 
     /**
      * 显示进度对话框
-     * 
+     *
      * @param msg
      *            消息
      */
@@ -147,15 +139,12 @@ public class DialogHelper {
 
     /**
      * 显示可取消的进度对话框
-     * 
+     *
      * @param msg
      *            消息
      */
-    public void showProgressDialog(final String msg, final boolean cancelable,
-                                   final OnCancelListener cancelListener,
-                                   final boolean showProgressBar) {
+    public void showProgressDialog(final String msg, final boolean cancelable, final OnCancelListener cancelListener, final boolean showProgressBar) {
         dismissProgressDialog();
-
         mActivity.runOnUiThread(new Runnable() {
 
             @Override
@@ -163,15 +152,12 @@ public class DialogHelper {
                 if (mActivity == null || mActivity.isFinishing()) {
                     return;
                 }
-
                 mAlertDialog = new GenericProgressDialog(mActivity);
                 mAlertDialog.setMessage(msg);
                 ((GenericProgressDialog) mAlertDialog).setProgressVisiable(showProgressBar);
                 mAlertDialog.setCancelable(cancelable);
                 mAlertDialog.setOnCancelListener(cancelListener);
-
                 mAlertDialog.show();
-
                 mAlertDialog.setCanceledOnTouchOutside(false);
             }
         });
@@ -179,6 +165,7 @@ public class DialogHelper {
 
     public void dismissProgressDialog() {
         mActivity.runOnUiThread(new Runnable() {
+
             @Override
             public void run() {
                 if (mAlertDialog != null && mAlertDialog.isShowing() && !mActivity.isFinishing()) {
@@ -188,5 +175,4 @@ public class DialogHelper {
             }
         });
     }
-
 }

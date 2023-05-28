@@ -13,14 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.stickercamera.app.camera.util;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.hardware.Camera;
 import android.hardware.Camera.CameraInfo;
-
 import com.stickercamera.app.camera.util.CameraHelper.CameraHelperImpl;
 import com.stickercamera.app.camera.util.CameraHelper.CameraInfo2;
 

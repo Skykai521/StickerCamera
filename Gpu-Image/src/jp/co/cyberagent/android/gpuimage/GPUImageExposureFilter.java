@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package jp.co.cyberagent.android.gpuimage;
 
 import android.opengl.GLES20;
@@ -22,20 +21,11 @@ import android.opengl.GLES20;
  * exposure: The adjusted exposure (-10.0 - 10.0, with 0.0 as the default)
  */
 public class GPUImageExposureFilter extends GPUImageFilter {
-    public static final String EXPOSURE_FRAGMENT_SHADER = "" +
-            " varying highp vec2 textureCoordinate;\n" +
-            " \n" +
-            " uniform sampler2D inputImageTexture;\n" +
-            " uniform highp float exposure;\n" +
-            " \n" +
-            " void main()\n" +
-            " {\n" +
-            "     highp vec4 textureColor = texture2D(inputImageTexture, textureCoordinate);\n" +
-            "     \n" +
-            "     gl_FragColor = vec4(textureColor.rgb * pow(2.0, exposure), textureColor.w);\n" +
-            " } ";
+
+    public static final String EXPOSURE_FRAGMENT_SHADER = "" + " varying highp vec2 textureCoordinate;\n" + " \n" + " uniform sampler2D inputImageTexture;\n" + " uniform highp float exposure;\n" + " \n" + " void main()\n" + " {\n" + "     highp vec4 textureColor = texture2D(inputImageTexture, textureCoordinate);\n" + "     \n" + "     gl_FragColor = vec4(textureColor.rgb * pow(2.0, exposure), textureColor.w);\n" + " } ";
 
     private int mExposureLocation;
+
     private float mExposure;
 
     public GPUImageExposureFilter() {

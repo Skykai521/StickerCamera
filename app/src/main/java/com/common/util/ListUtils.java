@@ -2,17 +2,18 @@ package com.common.util;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import android.text.TextUtils;
 
 /**
  * List Utils
- * 
+ *
  * @author <a href="http://www.trinea.cn" target="_blank">Trinea</a> 2011-7-22
  */
 public class ListUtils {
 
-    /** default join separator **/
+    /**
+     * default join separator *
+     */
     public static final String DEFAULT_JOIN_SEPARATOR = ",";
 
     private ListUtils() {
@@ -21,13 +22,13 @@ public class ListUtils {
 
     /**
      * get size of list
-     * 
+     *
      * <pre>
      * getSize(null)   =   0;
      * getSize({})     =   0;
      * getSize({1})    =   1;
      * </pre>
-     * 
+     *
      * @param <V>
      * @param sourceList
      * @return if list is null or empty, return 0, else return {@link List#size()}.
@@ -38,13 +39,13 @@ public class ListUtils {
 
     /**
      * is null or its size is 0
-     * 
+     *
      * <pre>
      * isEmpty(null)   =   true;
      * isEmpty({})     =   true;
      * isEmpty({1})    =   false;
      * </pre>
-     * 
+     *
      * @param <V>
      * @param sourceList
      * @return if list is null or its size is 0, return true, else return false.
@@ -55,14 +56,14 @@ public class ListUtils {
 
     /**
      * compare two list
-     * 
+     *
      * <pre>
      * isEquals(null, null) = true;
      * isEquals(new ArrayList&lt;String&gt;(), null) = false;
      * isEquals(null, new ArrayList&lt;String&gt;()) = false;
      * isEquals(new ArrayList&lt;String&gt;(), new ArrayList&lt;String&gt;()) = true;
      * </pre>
-     * 
+     *
      * @param <V>
      * @param actual
      * @param expected
@@ -78,7 +79,6 @@ public class ListUtils {
         if (actual.size() != expected.size()) {
             return false;
         }
-
         for (int i = 0; i < actual.size(); i++) {
             if (!ObjectUtils.isEquals(actual.get(i), expected.get(i))) {
                 return false;
@@ -89,13 +89,13 @@ public class ListUtils {
 
     /**
      * join list to string, separator is ","
-     * 
+     *
      * <pre>
      * join(null)      =   "";
      * join({})        =   "";
      * join({a,b})     =   "a,b";
      * </pre>
-     * 
+     *
      * @param list
      * @return join list to string, separator is ",". if list is empty, return ""
      */
@@ -105,25 +105,25 @@ public class ListUtils {
 
     /**
      * join list to string
-     * 
+     *
      * <pre>
      * join(null, '#')     =   "";
      * join({}, '#')       =   "";
      * join({a,b,c}, ' ')  =   "abc";
      * join({a,b,c}, '#')  =   "a#b#c";
      * </pre>
-     * 
+     *
      * @param list
      * @param separator
      * @return join list to string. if list is empty, return ""
      */
     public static String join(List<String> list, char separator) {
-        return join(list, new String(new char[] {separator}));
+        return join(list, new String(new char[] { separator }));
     }
 
     /**
      * join list to string. if separator is null, use {@link #DEFAULT_JOIN_SEPARATOR}
-     * 
+     *
      * <pre>
      * join(null, "#")     =   "";
      * join({}, "#$")      =   "";
@@ -132,7 +132,7 @@ public class ListUtils {
      * join({a,b,c}, "#")  =   "a#b#c";
      * join({a,b,c}, "#$") =   "a#$b#$c";
      * </pre>
-     * 
+     *
      * @param list
      * @param separator
      * @return join list to string with separator. if list is empty, return ""
@@ -143,7 +143,7 @@ public class ListUtils {
 
     /**
      * add distinct entry to list
-     * 
+     *
      * @param <V>
      * @param sourceList
      * @param entry
@@ -155,7 +155,7 @@ public class ListUtils {
 
     /**
      * add all distinct entry to list1 from list2
-     * 
+     *
      * @param <V>
      * @param sourceList
      * @param entryList
@@ -165,7 +165,6 @@ public class ListUtils {
         if (sourceList == null || isEmpty(entryList)) {
             return 0;
         }
-
         int sourceCount = sourceList.size();
         for (V entry : entryList) {
             if (!sourceList.contains(entry)) {
@@ -177,7 +176,7 @@ public class ListUtils {
 
     /**
      * remove duplicate entries in list
-     * 
+     *
      * @param <V>
      * @param sourceList
      * @return the count of entries be removed
@@ -186,7 +185,6 @@ public class ListUtils {
         if (isEmpty(sourceList)) {
             return 0;
         }
-
         int sourceCount = sourceList.size();
         int sourceListSize = sourceList.size();
         for (int i = 0; i < sourceListSize; i++) {
@@ -203,7 +201,7 @@ public class ListUtils {
 
     /**
      * add not null entry to list
-     * 
+     *
      * @param sourceList
      * @param value
      * @return <ul>
@@ -221,7 +219,7 @@ public class ListUtils {
      */
     @SuppressWarnings("unchecked")
     public static <V> V getLast(List<V> sourceList, V value) {
-        return (sourceList == null) ? null : (V)ArrayUtils.getLast(sourceList.toArray(), value, true);
+        return (sourceList == null) ? null : (V) ArrayUtils.getLast(sourceList.toArray(), value, true);
     }
 
     /**
@@ -229,12 +227,12 @@ public class ListUtils {
      */
     @SuppressWarnings("unchecked")
     public static <V> V getNext(List<V> sourceList, V value) {
-        return (sourceList == null) ? null : (V)ArrayUtils.getNext(sourceList.toArray(), value, true);
+        return (sourceList == null) ? null : (V) ArrayUtils.getNext(sourceList.toArray(), value, true);
     }
 
     /**
      * invert list
-     * 
+     *
      * @param <V>
      * @param sourceList
      * @return
@@ -243,7 +241,6 @@ public class ListUtils {
         if (isEmpty(sourceList)) {
             return sourceList;
         }
-
         List<V> invertList = new ArrayList<V>(sourceList.size());
         for (int i = sourceList.size() - 1; i >= 0; i--) {
             invertList.add(sourceList.get(i));

@@ -9,6 +9,7 @@ import android.graphics.Region;
 import android.graphics.drawable.Drawable;
 
 public interface FeatherDrawable {
+
     public void setMinSize(float paramFloat1, float paramFloat2);
 
     public float getMinWidth();

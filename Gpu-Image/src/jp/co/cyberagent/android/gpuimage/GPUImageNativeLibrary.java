@@ -13,10 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package jp.co.cyberagent.android.gpuimage;
 
 public class GPUImageNativeLibrary {
+
     static {
         System.loadLibrary("gpuimage-library");
     }

@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package jp.co.cyberagent.android.gpuimage;
 
 import android.opengl.GLES20;
@@ -23,7 +22,9 @@ import android.opengl.GLES20;
  *  with a Gaussian blur to smooth out noise.
  */
 public class GPUImageSmoothToonFilter extends GPUImageFilterGroup {
+
     GPUImageGaussianBlurFilter blurFilter;
+
     GPUImageToonFilter toonFilter;
 
     /**
@@ -33,13 +34,10 @@ public class GPUImageSmoothToonFilter extends GPUImageFilterGroup {
         // First pass: apply a variable Gaussian blur
         blurFilter = new GPUImageGaussianBlurFilter();
         addFilter(blurFilter);
-
         // Second pass: run the Sobel edge detection on this blurred image, along with a posterization effect
         toonFilter = new GPUImageToonFilter();
         addFilter(toonFilter);
-
         getFilters().add(blurFilter);
-
         setBlurSize(0.5f);
         setThreshold(0.2f);
         setQuantizationLevels(10.0f);
@@ -67,5 +65,4 @@ public class GPUImageSmoothToonFilter extends GPUImageFilterGroup {
     public void setQuantizationLevels(float value) {
         toonFilter.setQuantizationLevels(value);
     }
-
 }

@@ -3,6 +3,7 @@ package com.customview.drawable;
 import android.graphics.Paint;
 
 public interface EditableDrawable {
+
     public static final int CURSOR_BLINK_TIME = 400;
 
     public void setOnSizeChangeListener(OnSizeChange paramOnSizeChange);
@@ -46,7 +47,7 @@ public interface EditableDrawable {
     public int getNumLines();
 
     public static interface OnSizeChange {
-        public void onSizeChanged(EditableDrawable paramEditableDrawable, float paramFloat1,
-                                  float paramFloat2, float paramFloat3, float paramFloat4);
+
+        public void onSizeChanged(EditableDrawable paramEditableDrawable, float paramFloat1, float paramFloat2, float paramFloat3, float paramFloat4);
     }
 }

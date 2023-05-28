@@ -1,6 +1,5 @@
 package com.customview;
 
-
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.text.TextUtils;
@@ -10,13 +9,11 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import com.github.skykai.stickercamera.R;
-
 
 /**
  * 首页标题栏
- * 
+ *
  * @author ouyezi
  */
 public class CommonTitleBar extends RelativeLayout {
@@ -24,17 +21,25 @@ public class CommonTitleBar extends RelativeLayout {
     // 防重复点击时间
     private static final int BTN_LIMIT_TIME = 500;
 
-    private TextView         leftButton;
-    private ImageView        leftButtonImg;
-    private TextView         middleButton;
-    private TextView         rightButton;
-    private ImageView        rightButtonImg;
-    private int              leftBtnIconId;
-    private String           leftBtnStr;
-    private String           titleTxtStr;
-    private String           rightBtnStr;
-    private int              rightBtnIconId;
+    private TextView leftButton;
 
+    private ImageView leftButtonImg;
+
+    private TextView middleButton;
+
+    private TextView rightButton;
+
+    private ImageView rightButtonImg;
+
+    private int leftBtnIconId;
+
+    private String leftBtnStr;
+
+    private String titleTxtStr;
+
+    private String rightBtnStr;
+
+    private int rightBtnIconId;
 
     public CommonTitleBar(Context context) {
         super(context);
@@ -53,7 +58,6 @@ public class CommonTitleBar extends RelativeLayout {
             LayoutInflater.from(context).inflate(R.layout.view_title_bar, this);
             return;
         }
-
         LayoutInflater.from(context).inflate(R.layout.view_title_bar, this);
         findViewById(R.id.title_out_frame).setBackgroundResource(R.color.blue);
         arr.recycle();
@@ -68,7 +72,6 @@ public class CommonTitleBar extends RelativeLayout {
         middleButton = (TextView) findViewById(R.id.title_middle);
         rightButtonImg = (ImageView) findViewById(R.id.title_right_btn);
         rightButton = (TextView) findViewById(R.id.title_right);
-
         if (leftBtnIconId != 0) {
             leftButtonImg.setImageResource(leftBtnIconId);
             leftButtonImg.setVisibility(View.VISIBLE);
@@ -134,5 +137,4 @@ public class CommonTitleBar extends RelativeLayout {
         OnClickListener myListener = new GlobalLimitClickOnClickListener(listener, BTN_LIMIT_TIME);
         findViewById(R.id.title_right_area).setOnClickListener(myListener);
     }
-
 }
