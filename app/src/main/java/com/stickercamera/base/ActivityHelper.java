@@ -25,7 +25,7 @@ public class ActivityHelper {
     }
 
     public void finish() {
-        mDialogHelper.dismissProgressDialog();
+        dismiss();
     }
 
     /**
@@ -86,6 +86,10 @@ public class ActivityHelper {
     }
 
     public void dismissProgressDialog() {
+        dismiss();
+    }
+
+    private void dismiss() {
         mDialogHelper.dismissProgressDialog();
     }
 }

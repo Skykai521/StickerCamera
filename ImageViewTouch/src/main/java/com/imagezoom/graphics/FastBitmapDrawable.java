@@ -54,22 +54,22 @@ public class FastBitmapDrawable extends Drawable implements IBitmapDrawable {
 
     @Override
     public int getIntrinsicWidth() {
-        return mBitmap.getWidth();
+        return getWidthOfBitmap();
     }
 
     @Override
     public int getIntrinsicHeight() {
-        return mBitmap.getHeight();
+        return getHeightOfBitmap();
     }
 
     @Override
     public int getMinimumWidth() {
-        return mBitmap.getWidth();
+        return getWidthOfBitmap();
     }
 
     @Override
     public int getMinimumHeight() {
-        return mBitmap.getHeight();
+        return getHeightOfBitmap();
     }
 
     public void setAntiAlias(boolean value) {
@@ -80,5 +80,13 @@ public class FastBitmapDrawable extends Drawable implements IBitmapDrawable {
     @Override
     public Bitmap getBitmap() {
         return mBitmap;
+    }
+
+    private int getWidthOfBitmap() {
+        return mBitmap.getWidth();
+    }
+
+    private int getHeightOfBitmap() {
+        return mBitmap.getHeight();
     }
 }

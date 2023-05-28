@@ -51,10 +51,14 @@ public class GPUImageTwoPassTextureSamplingFilter extends GPUImageTwoPassFilter 
     }
 
     public float getVerticalTexelOffsetRatio() {
-        return 1f;
+        return One();
     }
 
     public float getHorizontalTexelOffsetRatio() {
+        return One();
+    }
+
+    private float One() {
         return 1f;
     }
 }

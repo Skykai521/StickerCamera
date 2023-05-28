@@ -542,15 +542,7 @@ public class CameraActivity extends CameraBaseActivity {
 
             @Override
             public int compare(Camera.Size a, Camera.Size b) {
-                int aPixels = a.height * a.width;
-                int bPixels = b.height * b.width;
-                if (bPixels < aPixels) {
-                    return -1;
-                }
-                if (bPixels > aPixels) {
-                    return 1;
-                }
-                return 0;
+                return compareImageSizes(a, b);
             }
         });
         StringBuilder previewResolutionSb = new StringBuilder();
@@ -613,15 +605,7 @@ public class CameraActivity extends CameraBaseActivity {
 
             @Override
             public int compare(Camera.Size a, Camera.Size b) {
-                int aPixels = a.height * a.width;
-                int bPixels = b.height * b.width;
-                if (bPixels < aPixels) {
-                    return -1;
-                }
-                if (bPixels > aPixels) {
-                    return 1;
-                }
-                return 0;
+                return compareImageSizes(a, b);
             }
         });
         // 移除不符合条件的分辨率
@@ -811,5 +795,17 @@ public class CameraActivity extends CameraBaseActivity {
             e.printStackTrace();
         }
         return c;
+    }
+
+    private int compareImageSizes(Camera.Size a, Camera.Size b) {
+        int aPixels = a.height * a.width;
+        int bPixels = b.height * b.width;
+        if (bPixels < aPixels) {
+            return -1;
+        }
+        if (bPixels > aPixels) {
+            return 1;
+        }
+        return 0;
     }
 }

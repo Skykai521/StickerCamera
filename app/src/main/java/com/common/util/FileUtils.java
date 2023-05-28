@@ -133,11 +133,11 @@ public class FileUtils {
     }
 
     public String getPhotoSavedPath() {
-        return BASE_PATH + "stickercamera";
+        return concatenatePathWithCamera();
     }
 
     public String getPhotoTempPath() {
-        return BASE_PATH + "stickercamera";
+        return concatenatePathWithCamera();
     }
 
     public String getSystemPhotoPath() {
@@ -315,5 +315,9 @@ public class FileUtils {
         }
         Collections.sort(photos);
         return photos;
+    }
+
+    private String concatenatePathWithCamera() {
+        return BASE_PATH + "stickercamera";
     }
 }

@@ -38,12 +38,12 @@ public class GPUImageGaussianBlurFilter extends GPUImageTwoPassTextureSamplingFi
 
     @Override
     public float getVerticalTexelOffsetRatio() {
-        return mBlurSize;
+        return getBlurSizeValue();
     }
 
     @Override
     public float getHorizontalTexelOffsetRatio() {
-        return mBlurSize;
+        return getBlurSizeValue();
     }
 
     /**
@@ -60,5 +60,9 @@ public class GPUImageGaussianBlurFilter extends GPUImageTwoPassTextureSamplingFi
                 initTexelOffsets();
             }
         });
+    }
+
+    private float getBlurSizeValue() {
+        return mBlurSize;
     }
 }

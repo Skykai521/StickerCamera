@@ -147,7 +147,7 @@ public class ImageViewTouch extends ImageViewTouchBase {
     }
 
     public boolean onSingleTapConfirmed(MotionEvent e) {
-        return true;
+        return isValid(e);
     }
 
     public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
@@ -172,7 +172,7 @@ public class ImageViewTouch extends ImageViewTouchBase {
     }
 
     public boolean onDown(MotionEvent e) {
-        return true;
+        return isValid(e);
     }
 
     public boolean onUp(MotionEvent e) {
@@ -183,7 +183,7 @@ public class ImageViewTouch extends ImageViewTouchBase {
     }
 
     public boolean onSingleTapUp(MotionEvent e) {
-        return true;
+        return isValid(e);
     }
 
     /**
@@ -335,5 +335,9 @@ public class ImageViewTouch extends ImageViewTouchBase {
     public interface OnZoomAnimationListener {
 
         void onZoomAnimEnd(float scale);
+    }
+
+    private boolean isValid(MotionEvent e) {
+        return true;
     }
 }
