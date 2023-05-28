@@ -105,11 +105,8 @@ public class MyImageViewDrawableOverlay extends ImageViewTouch {
                     float upY = event.getRawY();
                     double distance = Math.sqrt(Math.abs(upX - downLabelX) * Math.abs(upX - downLabelX) + Math.abs(upY - downLabelY) * //两点之间的距离
                     Math.abs(upY - downLabelY));
-                    if (distance < 15) {
-                        // 距离较小，当作click事件来处理
-                        if (mDrawableListener != null) {
-                            mDrawableListener.onClick(currentLabel);
-                        }
+                    if (distance < 15 && mDrawableListener != null) {
+                        mDrawableListener.onClick(currentLabel);
                     }
                     currentLabel = null;
                     break;
@@ -401,10 +398,8 @@ public class MyImageViewDrawableOverlay extends ImageViewTouch {
             if (mDrawableListener != null) {
                 mDrawableListener.onMove(mOverlayView);
             }
-            if (mOverlayView.getMode() == MyHighlightView.MOVE) {
-                if (!mScaleWithContent) {
-                    ensureVisible(mOverlayView, distanceX, distanceY);
-                }
+            if (mOverlayView.getMode() == MyHighlightView.MOVE && !mScaleWithContent) {
+                ensureVisible(mOverlayView, distanceX, distanceY);
             }
             return true;
         } else {
@@ -431,10 +426,8 @@ public class MyImageViewDrawableOverlay extends ImageViewTouch {
             // check if we should invalidate again the canvas
             if (!shouldInvalidateAfter) {
                 FeatherDrawable content = current.getContent();
-                if (content instanceof EditableDrawable) {
-                    if (((EditableDrawable) content).isEditing()) {
-                        shouldInvalidateAfter = true;
-                    }
+                if (content instanceof EditableDrawable && ((EditableDrawable) content).isEditing()) {
+                    shouldInvalidateAfter = true;
                 }
             }
             canvas.restore();

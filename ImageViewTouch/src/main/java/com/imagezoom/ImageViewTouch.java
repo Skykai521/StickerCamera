@@ -203,10 +203,8 @@ public class ImageViewTouch extends ImageViewTouchBase {
         if (null == bitmapRect) {
             return false;
         }
-        if (bitmapRect.right >= imageViewRect.right) {
-            if (direction < 0) {
-                return Math.abs(bitmapRect.right - imageViewRect.right) > SCROLL_DELTA_THRESHOLD;
-            }
+        if (bitmapRect.right >= imageViewRect.right && direction < 0) {
+            return Math.abs(bitmapRect.right - imageViewRect.right) > SCROLL_DELTA_THRESHOLD;
         }
         double bitmapScrollRectDelta = Math.abs(bitmapRect.left - mScrollRect.left);
         return bitmapScrollRectDelta > SCROLL_DELTA_THRESHOLD;
@@ -250,11 +248,9 @@ public class ImageViewTouch extends ImageViewTouchBase {
 
         @Override
         public void onLongPress(MotionEvent e) {
-            if (isLongClickable()) {
-                if (!mScaleDetector.isInProgress()) {
-                    setPressed(true);
-                    performLongClick();
-                }
+            if (isLongClickable() && !mScaleDetector.isInProgress()) {
+                setPressed(true);
+                performLongClick();
             }
         }
 

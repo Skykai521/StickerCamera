@@ -224,26 +224,24 @@ public class MyHighlightView implements EditableDrawable.OnSizeChange {
             mContent.setBounds((int) mDrawRect.left, (int) mDrawRect.top, (int) mDrawRect.right, (int) mDrawRect.bottom);
         }
         mContent.draw(canvas);
-        if (is_selected || is_focused) {
-            if (mShowAnchors) {
-                //绘制边框
-                outlinePath.reset();
-                outlinePath.addRect(mTempRect, Path.Direction.CW);
-                outlinePaint.setColor(Color.WHITE);
-                outlinePaint.setStrokeWidth(App.getApp().dp2px(1));
-                canvas.drawPath(outlinePath, outlinePaint);
-                final int left = (int) (mTempRect.left);
-                final int right = (int) (mTempRect.right);
-                final int top = (int) (mTempRect.top);
-                final int bottom = (int) (mTempRect.bottom);
-                if (mAnchorRotate != null) {
-                    mAnchorRotate.setBounds(right - mAnchorRotateWidth, bottom - mAnchorRotateHeight, right + mAnchorRotateWidth, bottom + mAnchorRotateHeight);
-                    mAnchorRotate.draw(canvas);
-                }
-                if (mAnchorDelete != null) {
-                    mAnchorDelete.setBounds(left - mAnchorDeleteWidth, top - mAnchorDeleteHeight, left + mAnchorDeleteWidth, top + mAnchorDeleteHeight);
-                    mAnchorDelete.draw(canvas);
-                }
+        if (is_selected || is_focused && mShowAnchors) {
+            //绘制边框
+            outlinePath.reset();
+            outlinePath.addRect(mTempRect, Path.Direction.CW);
+            outlinePaint.setColor(Color.WHITE);
+            outlinePaint.setStrokeWidth(App.getApp().dp2px(1));
+            canvas.drawPath(outlinePath, outlinePaint);
+            final int left = (int) (mTempRect.left);
+            final int right = (int) (mTempRect.right);
+            final int top = (int) (mTempRect.top);
+            final int bottom = (int) (mTempRect.bottom);
+            if (mAnchorRotate != null) {
+                mAnchorRotate.setBounds(right - mAnchorRotateWidth, bottom - mAnchorRotateHeight, right + mAnchorRotateWidth, bottom + mAnchorRotateHeight);
+                mAnchorRotate.draw(canvas);
+            }
+            if (mAnchorDelete != null) {
+                mAnchorDelete.setBounds(left - mAnchorDeleteWidth, top - mAnchorDeleteHeight, left + mAnchorDeleteWidth, top + mAnchorDeleteHeight);
+                mAnchorDelete.draw(canvas);
             }
         }
         canvas.restoreToCount(saveCount);
@@ -358,11 +356,9 @@ public class MyHighlightView implements EditableDrawable.OnSizeChange {
         // mContext.invalidate();
         final boolean verticalCheck = (y >= (rect.top - HIT_TOLERANCE)) && (y < (rect.bottom + HIT_TOLERANCE));
         final boolean horizCheck = (x >= (rect.left - HIT_TOLERANCE)) && (x < (rect.right + HIT_TOLERANCE));
-        if (mAnchorDelete != null) {
-            if ((Math.abs(rect.left - x) < HIT_TOLERANCE) && (Math.abs(rect.top - y) < HIT_TOLERANCE) && verticalCheck && horizCheck) {
-                if (mDeleteClickListener != null) {
-                    mDeleteClickListener.onDeleteClick();
-                }
+        if (mAnchorDelete != null && (Math.abs(rect.left - x) < HIT_TOLERANCE) && (Math.abs(rect.top - y) < HIT_TOLERANCE) && verticalCheck && horizCheck) {
+            if (mDeleteClickListener != null) {
+                mDeleteClickListener.onDeleteClick();
             }
         }
     }
@@ -695,13 +691,11 @@ public class MyHighlightView implements EditableDrawable.OnSizeChange {
     @Override
     public void onSizeChanged(EditableDrawable content, float left, float top, float right, float bottom) {
         Log.i(LOG_TAG, "onSizeChanged: " + left + ", " + top + ", " + right + ", " + bottom);
-        if (content.equals(mEditableContent) && null != mContext) {
-            if (mDrawRect.left != left || mDrawRect.top != top || mDrawRect.right != right || mDrawRect.bottom != bottom) {
-                if (forceUpdate()) {
-                    mContext.invalidate(getInvalidationRect());
-                } else {
-                    mContext.postInvalidate();
-                }
+        if (content.equals(mEditableContent) && null != mContext && mDrawRect.left != left || mDrawRect.top != top || mDrawRect.right != right || mDrawRect.bottom != bottom) {
+            if (forceUpdate()) {
+                mContext.invalidate(getInvalidationRect());
+            } else {
+                mContext.postInvalidate();
             }
         }
     }

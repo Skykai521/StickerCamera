@@ -970,10 +970,8 @@ public class StringUtils {
         int lastIdx = str.length() - 1;
         String ret = str.substring(0, lastIdx);
         char last = str.charAt(lastIdx);
-        if (last == '\n') {
-            if (ret.charAt(lastIdx - 1) == '\r') {
-                return ret.substring(0, lastIdx - 1);
-            }
+        if (last == '\n' && ret.charAt(lastIdx - 1) == '\r') {
+            return ret.substring(0, lastIdx - 1);
         }
         return ret;
     }
