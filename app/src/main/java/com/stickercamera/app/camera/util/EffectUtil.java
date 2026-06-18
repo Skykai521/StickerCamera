@@ -218,7 +218,7 @@ public class EffectUtil {
             Matrix matrix = new Matrix(processImage.getImageMatrix());
             if (!matrix.invert(matrix)) {
             }
-            int saveCount = mCanvas.save(Canvas.MATRIX_SAVE_FLAG);
+            int saveCount = mCanvas.save();
             mCanvas.concat(rotateMatrix);
 
             stickerDrawable.setDropShadow(false);

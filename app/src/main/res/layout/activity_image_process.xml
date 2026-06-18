@@ -41,14 +41,12 @@
             android:layout_height="fill_parent"
             android:orientation="vertical" >
 
-            <it.sephiroth.android.library.widget.HListView
+            <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/list_tools"
                 android:layout_width="match_parent"
                 android:layout_height="fill_parent"
                 android:background="@color/common_background"
-                android:gravity="center_vertical"
-                android:overScrollMode="always"
-                app:hlv_dividerWidth="@dimen/margin_15px"/>
+                android:overScrollMode="always"/>
 
         </LinearLayout>
     </LinearLayout>

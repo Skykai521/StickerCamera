@@ -1,16 +1,11 @@
 apply plugin: 'com.android.library'
 
 android {
-    compileSdkVersion 22
-    buildToolsVersion "22.0.1"
+    namespace 'jp.co.cyberagent.android.gpuimage'
+    compileSdk 36
 
     defaultConfig {
-        minSdkVersion 15
-        targetSdkVersion 22
-
-        versionCode = 1
-        versionName = "1.0"
-
+        minSdk 26
     }
 
     sourceSets {
@@ -18,18 +13,16 @@ android {
             manifest.srcFile 'AndroidManifest.xml'
             java.srcDirs = ['src']
             resources.srcDirs = ['src']
-            aidl.srcDirs = ['src']
-            renderscript.srcDirs = ['src']
-            res.srcDirs = ['res']
-            assets.srcDirs = ['assets']
-            jni.srcDirs = ['jni']
+            jniLibs.srcDirs = ['libs']
         }
-
-        instrumentTest.setRoot('tests')
     }
 
-    lintOptions {
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
+    }
+
+    lint {
         abortOnError false
     }
-
 }

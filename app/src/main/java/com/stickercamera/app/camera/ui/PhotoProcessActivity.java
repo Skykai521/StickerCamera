@@ -9,7 +9,7 @@ import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -49,10 +49,12 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import butterknife.ButterKnife;
-import butterknife.InjectView;
-import de.greenrobot.event.EventBus;
-import it.sephiroth.android.library.widget.HListView;
+import butterknife.BindView;
+import org.greenrobot.eventbus.EventBus;
 import jp.co.cyberagent.android.gpuimage.GPUImageFilter;
 import jp.co.cyberagent.android.gpuimage.GPUImageView;
 
@@ -65,22 +67,22 @@ import jp.co.cyberagent.android.gpuimage.GPUImageView;
 public class PhotoProcessActivity extends CameraBaseActivity {
 
     //滤镜图片
-    @InjectView(R.id.gpuimage)
+    @BindView(R.id.gpuimage)
     GPUImageView mGPUImageView;
     //绘图区域
-    @InjectView(R.id.drawing_view_container)
+    @BindView(R.id.drawing_view_container)
     ViewGroup drawArea;
     //底部按钮
-    @InjectView(R.id.sticker_btn)
+    @BindView(R.id.sticker_btn)
     TextView stickerBtn;
-    @InjectView(R.id.filter_btn)
+    @BindView(R.id.filter_btn)
     TextView filterBtn;
-    @InjectView(R.id.text_btn)
+    @BindView(R.id.text_btn)
     TextView labelBtn;
     //工具区
-    @InjectView(R.id.list_tools)
-    HListView bottomToolBar;
-    @InjectView(R.id.toolbar_area)
+    @BindView(R.id.list_tools)
+    RecyclerView bottomToolBar;
+    @BindView(R.id.toolbar_area)
     ViewGroup toolArea;
     private MyImageViewDrawableOverlay mImageView;
     private LabelSelector labelSelector;
@@ -103,7 +105,7 @@ public class PhotoProcessActivity extends CameraBaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_image_process);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
         EffectUtil.clear();
         initView();
         initEvent();
@@ -346,23 +348,20 @@ public class PhotoProcessActivity extends CameraBaseActivity {
     //初始化贴图
     private void initStickerToolBar(){
 
-        bottomToolBar.setAdapter(new StickerToolAdapter(PhotoProcessActivity.this, EffectUtil.addonList));
-        bottomToolBar.setOnItemClickListener(new it.sephiroth.android.library.widget.AdapterView.OnItemClickListener() {
-
-            @Override
-            public void onItemClick(it.sephiroth.android.library.widget.AdapterView<?> arg0,
-                                    View arg1, int arg2, long arg3) {
-                labelSelector.hide();
-                Addon sticker = EffectUtil.addonList.get(arg2);
-                EffectUtil.addStickerImage(mImageView, PhotoProcessActivity.this, sticker,
-                        new EffectUtil.StickerCallback() {
-                            @Override
-                            public void onRemoveSticker(Addon sticker) {
-                                labelSelector.hide();
-                            }
-                        });
-            }
+        bottomToolBar.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        StickerToolAdapter adapter = new StickerToolAdapter(PhotoProcessActivity.this, EffectUtil.addonList);
+        adapter.setOnItemClickListener(position -> {
+            labelSelector.hide();
+            Addon sticker = EffectUtil.addonList.get(position);
+            EffectUtil.addStickerImage(mImageView, PhotoProcessActivity.this, sticker,
+                    new EffectUtil.StickerCallback() {
+                        @Override
+                        public void onRemoveSticker(Addon sticker) {
+                            labelSelector.hide();
+                        }
+                    });
         });
+        bottomToolBar.setAdapter(adapter);
         setCurrentBtn(stickerBtn);
     }
 
@@ -370,25 +369,23 @@ public class PhotoProcessActivity extends CameraBaseActivity {
     //初始化滤镜
     private void initFilterToolBar(){
         final List<FilterEffect> filters = EffectService.getInst().getLocalFilters();
-        final FilterAdapter adapter = new FilterAdapter(PhotoProcessActivity.this, filters,smallImageBackgroud);
-        bottomToolBar.setAdapter(adapter);
-        bottomToolBar.setOnItemClickListener(new it.sephiroth.android.library.widget.AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(it.sephiroth.android.library.widget.AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-                labelSelector.hide();
-                if (adapter.getSelectFilter() != arg2) {
-                    adapter.setSelectFilter(arg2);
-                    GPUImageFilter filter = GPUImageFilterTools.createFilterForType(
-                            PhotoProcessActivity.this, filters.get(arg2).getType());
-                    mGPUImageView.setFilter(filter);
-                    GPUImageFilterTools.FilterAdjuster mFilterAdjuster = new GPUImageFilterTools.FilterAdjuster(filter);
-                    //可调节颜色的滤镜
-                    if (mFilterAdjuster.canAdjust()) {
-                        //mFilterAdjuster.adjust(100); 给可调节的滤镜选一个合适的值
-                    }
+        bottomToolBar.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        final FilterAdapter adapter = new FilterAdapter(PhotoProcessActivity.this, filters, smallImageBackgroud);
+        adapter.setOnItemClickListener(position -> {
+            labelSelector.hide();
+            if (adapter.getSelectFilter() != position) {
+                adapter.setSelectFilter(position);
+                GPUImageFilter filter = GPUImageFilterTools.createFilterForType(
+                        PhotoProcessActivity.this, filters.get(position).getType());
+                mGPUImageView.setFilter(filter);
+                GPUImageFilterTools.FilterAdjuster mFilterAdjuster = new GPUImageFilterTools.FilterAdjuster(filter);
+                //可调节颜色的滤镜
+                if (mFilterAdjuster.canAdjust()) {
+                    //mFilterAdjuster.adjust(100); 给可调节的滤镜选一个合适的值
                 }
             }
         });
+        bottomToolBar.setAdapter(adapter);
     }
 
     //添加标签

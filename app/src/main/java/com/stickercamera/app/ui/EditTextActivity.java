@@ -17,7 +17,7 @@ import com.stickercamera.AppConstants;
 import com.stickercamera.base.BaseActivity;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.BindView;
 
 
 /**
@@ -30,9 +30,9 @@ public class EditTextActivity extends BaseActivity {
 
     private final static int MAX        = 10;
     private int maxlength               = MAX;
-    @InjectView(R.id.text_input)
+    @BindView(R.id.text_input)
     EditText contentView;
-    @InjectView(R.id.tag_input_tips)
+    @BindView(R.id.tag_input_tips)
     TextView numberTips;
 
     public static void openTextEdit(Activity mContext, String defaultStr,int maxLength, int reqCode) {
@@ -48,7 +48,7 @@ public class EditTextActivity extends BaseActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_text);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
         maxlength = getIntent().getIntExtra(AppConstants.PARAM_MAX_SIZE, MAX);
 
         String defaultStr = getIntent().getStringExtra(AppConstants.PARAM_EDIT_TEXT);

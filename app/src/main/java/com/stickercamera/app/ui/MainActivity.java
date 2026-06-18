@@ -1,12 +1,12 @@
 package com.stickercamera.app.ui;
 
 import android.graphics.BitmapFactory;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AppCompatActivity;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.CardView;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -24,7 +24,7 @@ import com.common.util.FileUtils;
 import com.common.util.StringUtils;
 import com.customview.LabelView;
 import com.github.skykai.stickercamera.R;
-import com.melnykov.fab.FloatingActionButton;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.stickercamera.App;
 import com.stickercamera.AppConstants;
 import com.stickercamera.app.camera.CameraManager;
@@ -38,8 +38,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
-import de.greenrobot.event.EventBus;
+import butterknife.BindView;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 /**
  * 主界面
@@ -49,9 +51,9 @@ import de.greenrobot.event.EventBus;
  */
 public class MainActivity extends BaseActivity {
 
-    @InjectView(R.id.fab)
+    @BindView(R.id.fab)
     FloatingActionButton fab;
-    @InjectView(R.id.recycler_view)
+    @BindView(R.id.recycler_view)
     RecyclerView mRecyclerView;
     private List<FeedItem> feedList;
     private PictureAdapter mAdapter;
@@ -61,7 +63,7 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
         EventBus.getDefault().register(this);
         initView();
 
@@ -79,7 +81,8 @@ public class MainActivity extends BaseActivity {
     }
 
 
-    public void onEventMainThread(FeedItem feedItem) {
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(FeedItem feedItem) {
         if (feedList == null) {
             feedList = new ArrayList<FeedItem>();
         }
@@ -186,9 +189,9 @@ public class MainActivity extends BaseActivity {
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        @InjectView(R.id.pictureLayout)
+        @BindView(R.id.pictureLayout)
         RelativeLayout pictureLayout;
-        @InjectView(R.id.picture)
+        @BindView(R.id.picture)
         ImageView picture;
 
         private List<TagItem> tagList = new ArrayList<>();
@@ -206,7 +209,7 @@ public class MainActivity extends BaseActivity {
 
         public ViewHolder(View itemView) {
             super(itemView);
-            ButterKnife.inject(this, itemView);
+            ButterKnife.bind(this, itemView);
         }
     }
 

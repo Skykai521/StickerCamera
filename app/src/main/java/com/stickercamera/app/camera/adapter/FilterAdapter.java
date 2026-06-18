@@ -5,9 +5,10 @@ import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.github.skykai.stickercamera.R;
 import com.stickercamera.app.camera.effect.FilterEffect;
@@ -20,15 +21,29 @@ import jp.co.cyberagent.android.gpuimage.GPUImageView;
 
 /**
  * @author tongqian.ni
- *
  */
-public class FilterAdapter extends BaseAdapter {
+public class FilterAdapter extends RecyclerView.Adapter<FilterAdapter.EffectHolder> {
 
-    List<FilterEffect> filterUris;
-    Context            mContext;
-    private Bitmap     background;
+    public interface OnItemClickListener {
+        void onItemClick(int position);
+    }
 
-    private int        selectFilter = 0;
+    private final List<FilterEffect> filterUris;
+    private final Context            mContext;
+    private final Bitmap             background;
+
+    private int                      selectFilter = 0;
+    private OnItemClickListener      onItemClickListener;
+
+    public FilterAdapter(Context context, List<FilterEffect> effects, Bitmap background) {
+        this.mContext = context;
+        this.filterUris = effects;
+        this.background = background;
+    }
+
+    public void setOnItemClickListener(OnItemClickListener l) {
+        this.onItemClickListener = l;
+    }
 
     public void setSelectFilter(int selectFilter) {
         this.selectFilter = selectFilter;
@@ -38,55 +53,44 @@ public class FilterAdapter extends BaseAdapter {
         return selectFilter;
     }
 
-    public FilterAdapter(Context context, List<FilterEffect> effects, Bitmap backgroud) {
-        filterUris = effects;
-        mContext = context;
-        this.background = backgroud;
-    }
-
-    @Override
-    public int getCount() {
-        return filterUris.size();
-    }
-
-    @Override
-    public Object getItem(int position) {
+    public FilterEffect getItem(int position) {
         return filterUris.get(position);
     }
 
+    @NonNull
     @Override
-    public long getItemId(int position) {
-        return position;
+    public EffectHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View v = LayoutInflater.from(mContext).inflate(R.layout.item_bottom_filter, parent, false);
+        return new EffectHolder(v);
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        EffectHolder holder = null;
-        if (convertView == null) {
-            LayoutInflater layoutInflater = LayoutInflater.from(mContext);
-            convertView = layoutInflater.inflate(R.layout.item_bottom_filter, null);
-            holder = new EffectHolder();
-            holder.filteredImg = (GPUImageView) convertView.findViewById(R.id.small_filter);
-            holder.filterName = (TextView) convertView.findViewById(R.id.filter_name);
-            convertView.setTag(holder);
-        } else {
-            holder = (EffectHolder) convertView.getTag();
-        }
-
-        final FilterEffect effect = (FilterEffect) getItem(position);
-
+    public void onBindViewHolder(@NonNull EffectHolder holder, int position) {
+        final FilterEffect effect = getItem(position);
         holder.filteredImg.setImage(background);
         holder.filterName.setText(effect.getTitle());
-        //if (!effect.isOri() && effect.getType() != null) {
         GPUImageFilter filter = GPUImageFilterTools.createFilterForType(mContext, effect.getType());
         holder.filteredImg.setFilter(filter);
-
-        return convertView;
+        holder.itemView.setOnClickListener(v -> {
+            if (onItemClickListener != null) {
+                onItemClickListener.onItemClick(holder.getAdapterPosition());
+            }
+        });
     }
 
-    class EffectHolder {
+    @Override
+    public int getItemCount() {
+        return filterUris.size();
+    }
+
+    static class EffectHolder extends RecyclerView.ViewHolder {
         GPUImageView filteredImg;
         TextView     filterName;
-    }
 
+        EffectHolder(View itemView) {
+            super(itemView);
+            filteredImg = itemView.findViewById(R.id.small_filter);
+            filterName = itemView.findViewById(R.id.filter_name);
+        }
+    }
 }

@@ -9,7 +9,7 @@
         app:titleTxt="贴纸相机" />
 
 
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -17,18 +17,17 @@
         android:scrollbars="vertical" />
 
 
-    <com.melnykov.fab.FloatingActionButton
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="31dp"
-        android:padding="4dp"
         android:src="@drawable/ic_camera_white"
-        app:fab_colorNormal="?attr/colorPrimary"
-        app:fab_colorPressed="?attr/colorPrimaryDark"
-        app:fab_colorRipple="?attr/colorPrimary" />
+        app:backgroundTint="?attr/colorPrimary"
+        app:rippleColor="?attr/colorPrimaryDark"
+        app:tint="@android:color/white" />
 
 
 </RelativeLayout>
