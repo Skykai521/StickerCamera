@@ -55,7 +55,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import butterknife.ButterKnife;
 import butterknife.BindView;
 import org.greenrobot.eventbus.EventBus;
-import jp.co.cyberagent.android.gpuimage.GPUImageFilter;
+import jp.co.cyberagent.android.gpuimage.filter.GPUImageFilter;
 import jp.co.cyberagent.android.gpuimage.GPUImageView;
 
 /**
@@ -378,11 +378,6 @@ public class PhotoProcessActivity extends CameraBaseActivity {
                 GPUImageFilter filter = GPUImageFilterTools.createFilterForType(
                         PhotoProcessActivity.this, filters.get(position).getType());
                 mGPUImageView.setFilter(filter);
-                GPUImageFilterTools.FilterAdjuster mFilterAdjuster = new GPUImageFilterTools.FilterAdjuster(filter);
-                //可调节颜色的滤镜
-                if (mFilterAdjuster.canAdjust()) {
-                    //mFilterAdjuster.adjust(100); 给可调节的滤镜选一个合适的值
-                }
             }
         });
         bottomToolBar.setAdapter(adapter);

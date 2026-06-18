@@ -149,14 +149,14 @@ public class FileUtils {
 
 
     private FileUtils() {
-        String sdcardState = Environment.getExternalStorageState();
-        //如果没SD卡则放缓存
-        if (Environment.MEDIA_MOUNTED.equals(sdcardState)) {
-            BASE_PATH = Environment.getExternalStorageDirectory().getAbsolutePath()
-                        + "/stickercamera/";
-        } else {
-            BASE_PATH = App.getApp().getCacheDirPath();
+        // 分区存储(Android 10+ / targetSdk 36)下应用无法直接写公共外部目录,
+        // 改用应用专属外部目录:无需运行时权限,各 API 级别均可写。
+        File baseDir = App.getApp().getExternalFilesDir(null);
+        if (baseDir == null) {
+            // 外部存储不可用时退回内部缓存目录
+            baseDir = App.getApp().getCacheDir();
         }
+        BASE_PATH = baseDir.getAbsolutePath() + "/stickercamera/";
 
         STICKER_BASE_PATH = BASE_PATH + "/stickers/";
     }
@@ -174,10 +174,9 @@ public class FileUtils {
     }
 
     public boolean mkdir(File file) {
-        while (!file.getParentFile().exists()) {
-            mkdir(file.getParentFile());
-        }
-        return file.mkdir();
+        // 用 mkdirs() 一次性创建整条目录链。旧实现用 while 循环等待父目录出现,
+        // 一旦 mkdir 因权限失败(分区存储)便永远卡在循环里——这是保存线程卡死的根因。
+        return file.exists() || file.mkdirs();
     }
 
     public boolean writeSimpleString(File file, String string) {
