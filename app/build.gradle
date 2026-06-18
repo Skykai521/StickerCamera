@@ -52,6 +52,6 @@ dependencies {
     implementation 'com.alibaba:fastjson:1.2.83'
     implementation 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
     implementation 'org.greenrobot:eventbus:3.3.1'
-    implementation project(':Gpu-Image')
+    implementation 'jp.co.cyberagent.android:gpuimage:2.1.0'
     implementation project(':ImageViewTouch')
 }

@@ -12,4 +12,4 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "StickerCamera"
-include ':app', ':Gpu-Image', ':ImageViewTouch'
+include ':app', ':ImageViewTouch'

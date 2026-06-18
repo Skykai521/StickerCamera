@@ -16,8 +16,8 @@ import com.stickercamera.app.camera.util.GPUImageFilterTools;
 
 import java.util.List;
 
-import jp.co.cyberagent.android.gpuimage.GPUImageFilter;
 import jp.co.cyberagent.android.gpuimage.GPUImageView;
+import jp.co.cyberagent.android.gpuimage.filter.GPUImageFilter;
 
 /**
  * @author tongqian.ni
