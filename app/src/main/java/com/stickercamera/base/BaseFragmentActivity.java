@@ -1,6 +1,6 @@
 package com.stickercamera.base;
 
-import android.support.v4.app.FragmentActivity;
+import androidx.fragment.app.FragmentActivity;
 import android.view.View;
 
 import com.customview.CommonTitleBar;
