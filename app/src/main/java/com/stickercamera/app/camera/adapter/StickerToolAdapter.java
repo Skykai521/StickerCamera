@@ -4,78 +4,77 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.common.util.ImageLoaderUtils;
 import com.github.skykai.stickercamera.R;
-import com.nostra13.universalimageloader.core.ImageLoader;
 import com.stickercamera.app.model.Addon;
 
 import java.util.List;
 
 /**
- * 
  * 贴纸适配器
+ *
  * @author tongqian.ni
  */
-public class StickerToolAdapter extends BaseAdapter {
+public class StickerToolAdapter extends RecyclerView.Adapter<StickerToolAdapter.EffectHolder> {
 
-    List<Addon> filterUris;
-    Context     mContext;
+    public interface OnItemClickListener {
+        void onItemClick(int position);
+    }
+
+    private final List<Addon>   filterUris;
+    private final Context       mContext;
+    private OnItemClickListener onItemClickListener;
 
     public StickerToolAdapter(Context context, List<Addon> effects) {
-        filterUris = effects;
-        mContext = context;
+        this.mContext = context;
+        this.filterUris = effects;
     }
 
-    @Override
-    public int getCount() {
-        return filterUris.size();
+    public void setOnItemClickListener(OnItemClickListener l) {
+        this.onItemClickListener = l;
     }
 
-    @Override
-    public Object getItem(int position) {
+    public Addon getItem(int position) {
         return filterUris.get(position);
     }
 
+    @NonNull
     @Override
-    public long getItemId(int position) {
-        return position;
+    public EffectHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View v = LayoutInflater.from(mContext).inflate(R.layout.item_bottom_tool, parent, false);
+        return new EffectHolder(v);
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        EffectHolder holder = null;
-        if (convertView == null) {
-            LayoutInflater layoutInflater = LayoutInflater.from(mContext);
-            convertView = layoutInflater.inflate(R.layout.item_bottom_tool, null);
-            holder = new EffectHolder();
-            holder.logo = (ImageView) convertView.findViewById(R.id.effect_image);
-            holder.container = (ImageView) convertView.findViewById(R.id.effect_background);
-            //holder.navImage.setOnClickListener(holder.clickListener);
-            convertView.setTag(holder);
-        } else {
-            holder = (EffectHolder) convertView.getTag();
-        }
-
-        final Addon effect = (Addon) getItem(position);
-
-        return showItem(convertView, holder, effect);
-    }
-
-    private View showItem(View convertView, EffectHolder holder, final Addon sticker) {
-
+    public void onBindViewHolder(@NonNull EffectHolder holder, int position) {
+        final Addon sticker = getItem(position);
         holder.container.setVisibility(View.GONE);
         ImageLoaderUtils.displayDrawableImage(sticker.getId() + "", holder.logo, null);
-
-        return convertView;
+        holder.itemView.setOnClickListener(v -> {
+            if (onItemClickListener != null) {
+                onItemClickListener.onItemClick(holder.getAdapterPosition());
+            }
+        });
     }
 
-    class EffectHolder {
+    @Override
+    public int getItemCount() {
+        return filterUris.size();
+    }
+
+    static class EffectHolder extends RecyclerView.ViewHolder {
         ImageView logo;
         ImageView container;
-    }
 
+        EffectHolder(View itemView) {
+            super(itemView);
+            logo = itemView.findViewById(R.id.effect_image);
+            container = itemView.findViewById(R.id.effect_background);
+        }
+    }
 }

@@ -49,10 +49,12 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import butterknife.ButterKnife;
 import butterknife.BindView;
 import org.greenrobot.eventbus.EventBus;
-import it.sephiroth.android.library.widget.HListView;
 import jp.co.cyberagent.android.gpuimage.GPUImageFilter;
 import jp.co.cyberagent.android.gpuimage.GPUImageView;
 
@@ -79,7 +81,7 @@ public class PhotoProcessActivity extends CameraBaseActivity {
     TextView labelBtn;
     //工具区
     @BindView(R.id.list_tools)
-    HListView bottomToolBar;
+    RecyclerView bottomToolBar;
     @BindView(R.id.toolbar_area)
     ViewGroup toolArea;
     private MyImageViewDrawableOverlay mImageView;
@@ -346,23 +348,20 @@ public class PhotoProcessActivity extends CameraBaseActivity {
     //初始化贴图
     private void initStickerToolBar(){
 
-        bottomToolBar.setAdapter(new StickerToolAdapter(PhotoProcessActivity.this, EffectUtil.addonList));
-        bottomToolBar.setOnItemClickListener(new it.sephiroth.android.library.widget.AdapterView.OnItemClickListener() {
-
-            @Override
-            public void onItemClick(it.sephiroth.android.library.widget.AdapterView<?> arg0,
-                                    View arg1, int arg2, long arg3) {
-                labelSelector.hide();
-                Addon sticker = EffectUtil.addonList.get(arg2);
-                EffectUtil.addStickerImage(mImageView, PhotoProcessActivity.this, sticker,
-                        new EffectUtil.StickerCallback() {
-                            @Override
-                            public void onRemoveSticker(Addon sticker) {
-                                labelSelector.hide();
-                            }
-                        });
-            }
+        bottomToolBar.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        StickerToolAdapter adapter = new StickerToolAdapter(PhotoProcessActivity.this, EffectUtil.addonList);
+        adapter.setOnItemClickListener(position -> {
+            labelSelector.hide();
+            Addon sticker = EffectUtil.addonList.get(position);
+            EffectUtil.addStickerImage(mImageView, PhotoProcessActivity.this, sticker,
+                    new EffectUtil.StickerCallback() {
+                        @Override
+                        public void onRemoveSticker(Addon sticker) {
+                            labelSelector.hide();
+                        }
+                    });
         });
+        bottomToolBar.setAdapter(adapter);
         setCurrentBtn(stickerBtn);
     }
 
@@ -370,25 +369,23 @@ public class PhotoProcessActivity extends CameraBaseActivity {
     //初始化滤镜
     private void initFilterToolBar(){
         final List<FilterEffect> filters = EffectService.getInst().getLocalFilters();
-        final FilterAdapter adapter = new FilterAdapter(PhotoProcessActivity.this, filters,smallImageBackgroud);
-        bottomToolBar.setAdapter(adapter);
-        bottomToolBar.setOnItemClickListener(new it.sephiroth.android.library.widget.AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(it.sephiroth.android.library.widget.AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-                labelSelector.hide();
-                if (adapter.getSelectFilter() != arg2) {
-                    adapter.setSelectFilter(arg2);
-                    GPUImageFilter filter = GPUImageFilterTools.createFilterForType(
-                            PhotoProcessActivity.this, filters.get(arg2).getType());
-                    mGPUImageView.setFilter(filter);
-                    GPUImageFilterTools.FilterAdjuster mFilterAdjuster = new GPUImageFilterTools.FilterAdjuster(filter);
-                    //可调节颜色的滤镜
-                    if (mFilterAdjuster.canAdjust()) {
-                        //mFilterAdjuster.adjust(100); 给可调节的滤镜选一个合适的值
-                    }
+        bottomToolBar.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        final FilterAdapter adapter = new FilterAdapter(PhotoProcessActivity.this, filters, smallImageBackgroud);
+        adapter.setOnItemClickListener(position -> {
+            labelSelector.hide();
+            if (adapter.getSelectFilter() != position) {
+                adapter.setSelectFilter(position);
+                GPUImageFilter filter = GPUImageFilterTools.createFilterForType(
+                        PhotoProcessActivity.this, filters.get(position).getType());
+                mGPUImageView.setFilter(filter);
+                GPUImageFilterTools.FilterAdjuster mFilterAdjuster = new GPUImageFilterTools.FilterAdjuster(filter);
+                //可调节颜色的滤镜
+                if (mFilterAdjuster.canAdjust()) {
+                    //mFilterAdjuster.adjust(100); 给可调节的滤镜选一个合适的值
                 }
             }
         });
+        bottomToolBar.setAdapter(adapter);
     }
 
     //添加标签
