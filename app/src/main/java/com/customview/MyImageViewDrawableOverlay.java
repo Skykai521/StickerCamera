@@ -485,7 +485,7 @@ public class MyImageViewDrawableOverlay extends ImageViewTouch {
         boolean shouldInvalidateAfter = false;
 
         for (int i = 0; i < mOverlayViews.size(); i++) {
-            canvas.save(Canvas.MATRIX_SAVE_FLAG);
+            canvas.save();
 
             MyHighlightView current = mOverlayViews.get(i);
             current.draw(canvas);
@@ -589,7 +589,7 @@ public class MyImageViewDrawableOverlay extends ImageViewTouch {
             Matrix rotateMatrix = hv.getCropRotationMatrix();
             Rect rect = hv.getCropRect();
 
-            int saveCount = canvas.save(Canvas.MATRIX_SAVE_FLAG);
+            int saveCount = canvas.save();
             canvas.concat(rotateMatrix);
             content.setBounds(rect);
             content.draw(canvas);
