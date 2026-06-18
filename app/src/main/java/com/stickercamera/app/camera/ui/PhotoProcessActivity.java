@@ -51,7 +51,7 @@ import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.BindView;
-import de.greenrobot.event.EventBus;
+import org.greenrobot.eventbus.EventBus;
 import it.sephiroth.android.library.widget.HListView;
 import jp.co.cyberagent.android.gpuimage.GPUImageFilter;
 import jp.co.cyberagent.android.gpuimage.GPUImageView;

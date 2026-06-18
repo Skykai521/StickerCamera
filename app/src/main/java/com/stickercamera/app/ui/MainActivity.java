@@ -39,7 +39,9 @@ import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.BindView;
-import de.greenrobot.event.EventBus;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 /**
  * 主界面
@@ -79,7 +81,8 @@ public class MainActivity extends BaseActivity {
     }
 
 
-    public void onEventMainThread(FeedItem feedItem) {
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(FeedItem feedItem) {
         if (feedList == null) {
             feedList = new ArrayList<FeedItem>();
         }
