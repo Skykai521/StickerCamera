@@ -54,7 +54,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.BindView;
 
 /**
  * 相机界面
@@ -78,25 +78,25 @@ public class CameraActivity extends CameraBaseActivity {
     private int mCurrentCameraId = 0;  //1是前置 0是后置
     private Handler handler = new Handler();
 
-    @InjectView(R.id.masking)
+    @BindView(R.id.masking)
     CameraGrid cameraGrid;
-    @InjectView(R.id.photo_area)
+    @BindView(R.id.photo_area)
     LinearLayout photoArea;
-    @InjectView(R.id.panel_take_photo)
+    @BindView(R.id.panel_take_photo)
     View takePhotoPanel;
-    @InjectView(R.id.takepicture)
+    @BindView(R.id.takepicture)
     Button takePicture;
-    @InjectView(R.id.flashBtn)
+    @BindView(R.id.flashBtn)
     ImageView flashBtn;
-    @InjectView(R.id.change)
+    @BindView(R.id.change)
     ImageView changeBtn;
-    @InjectView(R.id.back)
+    @BindView(R.id.back)
     ImageView backBtn;
-    @InjectView(R.id.next)
+    @BindView(R.id.next)
     ImageView galleryBtn;
-    @InjectView(R.id.focus_index)
+    @BindView(R.id.focus_index)
     View focusIndex;
-    @InjectView(R.id.surfaceView)
+    @BindView(R.id.surfaceView)
     SurfaceView surfaceView;
 
 
@@ -105,7 +105,7 @@ public class CameraActivity extends CameraBaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_camera);
         mCameraHelper = new CameraHelper(this);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
         initView();
         initEvent();
     }

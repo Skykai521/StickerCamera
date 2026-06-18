@@ -38,7 +38,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.BindView;
 import de.greenrobot.event.EventBus;
 
 /**
@@ -49,9 +49,9 @@ import de.greenrobot.event.EventBus;
  */
 public class MainActivity extends BaseActivity {
 
-    @InjectView(R.id.fab)
+    @BindView(R.id.fab)
     FloatingActionButton fab;
-    @InjectView(R.id.recycler_view)
+    @BindView(R.id.recycler_view)
     RecyclerView mRecyclerView;
     private List<FeedItem> feedList;
     private PictureAdapter mAdapter;
@@ -61,7 +61,7 @@ public class MainActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
         EventBus.getDefault().register(this);
         initView();
 
@@ -186,9 +186,9 @@ public class MainActivity extends BaseActivity {
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        @InjectView(R.id.pictureLayout)
+        @BindView(R.id.pictureLayout)
         RelativeLayout pictureLayout;
-        @InjectView(R.id.picture)
+        @BindView(R.id.picture)
         ImageView picture;
 
         private List<TagItem> tagList = new ArrayList<>();
@@ -206,7 +206,7 @@ public class MainActivity extends BaseActivity {
 
         public ViewHolder(View itemView) {
             super(itemView);
-            ButterKnife.inject(this, itemView);
+            ButterKnife.bind(this, itemView);
         }
     }
 

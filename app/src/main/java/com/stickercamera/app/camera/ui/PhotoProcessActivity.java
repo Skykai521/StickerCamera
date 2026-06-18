@@ -50,7 +50,7 @@ import java.util.Date;
 import java.util.List;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.BindView;
 import de.greenrobot.event.EventBus;
 import it.sephiroth.android.library.widget.HListView;
 import jp.co.cyberagent.android.gpuimage.GPUImageFilter;
@@ -65,22 +65,22 @@ import jp.co.cyberagent.android.gpuimage.GPUImageView;
 public class PhotoProcessActivity extends CameraBaseActivity {
 
     //滤镜图片
-    @InjectView(R.id.gpuimage)
+    @BindView(R.id.gpuimage)
     GPUImageView mGPUImageView;
     //绘图区域
-    @InjectView(R.id.drawing_view_container)
+    @BindView(R.id.drawing_view_container)
     ViewGroup drawArea;
     //底部按钮
-    @InjectView(R.id.sticker_btn)
+    @BindView(R.id.sticker_btn)
     TextView stickerBtn;
-    @InjectView(R.id.filter_btn)
+    @BindView(R.id.filter_btn)
     TextView filterBtn;
-    @InjectView(R.id.text_btn)
+    @BindView(R.id.text_btn)
     TextView labelBtn;
     //工具区
-    @InjectView(R.id.list_tools)
+    @BindView(R.id.list_tools)
     HListView bottomToolBar;
-    @InjectView(R.id.toolbar_area)
+    @BindView(R.id.toolbar_area)
     ViewGroup toolArea;
     private MyImageViewDrawableOverlay mImageView;
     private LabelSelector labelSelector;
@@ -103,7 +103,7 @@ public class PhotoProcessActivity extends CameraBaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_image_process);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
         EffectUtil.clear();
         initView();
         initEvent();

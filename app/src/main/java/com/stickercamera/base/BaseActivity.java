@@ -15,8 +15,6 @@ import com.github.skykai.stickercamera.R;
 import com.customview.CommonTitleBar;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 
-import butterknife.ButterKnife;
-
 /**
  * Created by sky on 15/7/6.
  */

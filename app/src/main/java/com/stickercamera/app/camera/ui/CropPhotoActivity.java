@@ -33,7 +33,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.BindView;
 
 /**
  * 裁剪图片界面
@@ -49,15 +49,15 @@ public class CropPhotoActivity extends CameraBaseActivity {
     private int initWidth, initHeight;
     private static final int MAX_WRAP_SIZE  = 2048;
 
-    @InjectView(R.id.crop_image)
+    @BindView(R.id.crop_image)
     ImageViewTouch cropImage;
-    @InjectView(R.id.draw_area)
+    @BindView(R.id.draw_area)
     ViewGroup drawArea;
-    @InjectView(R.id.wrap_image)
+    @BindView(R.id.wrap_image)
     View wrapImage;
-    @InjectView(R.id.btn_crop_type)
+    @BindView(R.id.btn_crop_type)
     View btnCropType;
-    @InjectView(R.id.image_center)
+    @BindView(R.id.image_center)
     ImageView imageCenter;
 
     @Override
@@ -65,7 +65,7 @@ public class CropPhotoActivity extends CameraBaseActivity {
         super.onCreate(savedInstanceState);
         // 显示界面
         setContentView(R.layout.activity_new_crop);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
         fileUri = getIntent().getData();
         initView();
         initEvent();
